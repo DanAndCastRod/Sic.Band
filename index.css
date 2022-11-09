@@ -11,6 +11,10 @@ html{
 body {
     margin: 0;
 }
+a{
+    color: #fff;
+    text-decoration: none;
+}
 .header-container{
     position: relative;
     display: flex;
@@ -18,9 +22,9 @@ body {
     justify-content: center;
     min-width: 100%;
     max-width: 100%;
-    max-height: 30rem;
 
-    height: 30rem;
+
+
 
     
 }
@@ -30,12 +34,12 @@ body {
     margin: auto;
     overflow: hidden;
     align-items: center;
+    width: 100%;
 }
 .img-container img{
     position:static;
     display: block;
     width: 100%;
-    
 }
 
 .title-wrap{
@@ -97,7 +101,47 @@ nav{
     background-color: #000;
 }
 
-a{
-    color: #fff;
-    text-decoration: none;
+.card-spot{
+    display: flex;
+    margin: 40px auto;
+    width: 80%;
+    border-radius: 10px;
+    border: 1px solid red;
+    
+}
+
+.spotify-container{
+    padding: 5px;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.resena-container{
+    display: flex;
+    padding: 2rem 5rem;
+    background-image: linear-gradient(40deg ,#111,#222);
+
+}
+.resena-title{
+    text-align: center;
+}
+.resena-left{
+    align-items: center;
+    border: 1px solid red;
+    box-shadow: 0 0 5px red;
+    padding: 2rem 5rem;
+}
+.resena-right{
+    display: flex;
+    overflow: hidden;
+    align-content: center;
+    border: 1px solid red;
+
+    box-shadow: 0 0 5px red;
+}
+#img-band{
+    min-width: 20rem;
+    width:50% ;
+    margin: 0 auto;
+    align-self: center;
 }
