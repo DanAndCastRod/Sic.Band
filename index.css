@@ -15,17 +15,21 @@ body {
     position: relative;
     display: flex;
     align-items: center;
+    justify-content: center;
     min-width: 100%;
     max-width: 100%;
     max-height: 30rem;
-    margin: auto;;
+
     height: 30rem;
 
     
 }
 .img-container{
+    display: flex;
     max-height: 30rem;
     margin: auto;
+    overflow: hidden;
+    align-items: center;
 }
 .img-container img{
     position:static;
@@ -36,11 +40,12 @@ body {
 
 .title-wrap{
     position: absolute;;
-    top: 50%;
-    padding-left: 5%;
+    top: 40%;
+    margin: auto;;
     display: flex;
     flex-direction: column;
-    align-items: center;;
+    align-items: center;
+    
 }
 
 .title-text{
@@ -52,10 +57,9 @@ body {
 .subtitle-container{
     
     display: flex;
-}
-.subtitle-container{
     padding-bottom: 20px;
 }
+
 .new{
     text-shadow: #000;
     padding-right: 5px;
@@ -65,6 +69,7 @@ body {
 .release-name{
     font-style: italic;
     font-weight: bold;
+    text-shadow: 1px 1px 5px black;
 }
 
 .button-container{
