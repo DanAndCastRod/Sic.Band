@@ -1,8 +1,6 @@
-:root{
-    background-color: black;
-    color: white;
-    font-family: 'segoe UI';
-    box-sizing: border-box;
+
+div{
+    color: #fff;
 }
 
 html{
@@ -10,6 +8,7 @@ html{
 }
 body {
     margin: 0;
+    background-color: #000;
 }
 a{
     color: #fff;
@@ -23,13 +22,13 @@ a{
     min-width: 100%;
     max-width: 100%;
 
-}
+}   
 .img-container{
     display: flex;
-    max-height: 30rem;
+    max-height: 30em;
     margin: auto;
-    overflow: hidden;
     align-items: center;
+    overflow: hidden;;
     width: 100%;
 }
 .img-container img{
@@ -102,7 +101,6 @@ nav{
     margin: 40px auto;
     width: 80%;
     border-radius: 10px;
-    border: 1px solid red;
     
 }
 
@@ -114,30 +112,41 @@ nav{
 
 .resena-container{
     display: flex;
-    padding: 2rem 5rem;
-    background-image: linear-gradient(40deg ,#111,#222);
+    flex-direction: row;
+    padding: 2em 5em;
+    background-image: linear-gradient(0deg,#111,#333);
+
+    margin:  0 10%;
+    border-radius: 10px;
 
 }
 .resena-title{
     text-align: center;
+    width: 50%;
 }
 .resena-left{
+    display: flex;;
+    flex-direction: column;
     align-items: center;
-    border: 1px solid red;
+    justify-content: center;
+    padding: 5% 5%;
     box-shadow: 0 0 5px red;
-    padding: 2rem 5rem;
+    border-radius: 10px;
+    margin: 0 5% ;
 }
 .resena-right{
-    display: flex;
-    overflow: hidden;
-    align-content: center;
-    border: 1px solid red;
-
+    margin: 0 5% ;
     box-shadow: 0 0 5px red;
+    border-radius: 10px;   
+    overflow: hidden;
+
+
 }
 #img-band{
-    min-width: 20rem;
-    width:50% ;
-    margin: 0 auto;
-    align-self: center;
+    object-fit: cover;
+  
+    width:100% ;
+    height: 100%;
+
+
 }
