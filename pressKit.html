@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,251 +8,318 @@
     <meta name="description" content="Banda de Grunge y rock alternativo de la ciudad de Pereira">
     <meta name="keywords" content="Banda de rock">
     <title>SIC Web Page</title>
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-        crossorigin="anonymous"
-    />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
     <link href="https://fonts.cdnfonts.com/css/grunge-2" rel="stylesheet">
     <link href="https://fonts.cdnfonts.com/css/remington-noiseless" rel="stylesheet">
     <style>
-body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-}
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
 
-.page {
-    width: 8.5in;
-    height: 11in;
-    margin: 0 auto;
-    /* padding: 1in; Agrega margen interno para impresión */
-    page-break-after: always;
-    border: 1px solid #000;
-    box-sizing: border-box;
-}
+        .page {
+            width: 8.5in;
+            height: 11.5in;
+            margin: 0 auto;
+            /* padding: 1in; Agrega margen interno para impresión */
+            page-break-after: always;
+            border: 1px solid #000;
+            /* box-sizing: border-box; */
+            padding: 0;
+        }
 
-.page:last-child {
-    page-break-after: auto;
-}
+        .page:last-child {
+            page-break-after: auto;
+        }
 
-#portada_1 {
-    background: url("/img/img-noise-361x370.png") repeat;
-    position: relative; /* Cambiado de absolute a relative */
-    height: 100%;
-}
+        #portada_1 {
+            background: url("/img/img-noise-361x370.png") repeat;
+            position: relative;
+            /* Cambiado de absolute a relative */
+            height: 100%;
+        }
 
-#portada_2 img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Recorta y centra la imagen */
-}
-#portada_3 {
-    background: url("/img/img-noise-361x370 (2).png") repeat;
-    position: relative; /* Cambiado de absolute a relative */
-    height: 100%;
-}
+        #portada_2 img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* Recorta y centra la imagen */
+        }
 
-
-#titulo_portada{
-    /* font-family: 'Grunge', sans-serif; */
-    font-weight: bolder;
-
-    font-family: 'Remington Noiseless', sans-serif;
-}
-.logo{
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-weight: bolder;
-    /* font-family: 'Remington Noiseless', sans-serif; */
-    
-}
-.font-reming{
-    font-family: 'Remington Noiseless', sans-serif !important;
-}
-.font-grunge{
-    font-family: 'Grunge', sans-serif;
-}
+        #portada_3 {
+            background: url("/img/img-noise-361x370 (2).png") repeat;
+            position: relative;
+            /* Cambiado de absolute a relative */
+            height: 100%;
+        }
 
 
+        #titulo_portada {
+            /* font-family: 'Grunge', sans-serif; */
+            font-weight: bolder;
 
+            font-family: 'Remington Noiseless', sans-serif;
+        }
+
+        .logo {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            font-weight: bolder;
+            /* font-family: 'Remington Noiseless', sans-serif; */
+
+        }
+
+        .font-reming {
+            font-family: 'Remington Noiseless', sans-serif !important;
+        }
+
+        .font-grunge {
+            font-family: 'Grunge', sans-serif;
+        }
+
+        #alreves_print {
+            display: none;
+        }
+
+        #dqsb_print {
+            display: none;
+        }
+
+        /* Estilo para mostrar alreves_print al imprimir */
+        @media print {
+            #alreves_spoti {
+                display: none;
+            }
+
+            #alreves_print {
+                display: block;
+            }
+
+            #dqsb_print {
+                display: block;
+            }
+
+            #dqsb_spoti {
+                display: none;
+            }
+        }
     </style>
 </head>
+
 <body>
 
-<!-- Página 1 -->
-<div class="page">
-    <div class="row h-100">
-        <div class="col-7" id="portada_1">
-            <div class="">
+    <!-- Página 1 -->
+    <div class="page">
+        <div class="row h-100">
+            <div class="col-7" id="portada_1">
+                <div class="">
 
-                <div class="pt-4 row">
-                    <h1 id="titulo_portada" class="text-center text-white mt-5">PORTAFOLIO MUSICAL</h1>
-                    <h1 id="titulo_portada" class="text-center text-white ">DIGITAL</h1>
-                    <h1  class="text-center text-white mt-3 logo" style="font-size: 5rem;">[SIC]</h1>
-                    <h2  class="text-center text-white mt-3 font-reming" style="font-size: 5rem;">2024</h2>
-                </div>
-    
-            </div>
-        </div>
-        <div class="col-5 p-0" id="portada_2">
-            <!-- Contenido de la segunda Columna -->
-            <img src="/img/DSC09280 (1).jpg" alt="" >
-        </div>
-    </div>
-</div>
-
-<!-- Página 2 -->
-<div class="page">
-    <div class="row h-100">
-        <div class="col-4 p-0" id="portada_2">
-            <!-- Contenido de la segunda Columna -->
-            <img src="/img/DSC09293-2.jpg" alt="" >
-        </div>
-        <div id="portada_3" class="col-8">
-            <div class="pt-3 row">
-                <h2  class="text-center text-white  font-grunge" style="font-size: 5rem;">RESEÑA</h2>
-                <div class="text-white">
-                    <p>
-                        La Banda [SIC], nace en Pereira a mediados del año 2017, con dos de sus cuatro integrantes actuales. A partir del año 2018, tras la incorporación de un nuevo guitarrista, la agrupación empezó a componer y grabar temas propios, resultando en su primer trabajo: el EP “Al revés”, que incluye las canciones “Al revés”, “El juego” y “Nuevo corazón”.
-                    </p>
-                    <p>
-                        [SIC] (en latín “así”) se caracteriza por un estilo que recibe influencias de géneros diversos como el rock alternativo, heavy metal, Grunge, Indie, Reggae y Rock Latino. Esta fusión desemboca en un sonido dinámico que oscila entre la expresividad y la contundencia, haciendo uso tanto de timbres familiares como novedosos, y privilegiando la autenticidad en materia de composición.
-                    </p>
-                    <p>
-                        La banda se ha presentado en múltiples escenarios de la escena musical de la ciudad y la región entre los que se destacan sus participaciones en el Showcase “Abre tus oídos” de Manizales, las audiciones para el festival Eje Rock Pereira 2018, el evento “No + silencio” en Roldanillo, y participación entrevista y toque en vivo para el programa Área 53 de Telecafé, en el año 2021 se presenta en el festival eje rock donde esta vez clasifica y queda dentro de las 12 bandas nominales del festival, para el año 2022 lanzan su segundo sencillo titulado “Desde que el sol brilla”.
-                    </p>
-                </div>
-
-            </div>
-
-
-        </div>
-    </div>
-</div>
-
-<!-- Página 3 -->
-<div class="page">
-    <div class="row h-100">
-        
-        <div id="portada_3" class="col-8">
-            <div class="pt-3 row">
-                <h2  class="text-center text-white  font-grunge" style="font-size: 5rem;">DISCOGRAFIA</h2>
-                <div class="text-white">
-                    <div class="font-reming text-center" style="font-size: 3rem;">Al reves</div>
-                    <div class="text-center">
-                        <a href="">
-                            <img src="/img/Logo.png" alt="" srcset="" style="height: 3in;">
-                        </a>
+                    <div class="pt-4 row">
+                        <h1 id="titulo_portada" class="text-center text-white mt-5">PORTAFOLIO MUSICAL</h1>
+                        <h1 id="titulo_portada" class="text-center text-white ">DIGITAL</h1>
+                        <h1 class="text-center text-white mt-3 logo" style="font-size: 5rem;">[SIC]</h1>
+                        <h2 class="text-center text-white mt-3 font-reming" style="font-size: 5rem;">2024</h2>
                     </div>
+
                 </div>
-
             </div>
-
-
-        </div>
-        <div class="col-4 p-0" id="portada_2">
-            <!-- Contenido de la segunda Columna -->
-            <img src="/img/IMG_1497.jpg" alt="" >
+            <div class="col-5 p-0" id="portada_2">
+                <!-- Contenido de la segunda Columna -->
+                <img src="/img/DSC09280 (1).jpg" alt="">
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Página 4 -->
-<div class="page">
-    <div class="row h-100">
-        <div class="col-2 p-0" id="portada_3">
-            <!-- Contenido de la segunda Columna -->
-
-        </div>
-        <div id="portada_1" class="col-10">
-            <div class="pt-3 row">
-                <h2  class="text-center text-white  font-grunge" style="font-size: 5rem;">STAGE PLOT</h2>
-                <img src="/img/stage.png" alt="" srcset="">
-
-
+    <!-- Página 2 -->
+    <div class="page">
+        <div class="row h-100">
+            <div class="col-4 p-0" id="portada_2">
+                <!-- Contenido de la segunda Columna -->
+                <img src="/img/DSC09293-2.jpg" alt="">
             </div>
+            <div id="portada_3" class="col-8">
+                <div class="pt-3 row">
+                    <h2 class="text-center text-white  font-grunge" style="font-size: 5rem;">RESEÑA</h2>
+                    <div class="text-white">
+                        <p>
+                            La Banda [SIC], nace en Pereira a mediados del año 2017, con dos de sus cuatro integrantes
+                            actuales. A partir del año 2018, tras la incorporación de un nuevo guitarrista, la
+                            agrupación empezó a componer y grabar temas propios, resultando en su primer trabajo: el EP
+                            “Al revés”, que incluye las canciones “Al revés”, “El juego” y “Nuevo corazón”.
+                        </p>
+                        <p>
+                            [SIC] (en latín “así”) se caracteriza por un estilo que recibe influencias de géneros
+                            diversos como el rock alternativo, heavy metal, Grunge, Indie, Reggae y Rock Latino. Esta
+                            fusión desemboca en un sonido dinámico que oscila entre la expresividad y la contundencia,
+                            haciendo uso tanto de timbres familiares como novedosos, y privilegiando la autenticidad en
+                            materia de composición.
+                        </p>
+                        <p>
+                            La banda se ha presentado en múltiples escenarios de la escena musical de la ciudad y la
+                            región entre los que se destacan sus participaciones en el Showcase “Abre tus oídos” de
+                            Manizales, las audiciones para el festival Eje Rock Pereira 2018, el evento “No + silencio”
+                            en Roldanillo, y participación entrevista y toque en vivo para el programa Área 53 de
+                            Telecafé, en el año 2021 se presenta en el festival eje rock donde esta vez clasifica y
+                            queda dentro de las 12 bandas nominales del festival, para el año 2022 lanzan su segundo
+                            sencillo titulado “Desde que el sol brilla”.
+                        </p>
+                    </div>
 
-
-        </div>
-
-    </div>
-</div>
-<div class="page">
-    <div class="row h-100">
-
-        <div id="portada_1" class="col-10">
-            <div class="pt-3 row">
-                <h2  class="text-center text-white  font-grunge" style="font-size: 5rem;">RIDER TÉCNICO</h2>
-                <div class="text-white px-5">
-                    
-                    <p>1	Amplificador para bajo 50W o superior	</p>
-                    <p>2	Amplificador para Guitarra 1 50W o Superior	</p>
-                    <p>3	Monitor (R) – Sin especificación	</p>
-                    <p>4	Monitor (L) – Sin especificación	</p>
-                    <p>5	Micrófono Voz 1 – Sin especificación    	</p>
-                    <p>6	Micrófono Voz 2 – Sin especificación    	</p>
-                    <p>7	Micrófono Voz 3 – Sin especificación    	</p>
-                    <p>8	Alimentación Eléctrica 110V para pedales análogos    	</p>
-                    <p>9	Alimentación Eléctrica 110 V para pedalera digital-   	</p>
-                    <p>10	Batería         	</p>
-                    <p>	A	Hi-Hat con su respectivo pedal y máquina   </p>
-                    <p>	B	Crash 1        </p>
-                    <p>	C	Crash 2        </p>
-                    <p>	D	Ride         </p>
-                    <p>	E	China (opcional)        </p>
-                    <p>	F	Redoblante         </p>
-                    <p>	G	Tom 1        </p>
-                    <p>	H	Tom 2        </p>
-                    <p>	I	Bombo         </p>
-                    <p>	J	Tom de Piso</p>
-                    <p>	K	Doble Percutor (Opcional)</p>
-                    <p>	L	Asiento Batería         </p>
-                    <p>@	Respectiva amplificación para voces y batería.	</p>
-                
                 </div>
 
 
             </div>
-
-
-        </div>
-        <div class="col-2 p-0" id="portada_3">
-            <!-- Contenido de la segunda Columna -->
-
         </div>
     </div>
-    
-</div>
 
-<!-- Página 5 -->
-<div class="page">
-    <div class="row h-100">
-        <div id="portada_2" class="">
-            <img src="/img/DSC09293.jpg" alt="">
-            <div class="pt-3 row">
-                <h2  class="text-center text-white  font-grunge" style="font-size: 5rem;">Redes</h2>
-                <div class="text-white">
-                    <p></p>
+    <!-- Página 3 -->
+    <div class="page">
+        <div class="row h-100">
+
+            <div id="portada_3" class="col-8">
+                <div class="pt-3 row">
+                    <h2 class="text-center text-white  font-grunge" style="font-size: 5rem;">DISCOGRAFIA</h2>
+                    <div class="text-white">
+                        <div class="font-reming text-center" style="font-size: 3rem;">Al reves</div>
+                        <div class="text-center">
+                            <div id="alreves_print">
+                                <a href="">
+                                    <img src="/img/316x316bb.webp.png" alt="" srcset="" style="height: 2in;">
+                                </a>
+
+                            </div>
+                            <iframe id="alreves_spoti" style="border-radius:12px"
+                                src="https://open.spotify.com/embed/album/7xYbsLxbLi15LserGq1Qtv?utm_source=generator&theme=0"
+                                width="50%" height="352" frameBorder="0" allowfullscreen=""
+                                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                                loading="lazy"></iframe>
+                        </div>
+                        <div class="font-reming text-center" style="font-size: 3rem;">Desde que el sol brilla</div>
+                        <div class="text-center">
+                            <div id="dqsb_print">
+                                <a href="">
+                                    <img src="/img/dqsynb.jpg" alt="" srcset="" style="height: 2in;">
+                                </a>
+
+                            </div>
+                            <iframe id="dqsb_spoti" style="border-radius:12px"
+                                src="https://open.spotify.com/embed/album/0KIu74uNoPhDNFz49zuDyx?utm_source=generator"
+                                width="50%" height="352" frameBorder="0" allowfullscreen=""
+                                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                                loading="lazy"></iframe>
+                        </div>
+
+                    </div>
+
                 </div>
+
+
+            </div>
+            <div class="col-4 p-0" id="portada_2">
+                <!-- Contenido de la segunda Columna -->
+                <img src="/img/IMG_1497.jpg" alt="">
+            </div>
+        </div>
+    </div>
+
+    <!-- Página 4 -->
+    <div class="page">
+        <div class="row h-100">
+            <div class="col-1 p-0" id="portada_3">
+                <!-- Contenido de la segunda Columna -->
+
+            </div>
+            <div id="portada_1" class="col-11">
+                <div class="pt-3 row">
+                    <h2 class="text-center text-white  font-grunge" style="font-size: 5rem;">STAGE PLOT</h2>
+                    <img src="/img/stage.png" alt="" srcset="">
+
+
+                </div>
+
 
             </div>
 
-
         </div>
     </div>
-</div>
 
-<script src="scripts/index.js"></script>
-<script
-    src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-    integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-    crossorigin="anonymous"
-></script>
-<script
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
-    integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
-    crossorigin="anonymous"
-></script>
+    <!-- Página 5 -->
+    <div class="page">
+        <div class="row h-100">
+
+            <div id="portada_1" class="col-11">
+                <div class="pt-3 row">
+                    <h2 class="text-center text-white  font-grunge" style="font-size: 5rem;">RIDER TÉCNICO</h2>
+                    <div class="text-white px-5">
+
+                        <p>1 Amplificador para bajo 50W o superior </p>
+                        <p>2 Amplificador para Guitarra 1 50W o Superior </p>
+                        <p>3 Monitor (R) – Sin especificación </p>
+                        <p>4 Monitor (L) – Sin especificación </p>
+                        <p>5 Micrófono Voz 1 – Sin especificación </p>
+                        <p>6 Micrófono Voz 2 – Sin especificación </p>
+                        <p>7 Micrófono Voz 3 – Sin especificación </p>
+                        <p>8 Alimentación Eléctrica 110V para pedales análogos </p>
+                        <p>9 Alimentación Eléctrica 110 V para pedalera digital- </p>
+                        <p>10 Batería </p>
+                        <p> A Hi-Hat con su respectivo pedal y máquina </p>
+                        <p> B Crash 1 </p>
+                        <p> C Crash 2 </p>
+                        <p> D Ride </p>
+                        <p> E China (opcional) </p>
+                        <p> F Redoblante </p>
+                        <p> G Tom 1 </p>
+                        <p> H Tom 2 </p>
+                        <p> I Bombo </p>
+                        <p> J Tom de Piso</p>
+                        <p> K Doble Percutor (Opcional)</p>
+                        <p> L Asiento Batería </p>
+                        <p>@ Respectiva amplificación para voces y batería. </p>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+            <div class="col-1 p-0" id="portada_3">
+                <!-- Contenido de la segunda Columna -->
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Página 6 -->
+    <div class="page">
+        <div class="row h-100">
+            <div id="portada_3" class="">
+                <!-- <img src="/img/DSC09293.jpg" alt=""> -->
+                <div class="pt-3 row">
+                    <h2 class="text-center text-white  font-grunge" style="font-size: 5rem;">Redes</h2>
+                    <div class="text-white">
+                        <p></p>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+    <script src="scripts/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+        crossorigin="anonymous"></script>
+    <script>
+
+    </script>
 </body>
+
 </html>
