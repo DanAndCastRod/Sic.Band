@@ -1,92 +1,130 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Sic Landing Page</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[SIC] - Sitio Web de la Banda</title>
+    <link rel="shortcut icon" href="./img/stats.Recurso 7-8.png" type="image/x-icon">
+    <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+    crossorigin="anonymous"
+    />
     <link rel="stylesheet" href="index.css">
-    <link rel="shortcut icon" href="/img/espalda 20 cm.png" type="image/x-icon">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <div class="header-container">
-            <div class="img-container">
-                <img src="img/Solei.jpeg" style="width:100%">
+    <div class="min-h-screen bg-black text-white">
+        <!-- Navegación -->
+        <nav class="flex-nav">
+            <div class="text-red-600 font-bold">NEWS</div>
+            <div class="nav-links">
+                <a href="#" class="hover-red">MUSIC</a>
+                <a href="#" class="hover-red">EVENTS</a>
+                <a href="#" class="hover-red">ABOUT</a>
+                <a href="#" class="hover-red">MEDIA</a>
             </div>
-            <div class="title-wrap">
-                <div class="title-text-container">
-                    <div class="title-text">[SIC]</div>
+            <button class="btn btn-outline">STORE</button>
+        </nav>
+
+        <!-- Sección Hero -->
+        <section class="hero">
+            <div class="hero-content">
+                <div class="band-logo">
+                    <div class="logo-letter">[</div>
+                    <div class="logo-letter">S</div>
+                    <div class="logo-letter">I</div>
+                    <div class="logo-letter">C</div>
+                    <div class="logo-letter">]</div>
                 </div>
-                <div class="subtitle-container">
-                    <div class="subtitle-text new">
-                        New release!
-                    </div>
-                    <div class="subtitle-text release-name">Desde que el sol brilla</div>
+                <div class="tour-announcement">
+                    <span class="text-3xl font-bold">LISTEN</span>
+                    <span class="text-3xl font-bold text-red-600">NOW</span>
                 </div>
-                <div class="button-container">
-                    <a href="https://open.spotify.com/album/3Ff1bUX5hL4msEC1ksZ8PL?si=1dc17979f8d14b5d">
-                        <div class="button-text">
-                            Listen Now!
-                        </div>
-                    </a>
-                </div>
+                <button class="btn btn-transparent" onclick="window.location.href = 'https://open.spotify.com/intl-es/artist/43VDUzaYRoeXU8KwZv9hcY'">Go to spotify</button>
             </div>
-            
-        </div>
-        
-    </header>
-    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">[SIC]</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
-                <span class="navbar-toggler-icon"></span>
-             </button>
-            <div class="collapse navbar-collapse" id="collapsibleNavbar">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="/pressKit.html">EPK</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
-                </li>
-            </ul>
-          </div>
-        </div>
-    </nav>
-    <Section>
-        <div class="card-spot">
-            <iframe style="border-radius:12px" src="https://open.spotify.com/embed/album/0KIu74uNoPhDNFz49zuDyx?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-        </div>
-    </Section>
-    <Section>
-        <div class="resena-container container-text">
-            <div class="resena-left">
-                <h2 class="resena-title">
-                    Reseña
-                </h2>
-                <p class="resena-text">
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Obcaecati sapiente illum quasi exercitationem! Laborum cupiditate, ipsa tenetur soluta dicta veniam hic quos mollitia molestiae pariatur explicabo recusandae obcaecati voluptates perspiciatis!
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero doloremque nihil autem consequatur. Blanditiis nisi expedita est consectetur natus praesentium doloribus qui. Dolore minus vel veniam, ea esse voluptates tempora!
-                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Blanditiis, laborum? Eius, perspiciatis aspernatur, laborum id voluptates itaque, quae provident eligendi numquam vitae perferendis odio sit quidem dolore dolor repellendus fugiat.  
-    
+        </section>
+
+        <!-- Sección de Noticias -->
+        <section class="news-section">
+            <div class="news-image"></div>
+            <div class="news-content">
+                <div class="news-header">
+                    <h2 class="text-2xl font-bold">NEWS</h2>
+                    <span class="text-zinc-200">19.03.2016</span>
+                </div>
+                <p class="text-lg">
+                    Hey guys! Great news for all our fans! We have 3 new events scheduled and going on tour!
+                    Check out our "Events" section for more information.
                 </p>
+                <button class="btn btn-outline">VIEW ALL</button>
             </div>
-            <div class="resena-right">
-                <div class="resena-img-container">
-                    <img id="img-band" src="img/group-logo.jpg" alt="">
+        </section>
+
+        <!-- Sección de Eventos -->
+        <section class="events-section d-none">
+            <div class="events-content">
+                <h2 class="text-2xl font-bold">UPCOMING EVENTS</h2>
+                <div class="events-list">
+                    <div class="event-item">
+                        <div class="text-zinc-400">MAR 20, 2016</div>
+                        <div class="text-xl">BUENOS AIRES, ARGENTINA</div>
+                        <div class="text-zinc-400">NICETO CLUB</div>
+                    </div>
+                    <div class="event-item">
+                        <div class="text-zinc-400">MAR 24, 2016</div>
+                        <div class="text-xl">SANTIAGO, CHILE</div>
+                        <div class="text-zinc-400">BLONDIE</div>
+                    </div>
+                    <div class="event-item">
+                        <div class="text-zinc-400">JUL 23, 2016</div>
+                        <div class="text-xl">SAN BERNARDINO, CA</div>
+                        <div class="text-zinc-400">LOST HIGHWAY 2016</div>
+                    </div>
                 </div>
             </div>
-        </div>    
-    </Section>
+            <div class="events-image"></div>
+        </section>
+
+        <!-- Sección Acerca de -->
+        <section class="about-section">
+            <div class="about-content">
+                <h2 class="text-2xl font-bold">ABOUT THE BAND</h2>
+                <p class="text-zinc-200">
+                    The band was formed in 1998, originally called The Elements. After discovering that another band had the same name, the members changed the name to Black Rebel Motorcycle Club, after Marlon Brando's motorcycle gang in the 1953 film The Wild One.
+                </p>
+                <button class="btn btn-outline">CONTINUE READING</button>
+            </div>
+        </section>
+
+        <!-- Pie de página -->
+        <footer class="footer">
+            <div class="text-xl font-bold">SOCIAL MEDIA:</div>
+            <div class="social-links text-white">
+                <a href="https://www.instagram.com/sic.band/" class="hover-light">
+                    <img src="./img/instagram-logo.svg" alt="Instagram" class="social-icon">
+                </a>
+                <a href="https://www.youtube.com/@sicband2459" class="hover-light">
+                    <img src="./img/youtube-svgrepo-com.svg" alt="YouTube" class="social-icon">
+                </a>
+                <a href="https://www.facebook.com/SIC.Banda" class="hover-light">
+                    <img src="./img/facebook-svgrepo-com.svg" alt="Facebook" class="social-icon">
+                </a>
+            </div>
+        </footer>
+    </div>
     <script src="index.js"></script>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script
+                src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+                integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+                crossorigin="anonymous"
+            ></script>
+    
+            <script
+                src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+                integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+                crossorigin="anonymous"
+            ></script>
 </body>
 </html>

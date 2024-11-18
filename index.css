@@ -15,21 +15,23 @@ a{
     text-decoration: none;
 }
 .header-container{
+    height: 100vh;
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
     min-width: 100%;
     max-width: 100%;
+    overflow: hidden;
 
 }   
 .img-container{
     display: flex;
     max-height: 30em;
-    margin: auto;
+    /* margin: auto; */
     align-items: center;
-    overflow: hidden;;
-    width: 100%;
+    /* overflow: hidden;; */
+    /* width: 100%; */
 }
 .img-container img{
     position:static;
@@ -149,4 +151,277 @@ nav{
     height: 100%;
 
 
+}
+
+.resena-img-container{
+    height: 100%;
+    width: 100%;
+}
+
+
+
+
+
+
+:root {
+    --color-black: #000000;
+    --color-white: #FFFFFF;
+    --color-red-A: #FF0000;
+    /* --color-red: #734f30; */
+    /* --color-red: #A68572; */
+    /* --color-red: #6f127a; */
+    /* --color-red: #2b4622; */
+    --color-red: #7a1212;
+    --color-zinc-200: #E4E4E7;
+    --color-zinc-400: #A1A1AA;
+    --color-zinc-900: #18181B;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--color-black);
+    color: var(--color-white);
+}
+
+.min-h-screen {
+    min-height: 100vh;
+}
+
+/* Navegación */
+.flex-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+}
+
+.nav-links {
+    display: none;
+}
+
+.nav-links a {
+    margin-left: 2rem;
+    color: var(--color-white);
+    text-decoration: none;
+}
+
+.hover-red:hover {
+    color: var(--color-red);
+}
+
+.btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-outline {
+    background-color: transparent;
+    border: 1px solid var(--color-white);
+    color: var(--color-white);
+}
+
+.btn-outline:hover {
+    background-color: var(--color-red);
+    border-color: var(--color-red);
+}
+
+
+
+/* Sección Hero */
+.hero {
+    position: relative;
+    height: 98vh;
+    background-image: url('./img/black-Entire.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to right, var(--color-black), transparent);
+}
+
+.hero-content {
+    position: absolute;
+    top: 50%;
+    left: 4rem;
+    transform: translateY(-50%);
+}
+
+.band-logo {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.logo-letter {
+    font-size: 3rem;
+    font-weight: bold;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.tour-announcement {
+    margin-bottom: 1rem;
+}
+
+.text-3xl {
+    font-size: 1.875rem;
+}
+
+.text-red-600 {
+    color: var(--color-red-A);
+}
+
+.btn-transparent {
+    background-color: transparent;
+    border: 2px solid var(--color-white);
+    color: var(--color-white);
+}
+
+.btn-transparent:hover {
+    background-color: var(--color-red);
+    border-color: var(--color-red);
+}
+
+/* Sección de Noticias */
+.news-section {
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+.news-image {
+    background-image: url('img/dqsynb.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 300px;
+}
+
+.news-content {
+    background-color: var(--color-red);
+    padding: 2rem;
+}
+
+.news-header {
+    margin-bottom: 2rem;
+}
+
+.text-2xl {
+    font-size: 1.5rem;
+}
+
+.text-lg {
+    font-size: 1.125rem;
+}
+
+/* Sección de Eventos */
+.events-section {
+    display: grid;
+    grid-template-columns: 1fr;
+    background-color: var(--color-zinc-900);
+}
+
+.events-content {
+    padding: 2rem;
+}
+
+.events-list {
+    margin-top: 2rem;
+}
+
+.event-item {
+    margin-bottom: 1.5rem;
+}
+
+.events-image {
+    background-image: url('./img/DSC09293-2.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 300px;
+}
+
+/* Sección Acerca de */
+.about-section {
+    position: relative;
+    height: 400px;
+    /* background-image: url('./img/group.jpg'); */
+    background-size: cover;
+    background-position: center;
+}
+
+.about-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.about-content {
+    position: relative;
+    padding: 2rem;
+    max-width: 600px;
+}
+
+/* Pie de página */
+.footer {
+    background-color: var(--color-red);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.social-links {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.social-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.hover-light:hover {
+    opacity: 0.8;
+}
+
+@media (min-width: 768px) {
+    .flex-nav {
+        padding: 1.5rem;
+    }
+
+    .nav-links {
+        display: flex;
+    }
+
+    .news-section,
+    .events-section {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .news-image,
+    .events-image {
+        height: 600px;
+    }
+
+    .footer {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .social-links {
+        margin-top: 0;
+    }
 }
