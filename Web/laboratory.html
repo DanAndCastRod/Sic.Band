@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[SIC] | THE LABORATORY</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Audiowide&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'void': '#000000',
+                        'page': '#F5F5F5',
+                        'visceral': '#D21F3C',
+                    },
+                    fontFamily: {
+                        'minimal': ['"Syncopate"', 'sans-serif'],
+                        'tech': ['"Audiowide"', 'cursive'],
+                        'body': ['"Orbitron"', 'sans-serif'],
+                    },
+                    backgroundImage: {
+                         'universe-map': "url('./assets/sic_universe_map.png')",
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'spin-slow': 'spin 12s linear infinite',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-void text-page font-body overflow-hidden h-screen flex flex-col items-center justify-center relative">
+
+    <!-- Navigation Back -->
+    <a href="index.html" class="absolute top-8 left-8 text-visceral font-minimal text-xs tracking-widest hover:text-page transition-colors z-50">
+        < BACK_TO_REALITY
+    </a>
+
+    <!-- Animated Background -->
+    <div class="absolute inset-0 bg-universe-map bg-cover bg-center opacity-30 animate-pulse-slow"></div>
+    <div class="absolute inset-0 bg-gradient-to-r from-void via-transparent to-void"></div>
+
+    <!-- Central Hub Content -->
+    <div class="relative z-10 text-center space-y-8">
+        <div class="w-24 h-24 border border-visceral/50 rounded-full animate-spin-slow mx-auto flex items-center justify-center">
+            <div class="w-2 h-2 bg-visceral rounded-full"></div>
+        </div>
+        
+        <h1 class="font-minimal text-4xl md:text-6xl tracking-widest text-page selection:bg-visceral">
+            THE MENTAL<br><span class="text-visceral">LABORATORY</span>
+        </h1>
+        
+        <p class="font-body text-xs md:text-sm text-page/60 max-w-lg mx-auto leading-loose">
+            You have entered the void between thoughts.
+            <br>
+            Here, ideas are not yet sentences. They are raw signal.
+            <br>
+            <span class="text-visceral">[REDACTED]</span>
+        </p>
+
+        <div class="grid grid-cols-2 gap-4 max-w-sm mx-auto mt-12">
+            <div class="border border-page/10 p-4 hover:border-visceral transition-colors cursor-pointer group">
+                <h3 class="font-minimal text-xs text-page group-hover:text-visceral">PHASE I</h3>
+                <p class="text-[10px] text-page/30">The Inversion</p>
+            </div>
+            <div class="border border-page/10 p-4 hover:border-visceral transition-colors cursor-pointer group">
+                <h3 class="font-minimal text-xs text-page group-hover:text-visceral">PHASE II</h3>
+                <p class="text-[10px] text-page/30">The Light</p>
+            </div>
+            <div class="border border-page/10 p-4 hover:border-visceral transition-colors cursor-pointer group">
+                <h3 class="font-minimal text-xs text-page group-hover:text-visceral">PHASE III</h3>
+                <p class="text-[10px] text-page/30">The Shadow</p>
+            </div>
+            <div class="border border-page/10 p-4 border-visceral/30 hover:bg-visceral hover:text-void transition-colors cursor-pointer group">
+                <h3 class="font-minimal text-xs text-visceral group-hover:text-void">PHASE IV</h3>
+                <p class="text-[10px] text-page/30 group-hover:text-void">The Ambiguity</p>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

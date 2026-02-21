@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[SIC] | Sentence In Conflict</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Audiowide&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'void': '#000000',
+                        'page': '#F5F5F5',
+                        'visceral': '#D21F3C',
+                    },
+                    fontFamily: {
+                        'minimal': ['"Syncopate"', 'sans-serif'],
+                        'tech': ['"Audiowide"', 'cursive'],
+                        'body': ['"Orbitron"', 'sans-serif'],
+                    },
+                    backgroundImage: {
+                        'grunge-strokes': "url('./assets/sic_grunge_brushstrokes.png')",
+                        'geo-ambiguity': "url('./assets/sic_geometric_ambiguity.png')",
+                        'noise-conflict': "url('./assets/sic_sentence_conflict_texture.png')",
+                        'universe-map': "url('./assets/sic_universe_map.png')",
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glitch-text {
+            position: relative;
+        }
+        .glitch-text::before, .glitch-text::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .glitch-text::before {
+            left: 2px;
+            text-shadow: -1px 0 #D21F3C;
+            clip: rect(24px, 550px, 90px, 0);
+            animation: glitch-anim-2 3s infinite linear alternate-reverse;
+        }
+        .glitch-text::after {
+            left: -2px;
+            text-shadow: -1px 0 #00ffff;
+            clip: rect(85px, 550px, 140px, 0);
+            animation: glitch-anim 2.5s infinite linear alternate-reverse;
+        }
+        @keyframes glitch-anim {
+            0% { clip: rect(11px, 9999px, 86px, 0); }
+            20% { clip: rect(98px, 9999px, 5px, 0); }
+            40% { clip: rect(21px, 9999px, 16px, 0); }
+            60% { clip: rect(78px, 9999px, 92px, 0); }
+            80% { clip: rect(19px, 9999px, 86px, 0); }
+            100% { clip: rect(67px, 9999px, 2px, 0); }
+        }
+        @keyframes glitch-anim-2 {
+            0% { clip: rect(12px, 9999px, 99px, 0); }
+            20% { clip: rect(87px, 9999px, 14px, 0); }
+            40% { clip: rect(32px, 9999px, 78px, 0); }
+            60% { clip: rect(54px, 9999px, 11px, 0); }
+            80% { clip: rect(4px, 9999px, 44px, 0); }
+            100% { clip: rect(65px, 9999px, 87px, 0); }
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #000;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #D21F3C;
+        }
+    </style>
+</head>
+<body class="bg-void text-page font-body selection:bg-visceral selection:text-void overflow-x-hidden">
+
+    <!-- Global Noise/Texture Overlay -->
+    <div class="fixed inset-0 pointer-events-none z-50 bg-noise-conflict opacity-5 mix-blend-overlay bg-cover bg-center"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-40 bg-void/90 backdrop-blur border-b border-visceral/30">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="font-minimal text-2xl font-bold tracking-tighter hover:text-visceral transition-colors cursor-pointer">
+                [<span class="text-visceral">SIC</span>]
+            </h1>
+            <div class="hidden md:flex space-x-8 font-minimal text-xs tracking-widest font-bold">
+                <a href="laboratory.html" class="hover:text-visceral decoration-visceral underline-offset-4 decoration-2 text-visceral">[ THE_LAB ]</a>
+                <a href="#manifesto" class="hover:text-visceral">MANIFESTO</a>
+                <a href="#archive" class="hover:text-visceral">THE_ARCHIVE</a>
+                <a href="#discography" class="hover:text-visceral">DISCOGRAPHY</a>
+                <a href="#triad" class="hover:text-visceral">THE_TRIAD</a>
+                <a href="#signal" class="hover:text-visceral">SIGNAL</a>
+            </div>
+            <button class="md:hidden text-visceral font-bold text-xl">///</button>
+        </div>
+    </nav>
+
+     <!-- Hero Section (Restored Ambiguity Version) -->
+     <header class="relative min-h-screen flex items-center justify-center overflow-hidden bg-geo-ambiguity bg-cover bg-center">
+        <!-- Dark Overlay -->
+        <div class="absolute inset-0 bg-void/75 transition-opacity duration-1000 hover:opacity-60"></div>
+        
+        <div class="relative z-10 text-center px-4">
+            <h2 class="font-minimal text-visceral text-xs md:text-sm tracking-[0.8em] mb-4 uppercase">Sentence In Conflict</h2>
+            <h1 class="font-minimal text-5xl md:text-8xl tracking-tighter mb-6 glitch-text text-page font-bold" data-text="[SIC]">
+                [SIC]
+            </h1>
+            <p class="font-minimal max-w-xl mx-auto text-page/70 text-xs md:text-sm leading-relaxed tracking-widest uppercase">
+                <span class="bg-visceral text-void px-1">Ideas</span> collide. Reality is rewritten.
+            </p>
+            
+            <div class="mt-12 flex justify-center gap-6">
+                <!-- CTA -->
+                 <a href="#discography" class="group relative px-8 py-3 bg-transparent text-page font-bold font-minimal text-xs uppercase overflow-hidden border border-visceral hover:bg-visceral transition-all duration-300">
+                    <span class="relative z-10 tracking-widest">ENTER_THE_SENTENCE</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Manifesto Section -->
+    <section id="manifesto" class="py-32 bg-page text-void relative overflow-hidden">
+        <div class="max-w-4xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center relative z-10">
+            <div>
+                 <h3 class="text-4xl font-minimal uppercase mb-8 text-void font-bold">Mental<br><span class="text-visceral">Laboratory</span></h3>
+                 <div class="h-1 w-24 bg-visceral mb-8"></div>
+                 <p class="font-body text-sm leading-loose text-void/80 text-justify">
+                    **[SIC]** is not just a band. It is a <span class="font-bold underline decoration-visceral">note in the margin</span> of reality.
+                    <br><br>
+                    We operate in a mental laboratory where ideas are fluid, undefined, and chaotic until they collide with the structure of sound. We explore the tension between the written sentence and the internal conflict.
+                 </p>
+            </div>
+            
+            <div class="relative group">
+                <div class="absolute -inset-4 border border-visceral/20 transform rotate-6 group-hover:rotate-0 transition-transform duration-700"></div>
+                <img src="./assets/sic_bio_scene.png" alt="Band Performance" class="w-full h-auto object-cover grayscale contrast-150 mix-blend-multiply relative z-10">
+                <div class="absolute bottom-4 right-4 bg-void text-page px-4 py-2 font-minimal text-xs">
+                    FIG. 1: THE PERFORMANCE
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- THE ARCHIVE (History) - Classified Document Style -->
+    <section id="archive" class="py-32 bg-void text-page relative border-b border-page/10">
+        <div class="max-w-4xl mx-auto px-6 relative z-10">
+            <div class="border-l-2 border-visceral pl-8 md:pl-16 relative">
+                <!-- Decorative Terminal Header -->
+                <div class="absolute -left-[9px] top-0 w-4 h-4 bg-visceral"></div>
+                <div class="font-minimal text-[10px] text-visceral mb-4 tracking-widest">CLASSIFIED FILE // ORIGIN_STORY</div>
+                
+                <h2 class="text-4xl md:text-5xl font-minimal font-bold mb-12 uppercase">
+                    THE ARCHIVE
+                </h2>
+
+                <div class="space-y-12 font-body text-sm text-page/70 leading-relaxed max-w-2xl">
+                    <div class="relative">
+                        <h4 class="text-page font-bold mb-2 font-minimal text-xs uppercase text-visceral">> ORIGIN_POINT [2017]</h4>
+                        <p>
+                            Subject [SIC] identified in <span class="bg-page text-void px-1 font-bold">PEREIRA, CO</span>. Initial formation detected mid-cycle. Core fusion of <span class="text-white">Daniel Castañeda</span> and <span class="text-white">Juan Pablo Hurtado</span> established.
+                        </p>
+                    </div>
+
+                    <div class="relative">
+                        <h4 class="text-page font-bold mb-2 font-minimal text-xs uppercase text-visceral">> SONIC_PROFILE</h4>
+                        <p>
+                            Analysis indicates a unstable compound of <span class="line-through decoration-visceral">Rock Alternativo</span> and <span class="line-through decoration-visceral">Grunge</span>. Secondary traces of Metal, Indie, and Latin rhythms detected. 
+                            <br><br>
+                            <span class="italic text-white">"A dynamic sound oscillating between expressivity and blunt force."</span>
+                        </p>
+                    </div>
+
+                    <div class="relative">
+                        <h4 class="text-page font-bold mb-2 font-minimal text-xs uppercase text-visceral">> OPERATIONAL_HISTORY</h4>
+                        <ul class="list-none space-y-4 font-mono text-xs border-l border-page/20 pl-4">
+                            <li><span class="text-visceral mr-2">[2018]</span> Eje Rock Festival // <span class="bg-visceral/20 text-visceral px-1">CLASSIFIED</span></li>
+                            <li><span class="text-visceral mr-2">[2018]</span> "Abre tus oídos" Showcase // Manizales</li>
+                            <li><span class="text-visceral mr-2">[2018]</span> "No + Silencio" // Roldanillo</li>
+                            <li><span class="text-visceral mr-2">[2021]</span> Telecafé Transmission [Area 53] // Broadcast Intercepted</li>
+                            <li><span class="text-visceral mr-2">[2021]</span> Eje Rock Festival // Top 12 Nominal Classification</li>
+                            <li><span class="text-visceral mr-2">[2022]</span> Protocol Launch: "Desde que el sol brilla"</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Discography Timeline -->
+    <section id="discography" class="py-32 bg-void relative">
+        <!-- Background Grid -->
+        <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px]"></div>
+
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="flex items-center justify-between mb-24">
+                <h2 class="text-5xl font-minimal font-bold tracking-tighter text-page">TIMELINE</h2>
+                <div class="h-[1px] flex-grow mx-8 bg-visceral/50"></div>
+                <span class="font-minimal text-xs font-bold bg-visceral text-void px-3 py-1">2018 - 2026</span>
+            </div>
+
+            <div class="grid md:grid-cols-5 gap-4">
+                
+                 <!-- Phase V: Ambiguous -->
+                 <article class="group relative aspect-square border border-page/10 bg-void hover:border-visceral transition-all duration-500 cursor-pointer overflow-hidden md:mt-12">
+                     <a href="#" class="block w-full h-full"> 
+                        <div class="absolute top-0 right-0 z-20 bg-visceral text-void font-bold text-[8px] font-minimal px-2 py-1">PHASE V</div>
+                        <img src="./assets/sic_album_ambiguous.png" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 grayscale group-hover:grayscale-0">
+                        <div class="absolute bottom-0 left-0 w-full p-2 bg-gradient-to-t from-void to-transparent z-10">
+                            <h3 class="text-lg font-minimal font-bold mb-0 text-page tracking-tighter">AMBIGUOUS</h3>
+                            <p class="font-minimal text-[8px] text-visceral">2026 // CONCEPT</p>
+                        </div>
+                    </a>
+                </article>
+
+                <!-- Phase IV: Así -->
+                <article class="group relative aspect-square border border-page/10 bg-void hover:border-visceral transition-all duration-500 cursor-pointer overflow-hidden">
+                    <a href="https://open.spotify.com/intl-es/album/4PxnIpMCF5wOzT7vtO6JO0?si=64dq-kJ4SxqF5CNZ5jzdUw" target="_blank" class="block w-full h-full">
+                       <div class="absolute top-0 right-0 z-20 bg-page/10 text-page font-bold text-[8px] font-minimal px-2 py-1">PHASE IV</div>
+                       <img src="./assets/sic_album_asi.jpg" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 grayscale group-hover:grayscale-0">
+                       <div class="absolute bottom-0 left-0 w-full p-2 bg-gradient-to-t from-void to-transparent z-10">
+                           <h3 class="text-lg font-minimal font-bold mb-0 text-page">ASÍ</h3>
+                           <p class="font-minimal text-[8px] text-visceral">2025 // SINGLE</p>
+                       </div>
+                   </a>
+               </article>
+
+                <!-- Phase III: Mss White -->
+                <article class="group relative aspect-square border border-page/10 bg-void hover:border-visceral transition-all duration-500 cursor-pointer overflow-hidden md:mt-12">
+                    <a href="https://open.spotify.com/intl-es/album/2SvkcZAU0u9b3k6lJmWfJf?si=Dah5mQJ9Qi-PfbWYyLxxGA" target="_blank" class="block w-full h-full">
+                        <div class="absolute top-0 right-0 z-20 bg-page/10 text-page font-bold text-[8px] font-minimal px-2 py-1">PHASE III</div>
+                        <img src="./assets/sic_album_mss_white.png" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-100 transition-all duration-500 grayscale group-hover:grayscale-0">
+                        <div class="absolute bottom-0 left-0 w-full p-2 bg-gradient-to-t from-void to-transparent z-10">
+                            <h3 class="text-lg font-minimal font-bold mb-0 text-page">MSS WHITE</h3>
+                            <p class="font-minimal text-[8px] text-visceral">2025 // SHADOW</p>
+                        </div>
+                    </a>
+                </article>
+
+                <!-- Phase II: Sol Brilla -->
+                <article class="group relative aspect-square border border-page/10 bg-void hover:border-visceral transition-all duration-500 cursor-pointer overflow-hidden">
+                     <a href="https://open.spotify.com/intl-es/album/0KIu74uNoPhDNFz49zuDyx?si=LmcsxKT5SrqCCm0W3ljdIQ" target="_blank" class="block w-full h-full">
+                        <div class="absolute top-0 right-0 z-20 bg-page/10 text-page font-bold text-[8px] font-minimal px-2 py-1">PHASE II</div>
+                        <img src="./assets/sic_album_desde_que_el_sol.jpg" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-100 transition-all duration-500 grayscale group-hover:grayscale-0">
+                        <div class="absolute bottom-0 left-0 w-full p-2 bg-gradient-to-t from-void to-transparent z-10">
+                            <h3 class="text-lg font-minimal font-bold mb-0 text-page leading-none">DESDE QUE EL SOL BRILLA</h3>
+                            <p class="font-minimal text-[8px] text-visceral">2022 // AWAKENING</p>
+                        </div>
+                    </a>
+                </article>
+
+                <!-- Phase I: Al Reves -->
+                <article class="group relative aspect-square border border-page/10 bg-void hover:border-visceral transition-all duration-500 cursor-pointer overflow-hidden md:mt-12">
+                    <a href="https://open.spotify.com/intl-es/album/4Rr1wEGeMCwCl0IN3NLufn?si=yto2li2iRAuBenzhMXcyqA" target="_blank" class="block w-full h-full">
+                        <div class="absolute top-0 right-0 z-20 bg-page/10 text-page font-bold text-[8px] font-minimal px-2 py-1">PHASE I</div>
+                        <img src="./assets/sic_album_al_reves.png" class="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-100 filter contrast-125 transition-all duration-500 grayscale group-hover:grayscale-0">
+                        <div class="absolute bottom-0 left-0 w-full p-2 bg-gradient-to-t from-void to-transparent z-10">
+                            <h3 class="text-lg font-minimal font-bold mb-0 text-page">AL REVÉS</h3>
+                            <p class="font-minimal text-[8px] text-visceral">2018 // INVERSION</p>
+                        </div>
+                    </a>
+                </article>
+
+            </div>
+            
+            <div class="mt-16 text-center border-t border-page/10 pt-8">
+                 <a href="https://open.spotify.com/intl-es/album/4PxnIpMCF5wOzT7vtO6JO0?si=64dq-kJ4SxqF5CNZ5jzdUw" target="_blank" class="text-page/50 hover:text-visceral font-minimal text-xs transition-colors">
+                    LISTEN TO LATEST SINGLE "ASÍ" ON SPOTIFY <i class="fas fa-arrow-right ml-2"></i>
+                 </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Triad (Members) - Clean CSS Cropped Version -->
+    <section id="triad" class="py-32 bg-page text-void relative">
+         <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <h2 class="font-minimal text-void mb-24 text-center text-4xl font-bold">THE TRIAD</h2>
+
+            <div class="grid md:grid-cols-3 gap-16">
+                <!-- Daniel -->
+                <div class="group text-center">
+                    <!-- CSS Crop wrapper: hides bottom 15% of image where text likely is -->
+                    <div class="relative w-56 h-56 mx-auto mb-8 animate-float overflow-hidden rounded-full">
+                        <div class="absolute inset-0 bg-visceral/10 rounded-full blur-xl group-hover:bg-visceral/30 transition-all opacity-0 group-hover:opacity-100"></div>
+                        <img src="./assets/sic_icon_daniel.png" class="relative z-10 w-full h-full object-cover object-center filter drop-shadow-md p-4 bg-void/5 rounded-full border border-void/10">
+                    </div>
+                    <h3 class="text-3xl font-minimal font-bold mb-2">DANIEL</h3>
+                    <p class="font-minimal text-[10px] text-visceral tracking-[0.3em] font-bold mb-4">THE ARCHITECT</p>
+                    <p class="font-body text-xs text-void/60 max-w-xs mx-auto">
+                        Voice + Guitar. <br>Constructs the melody from the chaos.
+                    </p>
+                </div>
+
+                <!-- Juan Pablo -->
+                <div class="group text-center md:mt-12">
+                    <div class="relative w-56 h-56 mx-auto mb-8 animate-float overflow-hidden rounded-full" style="animation-delay: 1s;">
+                         <div class="absolute inset-0 bg-visceral/10 rounded-full blur-xl group-hover:bg-visceral/30 transition-all opacity-0 group-hover:opacity-100"></div>
+                        <img src="./assets/sic_icon_juan_refined.png" class="relative z-10 w-full h-full object-cover object-center filter drop-shadow-md p-4 bg-void/5 rounded-full border border-void/10">
+                    </div>
+                    <h3 class="text-3xl font-minimal font-bold mb-2">JUAN PABLO</h3>
+                    <p class="font-minimal text-[10px] text-visceral tracking-[0.3em] font-bold mb-4">THE ENGINE</p>
+                    <p class="font-body text-xs text-void/60 max-w-xs mx-auto">
+                        Drums. <br>Drives the pulse of the conflict.
+                    </p>
+                </div>
+
+                <!-- Francisco -->
+                <div class="group text-center">
+                     <div class="relative w-56 h-56 mx-auto mb-8 animate-float overflow-hidden rounded-full" style="animation-delay: 2s;">
+                         <div class="absolute inset-0 bg-visceral/10 rounded-full blur-xl group-hover:bg-visceral/30 transition-all opacity-0 group-hover:opacity-100"></div>
+                        <img src="./assets/sic_icon_francisco.png" class="relative z-10 w-full h-full object-cover object-center filter drop-shadow-md p-4 bg-void/5 rounded-full border border-void/10">
+                    </div>
+                    <h3 class="text-3xl font-minimal font-bold mb-2">FRANCISCO</h3>
+                    <p class="font-minimal text-[10px] text-visceral tracking-[0.3em] font-bold mb-4">THE FOUNDATION</p>
+                    <p class="font-body text-xs text-void/60 max-w-xs mx-auto">
+                        Bass. <br>Solidifies the abstract.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EVIDENCE (Press) - Glitch/Intercept Style -->
+    <section id="evidence" class="py-24 bg-void relative overflow-hidden">
+        <!-- Glitch Background -->
+        <div class="absolute inset-0 opacity-10" style="background-image: repeating-linear-gradient(0deg, transparent, transparent 2px, #D21F3C 2px, #D21F3C 4px);"></div>
+        
+        <div class="max-w-6xl mx-auto px-6 relative z-10">
+            <h2 class="font-minimal text-center text-2xl text-page/50 mb-16 tracking-[0.5em]">INTERCEPTED_TRANSMISSIONS</h2>
+            
+            <div class="grid md:grid-cols-2 gap-12">
+                <!-- Quote 1 -->
+                <div class="border border-page/20 p-8 relative bg-void/80 backdrop-blur">
+                    <div class="absolute top-0 left-0 w-2 h-2 bg-visceral"></div>
+                    <div class="absolute bottom-0 right-0 w-2 h-2 bg-visceral"></div>
+                    <p class="font-minimal text-lg md:text-xl text-page italic mb-6 leading-relaxed">
+                        "UNA EXPLOSIÓN SONORA QUE REMUEVE LAS ENTRAÑAS."
+                    </p>
+                    <div class="flex items-center text-[10px] font-body tracking-wider text-visceral">
+                        <span class="w-2 h-2 bg-visceral rounded-full mr-2 animate-pulse"></span>
+                        SOURCE: REVISTA ROCKTOTAL
+                    </div>
+                </div>
+
+                <!-- Quote 2 -->
+                <div class="border border-page/20 p-8 relative bg-void/80 backdrop-blur">
+                    <div class="absolute top-0 right-0 w-2 h-2 bg-page"></div>
+                    <div class="absolute bottom-0 left-0 w-2 h-2 bg-page"></div>
+                    <p class="font-minimal text-lg md:text-xl text-page italic mb-6 leading-relaxed">
+                        "INTENSO Y EMOTIVO, REDEFINEN EL GRUNGE PARA NUEVAS GENERACIONES."
+                    </p>
+                    <div class="flex items-center text-[10px] font-body tracking-wider text-visceral">
+                        <span class="w-2 h-2 bg-visceral rounded-full mr-2 animate-pulse"></span>
+                        SOURCE: DIARIO ALTERNATIVO
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SIGNAL (Contact) - Terminal Style -->
+    <section id="signal" class="py-24 bg-page text-void relative">
+        <div class="max-w-3xl mx-auto px-6 text-center">
+            <h2 class="font-minimal text-4xl font-bold mb-2">SIGNAL</h2>
+            <div class="w-16 h-1 bg-visceral mx-auto mb-12"></div>
+
+            <div class="space-y-8 font-minimal text-sm md:text-base tracking-widest">
+                <div class="group cursor-pointer">
+                    <p class="text-visceral text-[10px] mb-1 font-bold">DIRECT UPLINK // EMAIL</p>
+                    <a href="mailto:sic.rockband@gmail.com" class="text-2xl font-bold hover:text-visceral transition-colors relative">
+                        sic.rockband@gmail.com
+                    </a>
+                </div>
+
+                <div class="group cursor-pointer">
+                    <p class="text-visceral text-[10px] mb-1 font-bold">AUDIO FREQUENCY // PHONE</p>
+                    <a href="tel:+573168228662" class="text-2xl font-bold hover:text-visceral transition-colors">
+                        +57 316 822 8662
+                    </a>
+                </div>
+            </div>
+            
+            <div class="mt-16 p-4 border border-visceral/20 inline-block">
+                <p class="font-body text-[10px] text-void/60">
+                    FOR BOOKING, PRESS & COLLABORATIONS.<br>
+                    TRANSMISSION ENDS.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black py-16 border-t border-page/10 font-minimal text-xs text-page/40">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="text-left">
+                <h2 class="text-2xl text-page font-bold tracking-widest mb-2">[SIC]</h2>
+                <p class="text-[10px]">SENTENCE IN CONFLICT // EST. 2017</p>
+            </div>
+            
+             <div class="flex space-x-8">
+               <a href="https://www.instagram.com/sic.band/?hl=es-la" target="_blank" class="hover:text-visceral transition-colors"><i class="fab fa-instagram text-xl"></i></a>
+               <a href="https://open.spotify.com/intl-es/artist/your_artist_id" target="_blank" class="hover:text-visceral transition-colors"><i class="fab fa-spotify text-xl"></i></a>
+               <a href="https://www.youtube.com/channel/UCFAShEu-88tWd8x7cjrVVlA" target="_blank" class="hover:text-visceral transition-colors"><i class="fab fa-youtube text-xl"></i></a>
+               <a href="mailto:sic.rockband@gmail.com" class="hover:text-visceral transition-colors"><i class="fas fa-envelope text-xl"></i></a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
