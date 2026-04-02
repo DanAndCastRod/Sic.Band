@@ -1,4 +1,4 @@
-import * as THREE from "../node_modules/three/build/three.module.min.js";
+import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.183.2/build/three.module.js";
 
 const doc = document;
 const win = window;
