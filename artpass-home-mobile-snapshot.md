@@ -1,0 +1,99 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "[SIC]" [ref=e4] [cursor=pointer]:
+        - /url: "#top"
+      - button "Menú" [ref=e5] [cursor=pointer]
+  - main [ref=e6]:
+    - generic [ref=e8]:
+      - generic [ref=e9]:
+        - paragraph [ref=e10]: Sentence In Conflict
+        - heading "Así fue escrito. Así se quiebra. Así se quiebra." [level=1] [ref=e11]
+        - paragraph [ref=e12]: Rock alternativo, grunge y fusión desde la tensión entre idea y materia. No ilustramos conceptos. Los sometemos a fricción hasta que se vuelven sonido.
+        - generic [ref=e13]
+        - generic [ref=e16]
+      - figure "La ambigüedad no corrige la verdad. La expone." [ref=e27]:
+        - img "[SIC] — La verdad en lo ambiguo" [ref=e28]
+        - paragraph [ref=e29]: Pereira / 2017 →
+        - generic [ref=e30]: La ambigüedad no corrige la verdad. La expone.
+    - generic [ref=e32]:
+      - generic [ref=e33]:
+        - generic [ref=e34]
+        - complementary [ref=e52]
+      - generic [ref=e69]:
+        - article [ref=e70]
+        - article [ref=e74]
+        - article [ref=e78]
+        - article [ref=e82]
+    - generic [ref=e88]:
+      - generic [ref=e89]:
+        - paragraph [ref=e90]: Núcleo
+        - heading "El conflicto no es un tema. Es la forma." [level=2] [ref=e91]
+        - paragraph [ref=e92]: El territorio conceptual de [SIC] es el mundo de las ideas y el conflicto semántico. La banda opera desde contrastes fuertes y convierte lo abstracto en impacto físico sin sacrificar ambigüedad.
+      - generic [ref=e93]:
+        - article [ref=e94]
+        - article [ref=e99]
+        - article [ref=e106]
+      - generic [ref=e113]:
+        - article [ref=e114]
+        - article [ref=e116]
+        - article [ref=e118]
+        - article [ref=e120]
+        - article [ref=e122]
+    - generic [ref=e126]:
+      - generic [ref=e127]:
+        - paragraph [ref=e128]: Sistema
+        - heading "Cómo piensa. Cómo habla. Cómo se ve." [level=2] [ref=e129]
+        - paragraph [ref=e130]: La identidad de [SIC] no vive solo en el sonido. También se reconoce en una voz editorial precisa y en un sistema visual de alto contraste, hostil y contenido.
+      - generic [ref=e131]:
+        - article [ref=e132]
+        - article [ref=e139]
+        - article [ref=e146]
+      - generic [ref=e163]:
+        - article [ref=e164]
+        - article [ref=e167]
+        - article [ref=e170]
+        - article [ref=e173]
+    - generic [ref=e178]:
+      - complementary [ref=e179]:
+        - generic [ref=e180]
+        - list [ref=e183]
+      - generic [ref=e196]:
+        - generic [ref=e197]
+        - generic [ref=e200]
+    - generic [ref=e235]:
+      - generic [ref=e236]:
+        - paragraph [ref=e237]: La triada
+        - heading "Tres funciones. Un mismo pulso." [level=2] [ref=e238]
+      - generic [ref=e239]:
+        - article [ref=e240]
+        - article [ref=e250]
+        - article [ref=e260]
+    - generic [ref=e271]:
+      - generic [ref=e272]:
+        - generic [ref=e273]
+        - link "Entrar al laboratorio" [ref=e277] [cursor=pointer]:
+          - /url: laboratory.html
+      - generic [ref=e278]:
+        - article [ref=e279]
+        - article [ref=e283]
+        - article [ref=e287]
+        - article [ref=e291]
+    - generic [ref=e297]:
+      - generic [ref=e298]:
+        - generic [ref=e299]
+        - paragraph [ref=e302]: Prensa, booking, colaboraciones editoriales y apariciones en vivo. La entrada no se plantea como promoción genérica, sino como una extensión del mismo sistema conceptual.
+      - list [ref=e304]:
+        - listitem [ref=e305]
+        - listitem [ref=e308]
+        - listitem [ref=e311]
+        - listitem [ref=e314]
+        - listitem [ref=e317]
+  - contentinfo [ref=e320]:
+    - generic [ref=e321]:
+      - paragraph [ref=e322]: "[SIC] / Sentence In Conflict / Pereira, Colombia"
+      - generic [ref=e323]:
+        - link "Volver arriba" [ref=e324] [cursor=pointer]:
+          - /url: "#top"
+        - link "Laboratorio" [ref=e325] [cursor=pointer]:
+          - /url: laboratory.html

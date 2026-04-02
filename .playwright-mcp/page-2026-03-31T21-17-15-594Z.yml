@@ -1,0 +1,256 @@
+- generic [active] [ref=e1]:
+  - generic:
+    - generic: Immersive field
+    - strong: Container lattice
+    - generic: compact lattice / conflict held in suspension
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "< Volver al manifiesto" [ref=e4] [cursor=pointer]:
+        - /url: index.html
+      - generic [ref=e5]: "[SIC] / THE MENTAL LABORATORY"
+      - navigation "Navegacion del laboratorio" [ref=e6]:
+        - link "Container" [ref=e7] [cursor=pointer]:
+          - /url: "#container"
+        - link "Ether" [ref=e8] [cursor=pointer]:
+          - /url: "#ether"
+        - link "Subconscious" [ref=e9] [cursor=pointer]:
+          - /url: "#subconscious"
+        - link "Mirror" [ref=e10] [cursor=pointer]:
+          - /url: "#mirror"
+  - main [ref=e11]:
+    - generic [ref=e13]:
+      - generic [ref=e14]:
+        - paragraph [ref=e15]: Simulacion de conflicto mental
+        - heading "Las ideas todavia no obedecen." [level=1] [ref=e16]
+        - paragraph [ref=e17]: Este laboratorio no presenta a [SIC]. Lo descompone. Materia visual, ruido, lenguaje, presencia y espejo trabajan como partes de un mismo expediente intervenido.
+        - generic [ref=e18]:
+          - link "Entrar al campo" [ref=e19] [cursor=pointer]:
+            - /url: "#container"
+          - link "Volver al manifiesto" [ref=e20] [cursor=pointer]:
+            - /url: index.html#lab
+        - generic [ref=e21]:
+          - article [ref=e22]:
+            - text: State
+            - strong [ref=e23]: Indeterminacy driven
+            - text: Lo que ves no permanece fijo. El sistema responde, filtra y fractura.
+          - article [ref=e24]:
+            - text: Driver
+            - strong [ref=e25]: Conflict as form
+            - text: La contradiccion no es un tema. Es el motor formal del laboratorio.
+          - article [ref=e26]:
+            - text: Output
+            - strong [ref=e27]: Presence before explanation
+            - text: La lectura entra por el impacto sensorial antes que por la descripcion.
+      - complementary [ref=e28]:
+        - generic [ref=e29]:
+          - img "Geometria abstracta y fragmentada del laboratorio [SIC]" [ref=e30]
+          - generic [ref=e31]: Pereira / active dossier
+          - generic [ref=e32]: Mental file // redacted
+          - generic [ref=e33]:
+            - generic [ref=e34]: System state
+            - paragraph [ref=e35]: Infraestructura de prueba para materia, ruido, texto y bio-scan local.
+            - generic [ref=e36]:
+              - generic [ref=e37]: Mode
+              - generic [ref=e38]: Intervened document
+            - generic [ref=e39]:
+              - generic [ref=e40]: Accent
+              - generic [ref=e41]: Black / White / Red
+            - generic [ref=e42]:
+              - generic [ref=e43]: Pulse
+              - generic [ref=e44]: Unstable but controlled
+    - generic [ref=e46]:
+      - generic [ref=e47]:
+        - generic [ref=e48]:
+          - paragraph [ref=e49]: Phase 1 / The Container
+          - heading "La idea se vuelve materia hostil." [level=2] [ref=e50]
+          - paragraph [ref=e51]: "El contenedor visual convierte palabras en objetos con peso. El cursor no navega: atraviesa el sistema y altera su campo."
+          - paragraph [ref=e52]: "No es una nube decorativa. Es un archivo vivo de conceptos centrales: verdad, sombra, pulso, herida, borde, forma y ambiguedad."
+        - generic [ref=e53]:
+          - article [ref=e54]:
+            - strong [ref=e55]: Repulsor input
+            - paragraph [ref=e56]: El puntero entra como fuerza externa. Cada gesto desplaza y recalibra el campo.
+          - article [ref=e57]:
+            - strong [ref=e58]: Visual grammar
+            - paragraph [ref=e59]: Reticula rigida, nodos tensionados, rojo tactico y lectura de expediente mas que de interfaz amable.
+      - article [ref=e60]:
+        - generic [ref=e61]:
+          - generic [ref=e62]:
+            - text: Idea collider
+            - heading "Campo de conceptos en friccion" [level=3] [ref=e63]
+          - generic [ref=e64]: scan / standby
+        - generic "Campo interactivo de ideas" [ref=e65]:
+          - button "TRUTH" [ref=e66]
+          - button "VOID" [ref=e67]
+          - button "AMBIGUITY" [ref=e68]
+          - button "CONFLICT" [ref=e69]
+          - button "MATERIAL" [ref=e70]
+          - button "SHADOW" [ref=e71]
+          - button "IDEA" [ref=e72]
+          - button "PULSE" [ref=e73]
+          - button "STATIC" [ref=e74]
+          - button "FORM" [ref=e75]
+          - button "DUALITY" [ref=e76]
+          - button "HERIDA" [ref=e77]
+          - button "EDGE" [ref=e78]
+          - button "NOISE" [ref=e79]
+          - button "SENTENCE" [ref=e80]
+          - button "REDACTED" [ref=e81]
+          - generic [ref=e82]:
+            - generic [ref=e83]: Repulsor field / active
+            - generic [ref=e84]: move through the pile
+        - generic [ref=e86]:
+          - button "Inject disturbance" [ref=e87] [cursor=pointer]
+          - generic [ref=e88]: Mueve el cursor o haz click para desestabilizar el campo y forzar colision.
+    - generic [ref=e90]:
+      - generic [ref=e91]:
+        - generic [ref=e92]:
+          - paragraph [ref=e93]: Phase 2 / The Ether
+          - heading "La senal aparece dentro del ruido." [level=2] [ref=e94]
+          - paragraph [ref=e95]: Este modulo trabaja como una radio de onda corta conceptual. No busca una cancion completa sino fragmentos de claridad parcial.
+          - paragraph [ref=e96]: Activa audio para encender el cuarto. El ruido baja cuando una frecuencia logra fijar una lectura temporal del sistema.
+        - generic [ref=e97]:
+          - article [ref=e98]:
+            - strong [ref=e99]: Carrier
+            - paragraph [ref=e100]: Ruido blanco, drone bajo y tono filtrado para producir presencia continua aun antes del lock.
+          - article [ref=e101]:
+            - strong [ref=e102]: Homing logic
+            - paragraph [ref=e103]: La claridad no es binaria. El sistema cruza volumen, filtro y texto segun proximidad a la frecuencia correcta.
+      - article [ref=e104]:
+        - generic [ref=e106]:
+          - text: Shortwave tuner
+          - heading "Frecuencia conceptual 88.0 - 108.0" [level=3] [ref=e107]
+        - generic [ref=e108]:
+          - generic [ref=e109]:
+            - generic [ref=e110]: "98.4"
+            - generic [ref=e111]: MHz
+          - generic [ref=e112]:
+            - button "Activate signal" [ref=e113] [cursor=pointer]
+            - button "Mute output" [disabled] [ref=e114] [cursor=pointer]
+        - slider "Control de frecuencia" [ref=e115]: "98.4"
+        - generic [ref=e116]:
+          - generic [ref=e118]: "92.5"
+          - generic [ref=e120]: "101.1"
+          - generic [ref=e122]: "106.6"
+        - generic [ref=e124]:
+          - generic [ref=e125]: Signal strength
+          - generic [ref=e126]: 0%
+        - generic [ref=e146]:
+          - generic [ref=e147]: Nearest station
+          - heading "NO LOCK / STATIC DOMINATES" [level=3] [ref=e148]
+          - paragraph [ref=e149]: La frecuencia sigue fuera de fase. El ruido sostiene el cuarto mientras la senal apenas insinua forma.
+          - generic [ref=e150]:
+            - generic [ref=e151]: Source tape
+            - generic [ref=e152]: MSS WHITE / archival carrier armed
+          - list [ref=e153]:
+            - listitem [ref=e154]: carrier / diffuse
+            - listitem [ref=e155]: clarity / insufficient
+            - listitem [ref=e156]: directive / continue tuning
+        - generic [ref=e157]:
+          - generic [ref=e158]:
+            - generic [ref=e159]: Intercepted stations
+            - generic [ref=e160]: drag the dial or use arrow keys
+          - generic [ref=e161]:
+            - button "92.5 MHz TRUTH HIDING / 92.5 La ambiguedad no corrige la verdad. La expone cuando el ruido deja de protegerla. MSS WHITE / fragment alpha" [ref=e162] [cursor=pointer]:
+              - generic [ref=e163]: 92.5 MHz
+              - strong [ref=e164]: TRUTH HIDING / 92.5
+              - paragraph [ref=e165]: La ambiguedad no corrige la verdad. La expone cuando el ruido deja de protegerla.
+              - generic [ref=e166]: MSS WHITE / fragment alpha
+            - button "101.1 MHz SENTENCE IN CONFLICT / 101.1 La maquina no entrega respuestas limpias. Solo bordes, interferencia y una idea todavia abierta. MSS WHITE / sentence bleed" [ref=e178] [cursor=pointer]:
+              - generic [ref=e179]: 101.1 MHz
+              - strong [ref=e180]: SENTENCE IN CONFLICT / 101.1
+              - paragraph [ref=e181]: La maquina no entrega respuestas limpias. Solo bordes, interferencia y una idea todavia abierta.
+              - generic [ref=e182]: MSS WHITE / sentence bleed
+            - button "106.6 MHz RED CHANNEL / 106.6 La senal roja aparece cuando el sistema detecta presencia antes que explicacion. MSS WHITE / red channel" [ref=e194] [cursor=pointer]:
+              - generic [ref=e195]: 106.6 MHz
+              - strong [ref=e196]: RED CHANNEL / 106.6
+              - paragraph [ref=e197]: La senal roja aparece cuando el sistema detecta presencia antes que explicacion.
+              - generic [ref=e198]: MSS WHITE / red channel
+    - generic [ref=e211]:
+      - generic [ref=e213]:
+        - paragraph [ref=e214]: Phase 3 / The Subconscious
+        - heading "La maquina responde, pero nunca limpio." [level=2] [ref=e215]
+        - paragraph [ref=e216]: El laboratorio no entrega copy promocional. Devuelve una lectura oblicua, intervenida y apenas estable de lo que se le entrega.
+        - paragraph [ref=e217]: El oraculo trabaja con campos semanticos del sistema [SIC]. El filtro convierte cualquier afirmacion en una superficie mas dura y ambigua.
+      - generic [ref=e218]:
+        - article [ref=e219]:
+          - generic [ref=e220]:
+            - generic [ref=e221]:
+              - text: Oracle
+              - heading "USER@SIC_LAB:~$" [level=3] [ref=e222]
+            - generic [ref=e223]: semantic machine
+          - generic [ref=e224]:
+            - generic [ref=e225]:
+              - strong [ref=e226]: SYSTEM
+              - paragraph [ref=e227]: USER@SIC_LAB:~$ waiting for semantic input
+            - generic [ref=e228]:
+              - strong [ref=e229]: ORACLE
+              - paragraph [ref=e230]: THE SENTENCE IS INCOMPLETE.
+          - generic [ref=e231]:
+            - textbox "Pregunta por verdad, herida, banda o futuro" [ref=e232]
+            - button "Transmit" [ref=e233] [cursor=pointer]
+        - article [ref=e234]:
+          - generic [ref=e235]:
+            - generic [ref=e236]:
+              - text: Truth filter
+              - heading "Type your truth here" [level=3] [ref=e237]
+            - generic [ref=e238]: upper / distort / inject
+          - textbox "Escribe una afirmacion y deja que el sistema la vuelva borde." [ref=e239]
+          - generic [ref=e240]:
+            - button "Process truth" [ref=e241] [cursor=pointer]
+            - button "Load sample" [ref=e242] [cursor=pointer]
+          - generic [ref=e243]: TYPE YOUR TRUTH. THE MACHINE WILL DISTORT IT.
+    - generic [ref=e245]:
+      - generic [ref=e246]:
+        - generic [ref=e247]:
+          - paragraph [ref=e248]: Phase 4 / The Mirror
+          - heading "El sujeto entra al sistema como evidencia." [level=2] [ref=e249]
+          - paragraph [ref=e250]: "El bio-scan convierte la camara en umbral: blanco y negro extremo, sombra roja y rastro fantasma para devolver otra version del visitante."
+          - paragraph [ref=e251]: El procesamiento ocurre en cliente. Nada sale del terminal. El modulo existe para romper la cuarta pared sin romper la privacidad.
+        - generic [ref=e252]:
+          - button "Initiate bio-scan" [ref=e253] [cursor=pointer]
+          - button "Cut feed" [ref=e254] [cursor=pointer]
+        - generic [ref=e255]: INITIATING BIO-SCAN // NO DATA LEAVES THIS TERMINAL
+      - article [ref=e256]:
+        - generic [ref=e257]:
+          - generic [ref=e258]:
+            - text: Mirror of duality
+            - heading "Threshold feed" [level=3] [ref=e259]
+          - generic [ref=e260]: SUBJECT // IDLE
+        - generic "Salida procesada del bio-scan" [ref=e262]
+        - generic [ref=e264]:
+          - generic [ref=e265]:
+            - generic [ref=e266]: Mode
+            - generic [ref=e267]: camera offline
+          - generic [ref=e268]:
+            - generic [ref=e269]: Privacy
+            - generic [ref=e270]: local only
+          - generic [ref=e271]:
+            - generic [ref=e272]: Threat
+            - generic [ref=e273]: standby
+          - generic [ref=e274]:
+            - generic [ref=e275]: Overlay
+            - generic [ref=e276]: censor bars / idle
+          - generic [ref=e277]:
+            - generic [ref=e278]: Shadow delay
+            - generic [ref=e279]: ghost frame / 6 ticks
+    - generic [ref=e281]:
+      - article [ref=e282]:
+        - text: Phase map
+        - heading "Container / Ether / Subconscious / Mirror" [level=3] [ref=e283]
+        - paragraph [ref=e284]: "Cuatro protocolos sobre una misma gramatica: tension, contraste, ruido, evidencia y pulso."
+      - article [ref=e285]:
+        - text: Operational note
+        - heading "El lab sigue abierto" [level=3] [ref=e286]
+        - paragraph [ref=e287]: Esta version ya ejecuta escena, senal, texto y bio-scan. Los siguientes refinamientos pueden profundizar fisica real, audio mas complejo y visuales adicionales.
+      - article [ref=e288]:
+        - text: Exit / return
+        - heading "Reingresar al sistema principal" [level=3] [ref=e289]
+        - paragraph [ref=e290]:
+          - link "Volver al sitio principal" [ref=e291] [cursor=pointer]:
+            - /url: index.html
+        - paragraph [ref=e292]:
+          - link "Abrir senal de contacto" [ref=e293] [cursor=pointer]:
+            - /url: index.html#senal
+        - paragraph [ref=e294]:
+          - link "Volver al inicio del laboratorio" [ref=e295] [cursor=pointer]:
+            - /url: "#top"

@@ -1,0 +1,35 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "[SIC]" [ref=e4] [cursor=pointer]:
+        - /url: "#top"
+      - navigation [ref=e289]
+  - main [ref=e6]:
+    - generic [ref=e8]:
+      - generic [ref=e9]
+      - figure "La ambigüedad no corrige la verdad. La expone." [ref=e17]
+    - generic [ref=e22]:
+      - generic [ref=e23]
+      - generic [ref=e59]
+    - generic [ref=e78]:
+      - generic [ref=e79]
+      - generic [ref=e83]
+    - generic [ref=e105]:
+      - generic [ref=e106]
+      - generic [ref=e110]
+    - generic [ref=e144]:
+      - complementary [ref=e145]
+      - generic [ref=e162]
+    - generic [ref=e199]:
+      - generic [ref=e200]
+      - generic [ref=e203]
+    - generic [ref=e235]:
+      - generic [ref=e236]
+      - generic [ref=e242]
+    - generic [ref=e261]:
+      - generic [ref=e263]
+      - list [ref=e267]
+  - contentinfo [ref=e283]:
+    - generic [ref=e284]:
+      - paragraph [ref=e285]: "[SIC] / Sentence In Conflict / Pereira, Colombia"
+      - generic [ref=e286]

@@ -1,0 +1,241 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "[SIC]" [ref=e4] [cursor=pointer]:
+        - /url: "#top"
+      - navigation [ref=e5]:
+        - link "Manifiesto" [ref=e6] [cursor=pointer]:
+          - /url: "#manifiesto"
+        - link "Archivo" [ref=e7] [cursor=pointer]:
+          - /url: "#archivo"
+        - link "Triada" [ref=e8] [cursor=pointer]:
+          - /url: "#triada"
+        - link "Laboratorio" [ref=e9] [cursor=pointer]:
+          - /url: "#lab"
+        - link "Señal" [ref=e10] [cursor=pointer]:
+          - /url: "#senal"
+  - main [ref=e11]:
+    - generic [ref=e13]:
+      - generic [ref=e14]:
+        - paragraph [ref=e15]: Sentence In Conflict
+        - heading "Así fue escrito. Así se quiebra. Así se quiebra." [level=1] [ref=e16]
+        - paragraph [ref=e17]: Rock alternativo, grunge y fusión desde la tensión entre idea y materia. No ilustramos conceptos. Los sometemos a fricción hasta que se vuelven sonido.
+        - generic [ref=e18]:
+          - link "Entrar al archivo" [ref=e19] [cursor=pointer]:
+            - /url: "#archivo"
+          - link "Abrir laboratorio" [ref=e20] [cursor=pointer]:
+            - /url: laboratory.html
+      - figure "La ambigüedad no corrige la verdad. La expone." [ref=e22]:
+        - img "[SIC] — La verdad en lo ambiguo" [ref=e23]
+        - paragraph [ref=e24]: Pereira / 2017 →
+        - generic [ref=e25]: La ambigüedad no corrige la verdad. La expone.
+    - generic [ref=e27]:
+      - generic [ref=e28]:
+        - generic [ref=e29]:
+          - generic [ref=e30]:
+            - paragraph [ref=e31]: Manifiesto
+            - heading "No simplificamos la contradicción. La habitamos." [level=2] [ref=e32]
+            - paragraph [ref=e33]:
+              - text: "[SIC] proviene de"
+              - emphasis [ref=e34]: sic erat scriptum
+              - text: — "así fue escrito" — y se lee también como
+              - emphasis [ref=e35]: Sentence In Conflict
+              - text: ". La banda habita lo indeterminado, lo abstracto y lo visceral. No cuenta historias: abre preguntas, expone grietas y convierte conceptos en impacto clasificado sonoro."
+          - paragraph [ref=e36]: "\"La música es pensamiento encarnado: cerebral en intención, física en ejecución.\""
+          - paragraph [ref=e37]: Cada punto de contacto con [SIC] debe sentirse intenso, reflexivo e inquietante. Más cerca de un manifiesto que de una pieza promocional.
+          - generic [ref=e38]:
+            - generic [ref=e39]:
+              - strong [ref=e40]: Idea / Materia
+              - text: Lo conceptual toma peso físico.
+            - generic [ref=e41]:
+              - strong [ref=e42]: Razón / Emoción
+              - text: La claridad entra en disputa con la herida.
+            - generic [ref=e43]:
+              - strong [ref=e44]: Orden / Caos
+              - text: La estructura existe para soportar el quiebre.
+            - generic [ref=e45]:
+              - strong [ref=e46]: Luz / Sombra
+              - text: La verdad aparece en el borde.
+        - complementary [ref=e47]:
+          - img "[SIC] en vivo" [ref=e48]
+          - generic [ref=e49]:
+            - generic [ref=e50]: Dossier
+            - generic [ref=e51]:
+              - generic [ref=e52]: Género
+              - generic [ref=e53]: Rock alternativo / Grunge / Fusión
+            - generic [ref=e54]:
+              - generic [ref=e55]: Territorio
+              - generic [ref=e56]: Ideas, conflicto, sombra, forma
+            - generic [ref=e57]:
+              - generic [ref=e58]: Arquetipo
+              - generic [ref=e59]: El filósofo abstracto
+            - generic [ref=e60]:
+              - generic [ref=e61]: Principio
+              - generic [ref=e62]: Sugerir más de lo que se explica
+      - generic [ref=e64]:
+        - article [ref=e65]:
+          - generic [ref=e66]: Pilar I
+          - heading "Indeterminación" [level=3] [ref=e67]
+          - paragraph [ref=e68]: No hay verdades absolutas. Lo importante no es cerrar el sentido, sino sostener la pregunta.
+        - article [ref=e69]:
+          - generic [ref=e70]: Pilar II
+          - heading "Ambigüedad" [level=3] [ref=e71]
+          - paragraph [ref=e72]: "Las cosas significan varias cosas al mismo tiempo. La ambigüedad no debilita: densifica."
+        - article [ref=e73]:
+          - generic [ref=e74]: Pilar III
+          - heading "Ideas" [level=3] [ref=e75]
+          - paragraph [ref=e76]: La canción no es fondo. Es postura, conflicto y materia pensante.
+        - article [ref=e77]:
+          - generic [ref=e78]: Pilar IV
+          - heading "Tensión" [level=3] [ref=e79]
+          - paragraph [ref=e80]: La identidad no opera desde neutralidad. Necesita contraste duro y cortes bruscos.
+    - generic [ref=e82]:
+      - complementary [ref=e83]:
+        - generic [ref=e84]:
+          - paragraph [ref=e85]: Archivo
+          - heading "Origen y rastro." [level=2] [ref=e86]
+        - list [ref=e87]:
+          - listitem [ref=e88]:
+            - generic [ref=e89]: "2017"
+            - paragraph [ref=e90]: Formación en Pereira. Núcleo inicial.
+          - listitem [ref=e91]:
+            - generic [ref=e92]: "2018"
+            - paragraph [ref=e93]: Eje Rock Festival. "Abre tus oídos" en Manizales. "No + Silencio" en Roldanillo.
+          - listitem [ref=e94]:
+            - generic [ref=e95]: "2021"
+            - paragraph [ref=e96]: Telecafé / Area 53. Top 12 en Eje Rock.
+          - listitem [ref=e97]:
+            - generic [ref=e98]: 2022 → 2026
+            - paragraph [ref=e99]: De "Desde que el sol brilla" a una fase marcada por ambigüedad, sombra y quiebre.
+      - generic [ref=e100]:
+        - generic [ref=e101]:
+          - paragraph [ref=e102]: Discografía
+          - heading "Fases del conflicto." [level=2] [ref=e103]
+        - generic [ref=e104]:
+          - link "Al Revés 2018 / Phase I Al Revés Primer gesto de inversión." [ref=e105] [cursor=pointer]:
+            - /url: https://open.spotify.com/intl-es/album/4Rr1wEGeMCwCl0IN3NLufn?si=yto2li2iRAuBenzhMXcyqA
+            - img "Al Revés" [ref=e106]
+            - generic [ref=e107]:
+              - generic [ref=e108]: 2018 / Phase I
+              - heading "Al Revés" [level=3] [ref=e109]
+              - paragraph [ref=e110]: Primer gesto de inversión.
+          - link "Desde que el sol brilla 2022 / Phase II Desde que el sol brilla Claridad atravesada por herida." [ref=e111] [cursor=pointer]:
+            - /url: https://open.spotify.com/intl-es/album/0KIu74uNoPhDNFz49zuDyx?si=LmcsxKT5SrqCCm0W3ljdIQ
+            - img "Desde que el sol brilla" [ref=e112]
+            - generic [ref=e113]:
+              - generic [ref=e114]: 2022 / Phase II
+              - heading "Desde que el sol brilla" [level=3] [ref=e115]
+              - paragraph [ref=e116]: Claridad atravesada por herida.
+          - link "MSS WHITE 2025 / Phase III MSS WHITE La sombra se vuelve archivo." [ref=e117] [cursor=pointer]:
+            - /url: https://open.spotify.com/intl-es/album/2SvkcZAU0u9b3k6lJmWfJf?si=Dah5mQJ9Qi-PfbWYyLxxGA
+            - img "MSS WHITE" [ref=e118]
+            - generic [ref=e119]:
+              - generic [ref=e120]: 2025 / Phase III
+              - heading "MSS WHITE" [level=3] [ref=e121]
+              - paragraph [ref=e122]: La sombra se vuelve archivo.
+          - link "Así 2025 / Phase III Así Golpe directo. Sin anestesia." [ref=e123] [cursor=pointer]:
+            - /url: https://open.spotify.com/intl-es/album/4PxnIpMCF5wOzT7vtO6JO0?si=64dq-kJ4SxqF5CNZ5jzdUw
+            - img "Así" [ref=e124]
+            - generic [ref=e125]:
+              - generic [ref=e126]: 2025 / Phase III
+              - heading "Así" [level=3] [ref=e127]
+              - paragraph [ref=e128]: Golpe directo. Sin anestesia.
+          - article [ref=e129]:
+            - img "Ambiguous" [ref=e130]
+            - generic [ref=e131]:
+              - generic [ref=e132]: 2026 / Phase IV
+              - heading "Ambiguous" [level=3] [ref=e133]
+              - paragraph [ref=e134]: Verdad en disputa.
+    - generic [ref=e137]:
+      - generic [ref=e138]:
+        - paragraph [ref=e139]: La triada
+        - heading "Tres funciones. Un mismo pulso." [level=2] [ref=e140]
+      - generic [ref=e141]:
+        - article [ref=e142]:
+          - generic [ref=e143]:
+            - img "Daniel Castañeda — Estructura geométrica" [ref=e144]
+            - generic [ref=e145]: SIC-01 / Voz + Guitarra
+          - generic [ref=e146]:
+            - generic [ref=e147]: Daniel Castañeda
+            - generic [ref=e148]: Activo
+          - generic [ref=e149]:
+            - heading "El arquitecto" [level=3] [ref=e150]
+            - paragraph [ref=e151]: Construye la forma antes del golpe. Lleva las ideas al borde donde empiezan a sonar como una herida precisa.
+        - article [ref=e152]:
+          - generic [ref=e153]:
+            - img "Juan Pablo Hurtado — Vórtice cinético" [ref=e154]
+            - generic [ref=e155]: SIC-02 / Batería
+          - generic [ref=e156]:
+            - generic [ref=e157]: Juan Pablo Hurtado
+            - generic [ref=e158]: Activo
+          - generic [ref=e159]:
+            - heading "El motor" [level=3] [ref=e160]
+            - paragraph [ref=e161]: Convierte la tensión en pulso. La fricción adquiere velocidad, peso y amenaza en su terreno.
+        - article [ref=e162]:
+          - generic [ref=e163]:
+            - img "Francisco Valencia — Geometría sagrada" [ref=e164]
+            - generic [ref=e165]: SIC-03 / Bajo
+          - generic [ref=e166]:
+            - generic [ref=e167]: Francisco Valencia
+            - generic [ref=e168]: Activo
+          - generic [ref=e169]:
+            - heading "La base" [level=3] [ref=e170]
+            - paragraph [ref=e171]: Le da masa a lo abstracto. La superficie donde el concepto deja de ser idea y se vuelve impacto físico.
+    - generic [ref=e173]:
+      - generic [ref=e174]:
+        - generic [ref=e175]:
+          - paragraph [ref=e176]: The Mental Laboratory
+          - heading "Otra capa del mismo conflicto." [level=2] [ref=e177]
+          - paragraph [ref=e178]: "El universo [SIC] se extiende a un espacio experimental: física, audio, lógica y confrontación con la propia imagen. No es una página aparte. Es el laboratorio mental."
+        - link "Entrar al laboratorio" [ref=e179] [cursor=pointer]:
+          - /url: laboratory.html
+      - generic [ref=e180]:
+        - article [ref=e181]:
+          - generic [ref=e182]: Phase 1 / The Container
+          - heading "Visuales y física" [level=3] [ref=e183]
+          - paragraph [ref=e184]: Las palabras se comportan como materia. Colisión, textura, scanlines y distorsión.
+        - article [ref=e185]:
+          - generic [ref=e186]: Phase 2 / The Ether
+          - heading "Audio y sintonía" [level=3] [ref=e187]
+          - paragraph [ref=e188]: Radio de onda corta. Ruido, señal y manifiesto se cruzan según la frecuencia.
+        - article [ref=e189]:
+          - generic [ref=e190]: Phase 3 / The Subconscious
+          - heading "Lógica e interacción" [level=3] [ref=e191]
+          - paragraph [ref=e192]: Terminal y filtros de verdad. La máquina contesta sin entregar una salida limpia.
+        - article [ref=e193]:
+          - generic [ref=e194]: Phase 4 / The Mirror
+          - heading "Hardware y realidad" [level=3] [ref=e195]
+          - paragraph [ref=e196]: La cámara como espejo de dualidad. Alto contraste, rastro fantasma, presencia intervenida.
+    - generic [ref=e199]:
+      - generic [ref=e201]:
+        - paragraph [ref=e202]: Señal
+        - heading "Si la conversación vale la pena, la señal se abre." [level=2] [ref=e203]
+      - list [ref=e205]:
+        - listitem [ref=e206]:
+          - generic [ref=e207]: Email
+          - link "sic.rockband@gmail.com" [ref=e208] [cursor=pointer]:
+            - /url: mailto:sic.rockband@gmail.com
+        - listitem [ref=e209]:
+          - generic [ref=e210]: Teléfono
+          - link "+57 316 822 8662" [ref=e211] [cursor=pointer]:
+            - /url: tel:+573168228662
+        - listitem [ref=e212]:
+          - generic [ref=e213]: Instagram
+          - link "@sic.band" [ref=e214] [cursor=pointer]:
+            - /url: https://www.instagram.com/sic.band/?hl=es-la
+        - listitem [ref=e215]:
+          - generic [ref=e216]: YouTube
+          - link "Canal oficial" [ref=e217] [cursor=pointer]:
+            - /url: https://www.youtube.com/channel/UCFAShEu-88tWd8x7cjrVVlA
+        - listitem [ref=e218]:
+          - generic [ref=e219]: Escucha
+          - link "Último lanzamiento en Spotify" [ref=e220] [cursor=pointer]:
+            - /url: https://open.spotify.com/intl-es/album/4PxnIpMCF5wOzT7vtO6JO0?si=64dq-kJ4SxqF5CNZ5jzdUw
+  - contentinfo [ref=e221]:
+    - generic [ref=e222]:
+      - paragraph [ref=e223]: "[SIC] / Sentence In Conflict / Pereira, Colombia"
+      - generic [ref=e224]:
+        - link "Volver arriba" [ref=e225] [cursor=pointer]:
+          - /url: "#top"
+        - link "Laboratorio" [ref=e226] [cursor=pointer]:
+          - /url: laboratory.html

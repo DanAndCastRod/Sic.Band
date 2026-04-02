@@ -1,0 +1,87 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "< Volver al manifiesto" [ref=e4] [cursor=pointer]:
+        - /url: index.html
+      - generic [ref=e5]: "[SIC] / The Mental Laboratory"
+  - main [ref=e6]:
+    - generic [ref=e8]:
+      - generic [ref=e9]:
+        - paragraph [ref=e10]: Simulación de espacio mental
+        - heading "Aquí las ideas todavía no son canciones." [level=1] [ref=e11]
+        - paragraph [ref=e12]: "El laboratorio es la zona donde [SIC] lleva su identidad a otras formas: física visual, radio, respuestas oblicuas y confrontación con el propio reflejo. No es un universo paralelo; es la infraestructura interna del conflicto."
+        - generic [ref=e13]:
+          - link "Abrir señal" [ref=e14] [cursor=pointer]:
+            - /url: index.html#senal
+          - link "Ver archivo musical" [ref=e15] [cursor=pointer]:
+            - /url: index.html#archivo
+      - complementary [ref=e16]:
+        - img "Geometría abstracta del laboratorio SIC" [ref=e17]
+        - generic [ref=e18]:
+          - generic [ref=e19]: Estado del sistema
+          - paragraph [ref=e20]: Un entorno de pruebas para materia, ruido, texto y percepción.
+          - generic [ref=e21]:
+            - generic [ref=e22]: Modo
+            - generic [ref=e23]: Documento intervenido
+          - generic [ref=e24]:
+            - generic [ref=e25]: Acento
+            - generic [ref=e26]: Negro / Blanco / Rojo
+          - generic [ref=e27]:
+            - generic [ref=e28]: Resultado
+            - generic [ref=e29]: Presencia antes que explicación
+    - generic [ref=e31]:
+      - generic [ref=e32]:
+        - paragraph [ref=e33]: Fases reales del lab
+        - heading "Cuatro protocolos para traducir el conflicto." [level=2] [ref=e34]
+        - paragraph [ref=e35]: "Estas fases vienen del plan del laboratorio y convierten la identidad de [SIC] en interacción: colisión, frecuencia, lenguaje intervenido y espejo de dualidad."
+      - generic [ref=e36]:
+        - article [ref=e37]:
+          - generic [ref=e38]: Phase 1 / The Container
+          - heading "Visuales y física" [level=3] [ref=e39]
+          - paragraph [ref=e40]: Palabras que caen, chocan y se dispersan. Scanlines, distorsión y señal inestable para que la página se sienta como materia bajo tensión.
+        - article [ref=e41]:
+          - generic [ref=e42]: Phase 2 / The Ether
+          - heading "Audio y sintonía" [level=3] [ref=e43]
+          - paragraph [ref=e44]: Un simulador de radio de onda corta donde el usuario encuentra ruido, manifiesto y fragmentos de audio al acercarse a una frecuencia.
+        - article [ref=e45]:
+          - generic [ref=e46]: Phase 3 / The Subconscious
+          - heading "Lógica e interacción" [level=3] [ref=e47]
+          - paragraph [ref=e48]: Terminal, respuestas deformadas y filtros de texto para que la máquina no entregue claridad completa, sino un borde inquietante.
+        - article [ref=e49]:
+          - generic [ref=e50]: Phase 4 / The Mirror
+          - heading "Hardware y realidad" [level=3] [ref=e51]
+          - paragraph [ref=e52]: "La cámara como espejo de dualidad: umbral blanco/negro, rojo visceral en sombras y un rastro fantasma que devuelve otra versión del usuario."
+    - generic [ref=e54]:
+      - generic [ref=e55]:
+        - paragraph [ref=e56]: Principios de implementación
+        - heading "El lab debe sentirse como evidencia, no como juguete." [level=2] [ref=e57]
+      - generic [ref=e58]:
+        - article [ref=e59]:
+          - generic [ref=e60]: Atmosfera
+          - heading "Hostil y precisa" [level=3] [ref=e61]
+          - paragraph [ref=e62]: Contraste duro, retícula rígida, espacio negativo y pequeñas fallas de señal antes que efectos suaves o decorativos.
+        - article [ref=e63]:
+          - generic [ref=e64]: Interacción
+          - heading "El usuario altera el sistema" [level=3] [ref=e65]
+          - paragraph [ref=e66]: Mouse, texto, frecuencia y cámara deben sentirse como entradas que modifican un organismo activo, no un micrositio pasivo.
+        - article [ref=e67]:
+          - generic [ref=e68]: Seguridad
+          - heading "Procesamiento local" [level=3] [ref=e69]
+          - paragraph [ref=e70]: La fase del espejo debe dejar claro que el bio-scan se procesa en el cliente y que ningún dato abandona el terminal.
+    - generic [ref=e72]:
+      - article [ref=e73]:
+        - generic [ref=e74]: Disclaimer
+        - heading "Este laboratorio sigue abierto." [level=3] [ref=e75]
+        - paragraph [ref=e76]: "La dirección ya está definida: materia visual, radio, subconsciente y espejo. El siguiente paso es convertir estas capas en una experiencia interactiva sin romper el rigor del sistema de marca."
+      - article [ref=e77]:
+        - generic [ref=e78]: Navegación
+        - heading "Salir / Reingresar" [level=3] [ref=e79]
+        - paragraph [ref=e80]:
+          - link "Volver al sitio principal" [ref=e81] [cursor=pointer]:
+            - /url: index.html
+        - paragraph [ref=e82]:
+          - link "Revisar el resumen del laboratorio" [ref=e83] [cursor=pointer]:
+            - /url: index.html#lab
+        - paragraph [ref=e84]:
+          - link "Abrir señal de contacto" [ref=e85] [cursor=pointer]:
+            - /url: index.html#senal
