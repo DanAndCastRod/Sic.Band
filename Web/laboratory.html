@@ -3,83 +3,381 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>[SIC] | THE LABORATORY</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Audiowide&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'void': '#000000',
-                        'page': '#F5F5F5',
-                        'visceral': '#D21F3C',
-                    },
-                    fontFamily: {
-                        'minimal': ['"Syncopate"', 'sans-serif'],
-                        'tech': ['"Audiowide"', 'cursive'],
-                        'body': ['"Orbitron"', 'sans-serif'],
-                    },
-                    backgroundImage: {
-                         'universe-map': "url('./assets/sic_universe_map.png')",
-                    },
-                    animation: {
-                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'spin-slow': 'spin 12s linear infinite',
-                    }
-                }
-            }
-        }
-    </script>
+    <title>[SIC] | The Mental Laboratory</title>
+    <meta name="description" content="Laboratorio interactivo de [SIC]: contenedor visual, radio de onda corta, logica subconsciente y bio-scan en cliente.">
+    <meta name="theme-color" content="#0a0a0a">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Audiowide&family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="./assets/sic_symbol_daniel.png">
+    <link rel="stylesheet" href="./styles/laboratory.css">
 </head>
-<body class="bg-void text-page font-body overflow-hidden h-screen flex flex-col items-center justify-center relative">
-
-    <!-- Navigation Back -->
-    <a href="index.html" class="absolute top-8 left-8 text-visceral font-minimal text-xs tracking-widest hover:text-page transition-colors z-50">
-        < BACK_TO_REALITY
-    </a>
-
-    <!-- Animated Background -->
-    <div class="absolute inset-0 bg-universe-map bg-cover bg-center opacity-30 animate-pulse-slow"></div>
-    <div class="absolute inset-0 bg-gradient-to-r from-void via-transparent to-void"></div>
-
-    <!-- Central Hub Content -->
-    <div class="relative z-10 text-center space-y-8">
-        <div class="w-24 h-24 border border-visceral/50 rounded-full animate-spin-slow mx-auto flex items-center justify-center">
-            <div class="w-2 h-2 bg-visceral rounded-full"></div>
-        </div>
-        
-        <h1 class="font-minimal text-4xl md:text-6xl tracking-widest text-page selection:bg-visceral">
-            THE MENTAL<br><span class="text-visceral">LABORATORY</span>
-        </h1>
-        
-        <p class="font-body text-xs md:text-sm text-page/60 max-w-lg mx-auto leading-loose">
-            You have entered the void between thoughts.
-            <br>
-            Here, ideas are not yet sentences. They are raw signal.
-            <br>
-            <span class="text-visceral">[REDACTED]</span>
-        </p>
-
-        <div class="grid grid-cols-2 gap-4 max-w-sm mx-auto mt-12">
-            <div class="border border-page/10 p-4 hover:border-visceral transition-colors cursor-pointer group">
-                <h3 class="font-minimal text-xs text-page group-hover:text-visceral">PHASE I</h3>
-                <p class="text-[10px] text-page/30">The Inversion</p>
-            </div>
-            <div class="border border-page/10 p-4 hover:border-visceral transition-colors cursor-pointer group">
-                <h3 class="font-minimal text-xs text-page group-hover:text-visceral">PHASE II</h3>
-                <p class="text-[10px] text-page/30">The Light</p>
-            </div>
-            <div class="border border-page/10 p-4 hover:border-visceral transition-colors cursor-pointer group">
-                <h3 class="font-minimal text-xs text-page group-hover:text-visceral">PHASE III</h3>
-                <p class="text-[10px] text-page/30">The Shadow</p>
-            </div>
-            <div class="border border-page/10 p-4 border-visceral/30 hover:bg-visceral hover:text-void transition-colors cursor-pointer group">
-                <h3 class="font-minimal text-xs text-visceral group-hover:text-void">PHASE IV</h3>
-                <p class="text-[10px] text-page/30 group-hover:text-void">The Ambiguity</p>
-            </div>
-        </div>
+<body data-lab-section="container">
+    <canvas id="void-scene" class="void-scene" aria-hidden="true"></canvas>
+    <canvas id="signal-canvas" class="signal-canvas" aria-hidden="true"></canvas>
+    <div class="noise-layer" aria-hidden="true"></div>
+    <div class="scanline-layer" aria-hidden="true"></div>
+    <div class="vignette-layer" aria-hidden="true"></div>
+    <div id="cursor-halo" class="cursor-halo" aria-hidden="true"></div>
+    <div id="subliminal-flash" class="subliminal-flash" aria-hidden="true"></div>
+    <div class="ambient-readout" aria-hidden="true">
+        <span class="panel-label">SIC / Releven node</span>
+        <strong id="ambient-title">Container lattice</strong>
+        <span id="ambient-copy">compact lattice / conflict held in suspension</span>
     </div>
 
+    <header class="topbar">
+        <div class="container topbar-shell">
+            <a class="back-link" href="index.html">&lt; Volver al manifiesto</a>
+            <div class="lab-mark">[SIC] / THE MENTAL LABORATORY</div>
+            <nav class="topnav" aria-label="Navegacion del laboratorio">
+                <a href="#container" data-nav-target="container">Container</a>
+                <a href="#ether" data-nav-target="ether">Ether</a>
+                <a href="#subconscious" data-nav-target="subconscious">Subconscious</a>
+                <a href="#mirror" data-nav-target="mirror">Mirror</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="lab-main">
+        <section class="hero" id="top">
+            <div class="container hero-grid">
+                <div class="hero-copy" data-reveal>
+                    <p class="eyebrow">Simulacion de conflicto mental</p>
+                    <h1>Las ideas todavia <span>no obedecen.</span></h1>
+                    <p class="hero-lead">
+                        Este laboratorio no presenta a [SIC]. Lo descompone. Materia visual, ruido, lenguaje, presencia y espejo trabajan como partes de un mismo expediente intervenido.
+                    </p>
+                    <div class="hero-actions">
+                        <a class="button" href="#container">Entrar al campo</a>
+                        <a class="ghost-button" href="index.html#lab">Volver al manifiesto</a>
+                    </div>
+                    <div class="hero-cells">
+                        <article class="cell">
+                            <span class="label">State</span>
+                            <strong>Indeterminacy driven</strong>
+                            <span>Lo que ves no permanece fijo. El sistema responde, filtra y fractura.</span>
+                        </article>
+                        <article class="cell">
+                            <span class="label">Driver</span>
+                            <strong>Conflict as form</strong>
+                            <span>La contradiccion no es un tema. Es el motor formal del laboratorio.</span>
+                        </article>
+                        <article class="cell">
+                            <span class="label">Output</span>
+                            <strong>Presence before explanation</strong>
+                            <span>La lectura entra por el impacto sensorial antes que por la descripcion.</span>
+                        </article>
+                    </div>
+                </div>
+
+                <aside class="hero-panel" data-reveal>
+                    <div class="hero-visual">
+                        <img src="./assets/sic_geometric_ambiguity.png" alt="Geometria abstracta y fragmentada del laboratorio [SIC]">
+                        <span class="hero-stamp">Pereira / active dossier</span>
+                        <div class="hero-overlay">Mental file // redacted</div>
+                        <div class="hero-readout">
+                            <span class="panel-label">System state</span>
+                            <p>Infraestructura de prueba para materia, ruido, texto y bio-scan local.</p>
+                            <div class="status-row">
+                                <span class="status-name">Mode</span>
+                                <span>Intervened document</span>
+                            </div>
+                            <div class="status-row">
+                                <span class="status-name">Accent</span>
+                                <span>Black / White / Red</span>
+                            </div>
+                            <div class="status-row">
+                                <span class="status-name">Pulse</span>
+                                <span>Unstable but controlled</span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+        <section id="container" class="module-section">
+            <div class="container section-grid">
+                <div class="section-copy" data-reveal>
+                    <div class="section-meta">
+                        <p class="eyebrow">Phase 1 / The Container</p>
+                        <h2>La idea se vuelve <span>materia hostil.</span></h2>
+                        <p class="section-lead">
+                            El contenedor visual convierte palabras en objetos con peso. El cursor no navega: atraviesa el sistema y altera su campo.
+                        </p>
+                        <p class="helper">
+                            No es una nube decorativa. Es un archivo vivo de conceptos centrales: verdad, sombra, pulso, herida, borde, forma y ambiguedad.
+                        </p>
+                    </div>
+
+                    <div class="module-detail">
+                        <article class="status-card">
+                            <strong>Repulsor input</strong>
+                            <p>El puntero entra como fuerza externa. Cada gesto desplaza y recalibra el campo.</p>
+                        </article>
+                        <article class="status-card">
+                            <strong>Visual grammar</strong>
+                            <p>Reticula rigida, nodos tensionados, rojo tactico y lectura de expediente mas que de interfaz amable.</p>
+                        </article>
+                    </div>
+                </div>
+
+                <article class="module-shell" data-reveal>
+                    <div class="stage-head">
+                        <div>
+                            <span class="panel-label">Idea collider</span>
+                            <h3>Campo de conceptos en friccion</h3>
+                        </div>
+                        <span id="stage-status" class="footnote">scan / standby</span>
+                    </div>
+                    <div id="idea-field" class="idea-field" aria-label="Campo interactivo de ideas"></div>
+                    <div class="stage-controls">
+                        <button id="scatter-button" class="ghost-button" type="button">Inject disturbance</button>
+                        <span class="footnote">Mueve el cursor o haz click para desestabilizar el campo y forzar colision.</span>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section id="ether" class="module-section">
+            <div class="container section-grid">
+                <div class="section-copy" data-reveal>
+                    <div class="section-meta">
+                        <p class="eyebrow">Phase 2 / The Ether</p>
+                        <h2>La senal aparece <span>dentro del ruido.</span></h2>
+                        <p class="section-lead">
+                            Este modulo trabaja como una radio de onda corta conceptual. No busca una cancion completa sino fragmentos de claridad parcial.
+                        </p>
+                        <p class="helper">
+                            Activa audio para encender el cuarto. El ruido baja cuando una frecuencia logra fijar una lectura temporal del sistema.
+                        </p>
+                    </div>
+
+                    <div class="module-detail">
+                        <article class="status-card">
+                            <strong>Carrier</strong>
+                            <p>Ruido blanco, drone bajo y tono filtrado para producir presencia continua aun antes del lock.</p>
+                        </article>
+                        <article class="status-card">
+                            <strong>Homing logic</strong>
+                            <p>La claridad no es binaria. El sistema cruza volumen, filtro y texto segun proximidad a la frecuencia correcta.</p>
+                        </article>
+                    </div>
+                </div>
+
+                <article class="module-shell" data-reveal>
+                    <div class="dial-head">
+                        <div>
+                            <span class="panel-label">Shortwave tuner</span>
+                            <h3>Frecuencia conceptual 88.0 - 108.0</h3>
+                        </div>
+                    </div>
+
+                    <div class="dial-row">
+                        <div class="freq-display">
+                            <span id="freq-value" class="freq-value">98.4</span>
+                            <span class="freq-unit">MHz</span>
+                        </div>
+                        <div class="hero-actions">
+                            <button id="audio-toggle" class="control-button" type="button">Activate signal</button>
+                            <button id="mute-toggle" class="ghost-button" type="button" disabled>Mute output</button>
+                        </div>
+                    </div>
+
+                    <input id="freq-slider" class="freq-slider" type="range" min="88" max="108" step="0.1" value="98.4" aria-label="Control de frecuencia">
+
+                    <div id="station-track" class="station-track" aria-hidden="true"></div>
+
+                    <div class="meter-shell">
+                        <div class="meter-head">
+                            <span class="meter-label">Signal strength</span>
+                            <span id="signal-strength" class="footnote">0%</span>
+                        </div>
+                        <div class="meter-bars" aria-hidden="true">
+                            <span class="meter-bar"></span>
+                            <span class="meter-bar"></span>
+                            <span class="meter-bar"></span>
+                            <span class="meter-bar"></span>
+                            <span class="meter-bar"></span>
+                            <span class="meter-bar"></span>
+                            <span class="meter-bar"></span>
+                            <span class="meter-bar"></span>
+                            <span class="meter-bar"></span>
+                            <span class="meter-bar"></span>
+                            <span class="meter-bar"></span>
+                            <span class="meter-bar"></span>
+                            <span class="meter-bar"></span>
+                            <span class="meter-bar"></span>
+                            <span class="meter-bar"></span>
+                            <span class="meter-bar"></span>
+                            <span class="meter-bar"></span>
+                            <span class="meter-bar"></span>
+                        </div>
+                    </div>
+
+                    <div class="signal-output">
+                        <span class="panel-label">Nearest station</span>
+                        <h3 id="signal-title">NO LOCK / STATIC DOMINATES</h3>
+                        <p id="signal-copy">La frecuencia sigue fuera de fase. El ruido sostiene el cuarto mientras la senal apenas insinua forma.</p>
+                        <div class="source-readout">
+                            <span class="status-name">Source tape</span>
+                            <span id="signal-source" class="signal-source-copy">MSS WHITE / archival carrier armed</span>
+                        </div>
+                        <ul id="signal-log" class="signal-log">
+                            <li>carrier / diffuse</li>
+                            <li>clarity / insufficient</li>
+                            <li>directive / continue tuning</li>
+                        </ul>
+                    </div>
+
+                    <div class="station-deck-shell">
+                        <div class="meter-head">
+                            <span class="meter-label">Intercepted stations</span>
+                            <span class="footnote">drag the dial or use arrow keys</span>
+                        </div>
+                        <div id="station-deck" class="station-deck" aria-live="polite"></div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section id="subconscious" class="module-section">
+            <div class="container section-grid">
+                <div class="section-copy" data-reveal>
+                    <div class="section-meta">
+                        <p class="eyebrow">Phase 3 / The Subconscious</p>
+                        <h2>La maquina responde, <span>pero nunca limpio.</span></h2>
+                        <p class="section-lead">
+                            El laboratorio no entrega copy promocional. Devuelve una lectura oblicua, intervenida y apenas estable de lo que se le entrega.
+                        </p>
+                        <p class="helper">
+                            El oraculo trabaja con campos semanticos del sistema [SIC]. El filtro convierte cualquier afirmacion en una superficie mas dura y ambigua.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="sub-grid" data-reveal>
+                    <article class="console-panel">
+                        <div class="console-head">
+                            <div>
+                                <span class="panel-label">Oracle</span>
+                                <h3>USER@SIC_LAB:~$</h3>
+                            </div>
+                            <span class="footnote">semantic machine</span>
+                        </div>
+                        <div id="oracle-output" class="terminal-output" aria-live="polite"></div>
+                        <form id="oracle-form" class="oracle-form">
+                            <input id="oracle-input" class="oracle-input" type="text" placeholder="Pregunta por verdad, herida, banda o futuro">
+                            <button class="button" type="submit">Transmit</button>
+                        </form>
+                    </article>
+
+                    <article class="filter-panel">
+                        <div class="filter-head">
+                            <div>
+                                <span class="panel-label">Truth filter</span>
+                                <h3>Type your truth here</h3>
+                            </div>
+                            <span class="footnote">upper / distort / inject</span>
+                        </div>
+                        <textarea id="truth-input" class="truth-input" placeholder="Escribe una afirmacion y deja que el sistema la vuelva borde."></textarea>
+                        <div class="filter-actions">
+                            <button id="truth-process" class="button" type="button">Process truth</button>
+                            <button id="truth-sample" class="ghost-button" type="button">Load sample</button>
+                        </div>
+                        <pre id="truth-output" class="filter-output" aria-live="polite"></pre>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="mirror" class="module-section">
+            <div class="container section-grid mirror-grid">
+                <div class="section-copy" data-reveal>
+                    <div class="section-meta">
+                        <p class="eyebrow">Phase 4 / The Mirror</p>
+                        <h2>El sujeto entra al sistema <span>como evidencia.</span></h2>
+                        <p class="section-lead">
+                            El bio-scan convierte la camara en umbral: blanco y negro extremo, sombra roja y rastro fantasma para devolver otra version del visitante.
+                        </p>
+                        <p class="helper">
+                            El procesamiento ocurre en cliente. Nada sale del terminal. El modulo existe para romper la cuarta pared sin romper la privacidad.
+                        </p>
+                    </div>
+
+                    <div class="mirror-actions">
+                        <button id="mirror-start" class="button" type="button">Initiate bio-scan</button>
+                        <button id="mirror-stop" class="ghost-button" type="button">Cut feed</button>
+                    </div>
+                    <div class="mirror-note">INITIATING BIO-SCAN // NO DATA LEAVES THIS TERMINAL</div>
+                </div>
+
+                <article class="mirror-panel" data-reveal>
+                    <div class="mirror-head">
+                        <div>
+                            <span class="panel-label">Mirror of duality</span>
+                            <h3>Threshold feed</h3>
+                        </div>
+                        <span id="subject-code" class="subject-code">SUBJECT // IDLE</span>
+                    </div>
+                    <div class="mirror-stage">
+                        <canvas id="mirror-canvas" class="mirror-canvas" width="640" height="480" aria-label="Salida procesada del bio-scan"></canvas>
+                        <div class="mirror-grid-overlay" aria-hidden="true"></div>
+                    </div>
+                    <video id="mirror-video" playsinline muted hidden></video>
+                    <div class="mirror-status">
+                        <div class="mirror-status-row">
+                            <span class="status-name">Mode</span>
+                            <span id="mirror-status-copy">camera offline</span>
+                        </div>
+                        <div class="mirror-status-row">
+                            <span class="status-name">Privacy</span>
+                            <span id="privacy-state">local only</span>
+                        </div>
+                        <div class="mirror-status-row">
+                            <span class="status-name">Threat</span>
+                            <span id="mirror-threat">standby</span>
+                        </div>
+                        <div class="mirror-status-row">
+                            <span class="status-name">Overlay</span>
+                            <span id="mirror-overlay-state">censor bars / idle</span>
+                        </div>
+                        <div class="mirror-status-row">
+                            <span class="status-name">Shadow delay</span>
+                            <span>ghost frame / 6 ticks</span>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="footer-section">
+            <div class="container footer-grid">
+                <article class="footer-card" data-reveal>
+                    <span class="panel-label">Phase map</span>
+                    <h3>Container / Ether / Subconscious / Mirror</h3>
+                    <p>Cuatro protocolos sobre una misma gramatica: tension, contraste, ruido, evidencia y pulso. Dentro de Releven, [SIC] opera aqui como nodo de alta friccion conceptual.</p>
+                </article>
+                <article class="footer-card" data-reveal>
+                    <span class="panel-label">Operational note</span>
+                    <h3>El lab sigue abierto</h3>
+                    <p>Esta version ya ejecuta escena, senal, texto y bio-scan. Los siguientes refinamientos pueden profundizar fisica real, audio mas complejo y visuales adicionales.</p>
+                </article>
+                <article class="footer-card" data-reveal>
+                    <span class="panel-label">Exit / return</span>
+                    <h3>Reingresar al sistema principal</h3>
+                    <p><a href="index.html">Volver al sitio principal</a></p>
+                    <p><a href="universe.html">Abrir plataforma 3 en 3D</a></p>
+                    <p><a href="index.html#senal">Abrir senal de contacto</a></p>
+                    <p><a href="#top">Volver al inicio del laboratorio</a></p>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <script src="./node_modules/gsap/dist/gsap.min.js" defer></script>
+    <script src="./scripts/laboratory.js" defer></script>
+    <script type="module" src="./scripts/laboratory-immersive.js"></script>
 </body>
 </html>

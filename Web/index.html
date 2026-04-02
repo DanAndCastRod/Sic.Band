@@ -4,429 +4,1938 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>[SIC] | Sentence In Conflict</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Audiowide&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'void': '#000000',
-                        'page': '#F5F5F5',
-                        'visceral': '#D21F3C',
-                    },
-                    fontFamily: {
-                        'minimal': ['"Syncopate"', 'sans-serif'],
-                        'tech': ['"Audiowide"', 'cursive'],
-                        'body': ['"Orbitron"', 'sans-serif'],
-                    },
-                    backgroundImage: {
-                        'grunge-strokes': "url('./assets/sic_grunge_brushstrokes.png')",
-                        'geo-ambiguity': "url('./assets/sic_geometric_ambiguity.png')",
-                        'noise-conflict': "url('./assets/sic_sentence_conflict_texture.png')",
-                        'universe-map': "url('./assets/sic_universe_map.png')",
-                    },
-                    animation: {
-                        'float': 'float 6s ease-in-out infinite',
-                    },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-10px)' },
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+    <meta name="description" content="[SIC] convierte ideas, ambigüedad y tensión en materia sonora.">
+    <meta name="theme-color" content="#0a0a0a">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Audiowide&family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="./assets/sic_symbol_daniel.png">
     <style>
-        .glitch-text {
+        :root {
+            --void: #0a0a0a;
+            --paper: #f5f5f5;
+            --visceral: #d21f3c;
+            --line: rgba(245, 245, 245, 0.16);
+            --line-dark: rgba(10, 10, 10, 0.16);
+            --muted: rgba(245, 245, 245, 0.60);
+            --muted-dark: rgba(10, 10, 10, 0.58);
+            --max: 1240px;
+        }
+
+        * { box-sizing: border-box; margin: 0; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            color: var(--paper);
+            background:
+                radial-gradient(circle at top center, rgba(210, 31, 60, 0.12), transparent 26rem),
+                linear-gradient(180deg, #070707 0%, #0b0b0b 38%, #050505 100%);
+            font-family: "Orbitron", sans-serif;
+            overflow-x: hidden;
+        }
+
+        .home-void-scene,
+        .home-ambient-glow {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        .home-void-scene {
+            z-index: 0;
+            opacity: 0.54;
+            mix-blend-mode: screen;
+        }
+
+        .home-ambient-glow {
+            z-index: 0;
+            opacity: 0.58;
+            background:
+                radial-gradient(circle at 18% 18%, rgba(210, 31, 60, 0.1), transparent 28rem),
+                radial-gradient(circle at 84% 20%, rgba(245, 245, 245, 0.06), transparent 24rem),
+                radial-gradient(circle at 50% 72%, rgba(210, 31, 60, 0.08), transparent 32rem);
+        }
+
+        .home-ambient-readout {
+            position: fixed;
+            left: 1rem;
+            bottom: 1rem;
+            z-index: 2;
+            display: grid;
+            gap: 0.32rem;
+            width: min(20rem, calc(100vw - 2rem));
+            padding: 0.95rem 1rem;
+            border: 1px solid rgba(245, 245, 245, 0.14);
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)),
+                rgba(10, 10, 10, 0.52);
+            box-shadow: 0 1rem 2.4rem rgba(0, 0, 0, 0.22);
+            backdrop-filter: blur(16px);
+            pointer-events: none;
+        }
+
+        .home-ambient-readout strong {
+            font-family: "Syncopate", sans-serif;
+            font-size: 0.8rem;
+            line-height: 1.55;
+            text-transform: uppercase;
+        }
+
+        .home-ambient-readout span:last-child {
+            color: var(--muted);
+            font-size: 0.7rem;
+            line-height: 1.7;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+
+        /* ── NOISE OVERLAY ── */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 999;
+            opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-size: 256px 256px;
+            mix-blend-mode: overlay;
+        }
+
+        /* ── SCANLINES ── */
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 998;
+            opacity: 0.03;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(245, 245, 245, 0.08) 2px,
+                rgba(245, 245, 245, 0.08) 4px
+            );
+        }
+
+        img { display: block; max-width: 100%; }
+        a { color: inherit; text-decoration: none; }
+        button { font: inherit; }
+
+        main, header, footer {
+            position: relative;
+            z-index: 3;
+        }
+
+        .container {
+            width: min(calc(100% - 2rem), var(--max));
+            margin: 0 auto;
+        }
+
+        /* ── GLITCH KEYFRAMES ── */
+        @keyframes glitch-shift {
+            0%, 100% { transform: translate(0); }
+            20% { transform: translate(-2px, 1px); }
+            40% { transform: translate(2px, -1px); }
+            60% { transform: translate(-1px, -1px); }
+            80% { transform: translate(1px, 2px); }
+        }
+
+        @keyframes glitch-clip {
+            0% { clip-path: inset(40% 0 61% 0); }
+            20% { clip-path: inset(92% 0 1% 0); }
+            40% { clip-path: inset(43% 0 1% 0); }
+            60% { clip-path: inset(25% 0 58% 0); }
+            80% { clip-path: inset(54% 0 7% 0); }
+            100% { clip-path: inset(58% 0 43% 0); }
+        }
+
+        @keyframes redline-pulse {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes fade-in-up {
+            from { opacity: 0; transform: translateY(1.5rem); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── HEADER ── */
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            backdrop-filter: blur(14px);
+            background: rgba(10, 10, 10, 0.92);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .site-header .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            min-height: 72px;
+        }
+
+        .brand-mark {
+            font-family: "Syncopate", sans-serif;
+            font-size: 1.1rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .brand-mark span { color: var(--visceral); }
+
+        .menu-toggle {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            min-width: 48px;
+            min-height: 48px;
+            border: 1px solid var(--line);
+            border-radius: 0;
+            background: transparent;
+            color: var(--paper);
+            font-family: "Syncopate", sans-serif;
+            font-size: 0.62rem;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            cursor: pointer;
+        }
+
+        .site-nav {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+        }
+
+        .site-nav a {
+            font-family: "Syncopate", sans-serif;
+            font-size: 0.62rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(245, 245, 245, 0.6);
+            transition: color 180ms ease;
+        }
+
+        .site-nav a:hover,
+        .site-nav a:focus-visible {
+            color: var(--visceral);
+        }
+
+        section {
+            position: relative;
+            overflow: clip;
+            scroll-margin-top: 5rem;
+        }
+
+        .section > .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .section { padding: 6rem 0; }
+
+        /* ── EYEBROW ── */
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-family: "Syncopate", sans-serif;
+            font-size: 0.62rem;
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+            color: var(--visceral);
+        }
+
+        .eyebrow::before {
+            content: "";
+            width: 2.8rem;
+            height: 1px;
+            background: currentColor;
+        }
+
+        .section-heading {
+            display: grid;
+            gap: 0.7rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .section-heading h2 {
+            font-family: "Syncopate", sans-serif;
+            font-weight: 700;
+            font-size: clamp(2rem, 5vw, 4rem);
+            line-height: 0.95;
+            letter-spacing: -0.03em;
+            text-transform: uppercase;
+            max-width: 14ch;
+        }
+
+        .section-heading p,
+        .panel p,
+        .timeline-item p,
+        .member-copy p,
+        .signal-copy p,
+        .lab-intro p {
+            line-height: 1.7;
+            font-size: 0.92rem;
+        }
+
+        /* ── HERO ── */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 6rem 0 4rem;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: -10%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120%;
+            height: 60%;
+            background: radial-gradient(ellipse, rgba(210, 31, 60, 0.12), transparent 65%);
+            pointer-events: none;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            top: 8%;
+            right: -10%;
+            width: min(58vw, 54rem);
+            height: 82%;
+            background: url("./assets/sic_universe_map.png") center/contain no-repeat;
+            opacity: 0.11;
+            mix-blend-mode: screen;
+            pointer-events: none;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .hero-copy {
+            display: grid;
+            gap: 1.8rem;
+            animation: fade-in-up 0.8s ease both;
+        }
+
+        .hero-copy h1 {
+            font-family: "Syncopate", sans-serif;
+            font-weight: 700;
+            font-size: clamp(3rem, 9vw, 7.5rem);
+            line-height: 0.9;
+            letter-spacing: -0.04em;
+            text-transform: uppercase;
+        }
+
+        .hero-copy h1 span {
+            color: var(--visceral);
             position: relative;
         }
-        .glitch-text::before, .glitch-text::after {
+
+        /* Glitch layer on hero accent */
+        .hero-copy h1 span::after {
             content: attr(data-text);
             position: absolute;
+            left: 2px;
             top: 0;
-            left: 0;
+            color: var(--visceral);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .hero-copy h1:hover span::after {
+            animation: glitch-shift 0.3s ease infinite, glitch-clip 0.3s steps(2) infinite;
+            opacity: 0.7;
+        }
+
+        .hero-lead {
+            max-width: 52ch;
+            color: var(--muted);
+            font-size: 0.95rem;
+            line-height: 1.75;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.9rem;
+        }
+
+        .hero-ledger {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0.8rem;
+            max-width: 62rem;
+        }
+
+        .ledger-card {
+            position: relative;
+            padding: 0.95rem 1rem 1rem;
+            border: 1px solid var(--line);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .ledger-card::before {
+            content: "";
+            position: absolute;
+            inset: 0 0 auto;
+            height: 1px;
+            background: var(--visceral);
+            opacity: 0.72;
+        }
+
+        .ledger-label {
+            display: block;
+            margin-bottom: 0.55rem;
+            font-family: "Audiowide", cursive;
+            font-size: 0.68rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--visceral);
+        }
+
+        .ledger-value {
+            display: block;
+            margin-bottom: 0.45rem;
+            font-family: "Syncopate", sans-serif;
+            font-size: 0.76rem;
+            line-height: 1.45;
+            text-transform: uppercase;
+        }
+
+        .ledger-line {
+            font-size: 0.76rem;
+            line-height: 1.65;
+            color: var(--muted);
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 3rem;
+            padding: 0.75rem 1.4rem;
+            border: 1px solid currentColor;
+            background: transparent;
+            font-family: "Syncopate", sans-serif;
+            font-size: 0.68rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: transform 140ms ease, background-color 140ms ease, color 140ms ease;
+        }
+
+        .button:hover,
+        .button:focus-visible {
+            transform: translate(-3px, -3px);
+        }
+
+        .button-primary {
+            color: var(--paper);
+            background: var(--visceral);
+            border-color: var(--visceral);
+        }
+
+        .button-primary:hover {
+            background: #b8192f;
+        }
+
+        .button-secondary {
+            color: var(--paper);
+        }
+
+        .hero-visual {
+            display: grid;
+            gap: 1rem;
+            animation: fade-in-up 0.8s ease 0.15s both;
+        }
+
+        .hero-poster {
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(245, 245, 245, 0.18);
+            min-height: 36rem;
+            background: #0e0e0e;
+        }
+
+        .hero-poster img {
+            position: absolute;
+            inset: 0;
             width: 100%;
             height: 100%;
+            object-fit: cover;
+            filter: grayscale(1) contrast(1.25);
+            opacity: 0.72;
+            transition: filter 0.6s ease;
         }
-        .glitch-text::before {
-            left: 2px;
-            text-shadow: -1px 0 #D21F3C;
-            clip: rect(24px, 550px, 90px, 0);
-            animation: glitch-anim-2 3s infinite linear alternate-reverse;
+
+        .hero-poster:hover img {
+            filter: grayscale(0.6) contrast(1.3);
         }
-        .glitch-text::after {
-            left: -2px;
-            text-shadow: -1px 0 #00ffff;
-            clip: rect(85px, 550px, 140px, 0);
-            animation: glitch-anim 2.5s infinite linear alternate-reverse;
+
+        .hero-poster::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(180deg, rgba(10, 10, 10, 0.05), rgba(10, 10, 10, 0.88)),
+                linear-gradient(135deg, rgba(210, 31, 60, 0.18), transparent 40%);
         }
-        @keyframes glitch-anim {
-            0% { clip: rect(11px, 9999px, 86px, 0); }
-            20% { clip: rect(98px, 9999px, 5px, 0); }
-            40% { clip: rect(21px, 9999px, 16px, 0); }
-            60% { clip: rect(78px, 9999px, 92px, 0); }
-            80% { clip: rect(19px, 9999px, 86px, 0); }
-            100% { clip: rect(67px, 9999px, 2px, 0); }
+
+        .poster-stamp {
+            position: absolute;
+            z-index: 1;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.5rem 0.7rem;
+            font-family: "Syncopate", sans-serif;
+            font-size: 0.58rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--void);
+            background: var(--paper);
         }
-        @keyframes glitch-anim-2 {
-            0% { clip: rect(12px, 9999px, 99px, 0); }
-            20% { clip: rect(87px, 9999px, 14px, 0); }
-            40% { clip: rect(32px, 9999px, 78px, 0); }
-            60% { clip: rect(54px, 9999px, 11px, 0); }
-            80% { clip: rect(4px, 9999px, 44px, 0); }
-            100% { clip: rect(65px, 9999px, 87px, 0); }
+
+        .poster-caption {
+            position: absolute;
+            z-index: 1;
+            left: 1.2rem;
+            right: 1.2rem;
+            bottom: 1.5rem;
+            font-family: "Syncopate", sans-serif;
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            line-height: 1.4;
+            text-transform: uppercase;
         }
-        
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
+
+        /* ── REDLINE DIVIDER ── */
+        .redline {
+            width: 100%;
+            height: 1px;
+            background: var(--visceral);
+            opacity: 0.4;
         }
-        ::-webkit-scrollbar-track {
-            background: #000;
+
+        /* ── MANIFIESTO (light section) ── */
+        .section-light {
+            color: var(--void);
+            background: var(--paper);
         }
-        ::-webkit-scrollbar-thumb {
-            background: #D21F3C;
+
+        .section-light::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(120deg, rgba(255, 255, 255, 0.88), rgba(245, 245, 245, 0.96)),
+                url("./assets/sic_sentence_conflict_texture.png") center/cover no-repeat;
+            opacity: 0.16;
+            mix-blend-mode: multiply;
+            pointer-events: none;
+        }
+
+        .manifesto-layout {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        .manifesto-copy {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .manifesto-quote {
+            padding-left: 1.2rem;
+            border-left: 3px solid var(--visceral);
+            font-family: "Syncopate", sans-serif;
+            font-size: clamp(1.3rem, 3vw, 2.2rem);
+            line-height: 1.35;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+        }
+
+        .tension-strip {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .tension-item {
+            padding: 1rem;
+            border-top: 2px solid var(--visceral);
+            background: rgba(10, 10, 10, 0.04);
+        }
+
+        .tension-item strong {
+            display: block;
+            margin-bottom: 0.4rem;
+            font-family: "Syncopate", sans-serif;
+            font-size: 0.82rem;
+            text-transform: uppercase;
+        }
+
+        .tension-item span {
+            font-size: 0.85rem;
+            color: var(--muted-dark);
+        }
+
+        /* Dossier sidebar */
+        .dossier-card {
+            display: grid;
+            gap: 1rem;
+            padding: 1.3rem;
+            border: 1px solid var(--line-dark);
+            background: rgba(10, 10, 10, 0.04);
+        }
+
+        .dossier-card img {
+            width: 100%;
+            aspect-ratio: 4 / 5;
+            object-fit: cover;
+            filter: grayscale(1) contrast(1.25);
+        }
+
+        .dossier-data {
+            display: grid;
+            gap: 0.7rem;
+        }
+
+        .dossier-row {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 1rem;
+            padding-top: 0.7rem;
+            border-top: 1px solid var(--line-dark);
+        }
+
+        .dossier-row span:first-child {
+            font-family: "Audiowide", cursive;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: rgba(10, 10, 10, 0.5);
+        }
+
+        .dossier-row span:last-child {
+            text-align: right;
+            font-family: "Syncopate", sans-serif;
+            font-size: 0.68rem;
+            text-transform: uppercase;
+        }
+
+        /* ── LABELS ── */
+        .panel-label,
+        .timeline-year,
+        .member-role,
+        .release-meta,
+        .phase-label {
+            display: block;
+            font-family: "Audiowide", cursive;
+            font-size: 0.7rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .panel-label,
+        .release-meta,
+        .phase-label {
+            color: var(--visceral);
+        }
+
+        /* ── PILARES ── */
+        .pillar-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+
+        .identity-grid {
+            display: grid;
+            grid-template-columns: 1.05fr 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .identity-card {
+            position: relative;
+            overflow: hidden;
+            padding: 1.25rem;
+            border: 1px solid var(--line);
+            background: rgba(255, 255, 255, 0.03);
+            min-height: 100%;
+        }
+
+        .identity-card-feature::after {
+            content: "";
+            position: absolute;
+            right: -12%;
+            bottom: -18%;
+            width: 14rem;
+            height: 14rem;
+            background: url("./assets/sic_symbol_daniel.png") center/contain no-repeat;
+            opacity: 0.08;
+            pointer-events: none;
+        }
+
+        .identity-card h3 {
+            margin: 0 0 0.75rem;
+            font-family: "Syncopate", sans-serif;
+            font-size: 0.92rem;
+            line-height: 1.45;
+            text-transform: uppercase;
+        }
+
+        .identity-card p,
+        .identity-card li {
+            font-size: 0.88rem;
+            line-height: 1.7;
+            color: var(--muted);
+        }
+
+        .identity-list {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            display: grid;
+            gap: 0.8rem;
+        }
+
+        .identity-list li {
+            padding-top: 0.8rem;
+            border-top: 1px solid rgba(245, 245, 245, 0.12);
+        }
+
+        .swatch-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.65rem;
+            margin-top: 1rem;
+        }
+
+        .swatch-block {
+            display: grid;
+            gap: 0.45rem;
+        }
+
+        .swatch-color {
+            min-height: 3.75rem;
+            border: 1px solid rgba(245, 245, 245, 0.16);
+        }
+
+        .swatch-block span,
+        .font-chip {
+            font-size: 0.7rem;
+            line-height: 1.5;
+            text-transform: uppercase;
+            color: rgba(245, 245, 245, 0.72);
+        }
+
+        .font-stack {
+            display: grid;
+            gap: 0.45rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(245, 245, 245, 0.12);
+        }
+
+        .font-chip.syncopate { font-family: "Syncopate", sans-serif; }
+        .font-chip.audiowide { font-family: "Audiowide", cursive; }
+
+        .exclusion-grid,
+        .tension-formula {
+            margin-top: 1rem;
+            display: grid;
+            gap: 0.85rem;
+        }
+
+        .exclusion-grid {
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+        }
+
+        .tension-formula {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+
+        .exclusion-card,
+        .formula-card {
+            padding: 1rem;
+            border: 1px solid var(--line);
+            background: rgba(255, 255, 255, 0.02);
+            min-height: 100%;
+        }
+
+        .exclusion-card strong,
+        .formula-card strong {
+            display: block;
+            margin-bottom: 0.45rem;
+            font-family: "Syncopate", sans-serif;
+            font-size: 0.74rem;
+            line-height: 1.45;
+            text-transform: uppercase;
+        }
+
+        .exclusion-card span,
+        .formula-card p {
+            font-size: 0.78rem;
+            line-height: 1.65;
+            color: var(--muted);
+        }
+
+        .pillar-card {
+            padding: 1.2rem;
+            border: 1px solid var(--line-dark);
+            background: rgba(10, 10, 10, 0.04);
+            min-height: 100%;
+        }
+
+        .pillar-card h3 {
+            margin: 0 0 0.7rem;
+            font-family: "Syncopate", sans-serif;
+            font-size: 0.92rem;
+            line-height: 1.4;
+            text-transform: uppercase;
+        }
+
+        .pillar-card p {
+            font-size: 0.88rem;
+            line-height: 1.65;
+            color: var(--muted-dark);
+        }
+
+        /* ── ARCHIVO ── */
+        .archive-layout {
+            display: grid;
+            grid-template-columns: minmax(16rem, 0.6fr) minmax(0, 1.4fr);
+            gap: 1.5rem;
+            align-items: start;
+        }
+
+        .timeline {
+            padding: 1.25rem;
+            border: 1px solid var(--line);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .timeline-list {
+            padding: 0;
+            list-style: none;
+            display: grid;
+            gap: 1rem;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 1.15rem;
+        }
+
+        .timeline-item::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0.65rem;
+            width: 0.4rem;
+            height: 0.4rem;
+            background: var(--visceral);
+        }
+
+        .timeline-year {
+            margin-bottom: 0.35rem;
+        }
+
+        .timeline-item p {
+            color: var(--muted);
+            font-size: 0.88rem;
+        }
+
+        .release-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1rem;
+        }
+
+        .release-card {
+            position: relative;
+            overflow: hidden;
+            min-height: 100%;
+            border: 1px solid var(--line);
+            background: rgba(255, 255, 255, 0.03);
+            transition: transform 180ms ease, border-color 180ms ease;
+        }
+
+        .release-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--visceral);
+        }
+
+        .release-card img {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            filter: grayscale(1) contrast(1.1);
+            transition: filter 300ms ease, transform 300ms ease;
+        }
+
+        .release-card:hover img {
+            filter: grayscale(0.1) contrast(1.1);
+            transform: scale(1.04);
+        }
+
+        .release-copy {
+            display: grid;
+            gap: 0.5rem;
+            padding: 0.85rem;
+        }
+
+        .release-copy h3 {
+            margin: 0;
+            font-family: "Syncopate", sans-serif;
+            font-size: 0.85rem;
+            line-height: 1.35;
+            text-transform: uppercase;
+        }
+
+        .release-copy p {
+            margin: 0;
+            font-size: 0.8rem;
+            line-height: 1.55;
+            color: var(--muted);
+        }
+
+        .release-card-feature {
+            display: grid;
+            grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+            grid-column: span 2;
+        }
+
+        .release-card-feature img {
+            height: 100%;
+            aspect-ratio: auto;
+        }
+
+        .release-card-feature .release-copy {
+            align-content: start;
+            padding: 1.1rem;
+        }
+
+        .release-flag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            margin-bottom: 0.35rem;
+            font-family: "Syncopate", sans-serif;
+            font-size: 0.6rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--paper);
+        }
+
+        .release-flag::before {
+            content: "";
+            width: 2rem;
+            height: 1px;
+            background: var(--visceral);
+        }
+
+        .release-note {
+            padding-top: 0.75rem;
+            border-top: 1px solid rgba(245, 245, 245, 0.12);
+            font-size: 0.78rem;
+            line-height: 1.7;
+            color: var(--muted);
+        }
+
+        /* ── TRIADA ── */
+        .triad-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.2rem;
+        }
+
+        .member-card {
+            border: 1px solid var(--line-dark);
+            background: rgba(10, 10, 10, 0.04);
+            min-height: 100%;
+            overflow: hidden;
+        }
+
+        .member-media {
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 1 / 1;
+            background: #050505;
+        }
+
+        /* Main geometric icon */
+        .member-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease, filter 0.6s ease;
+        }
+
+        .member-card:hover .member-media img {
+            transform: scale(1.06);
+            filter: brightness(1.15);
+        }
+
+        /* Scanlines per card */
+        .member-media::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            pointer-events: none;
+            opacity: 0.06;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 3px,
+                rgba(245, 245, 245, 0.12) 3px,
+                rgba(245, 245, 245, 0.12) 6px
+            );
+        }
+
+        /* Red duotone vignette overlay */
+        .member-media::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 3;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse at center, transparent 40%, rgba(10, 10, 10, 0.7) 100%),
+                linear-gradient(180deg, transparent 60%, rgba(210, 31, 60, 0.12) 100%);
+            transition: opacity 0.4s ease;
+        }
+
+        .member-card:hover .member-media::after {
+            opacity: 0.6;
+        }
+
+        /* Classification stamp */
+        .member-stamp {
+            position: absolute;
+            z-index: 4;
+            top: 0.8rem;
+            left: 0.8rem;
+            padding: 0.35rem 0.55rem;
+            font-family: "Audiowide", cursive;
+            font-size: 0.55rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--paper);
+            background: rgba(10, 10, 10, 0.75);
+            border: 1px solid rgba(245, 245, 245, 0.18);
+            backdrop-filter: blur(4px);
+        }
+
+        .member-copy {
+            padding: 1.2rem;
+        }
+
+        .member-copy h3 {
+            margin: 0 0 0.6rem;
+            font-family: "Syncopate", sans-serif;
+            font-size: 0.92rem;
+            line-height: 1.4;
+            text-transform: uppercase;
+        }
+
+        .member-role {
+            margin-bottom: 0.5rem;
+        }
+
+        .member-copy p {
+            color: var(--muted-dark);
+            font-size: 0.88rem;
+            line-height: 1.65;
+        }
+
+        /* Designation code under image */
+        .member-designation {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.55rem 0.8rem;
+            border-top: 1px solid rgba(245, 245, 245, 0.08);
+            border-bottom: 1px solid var(--line-dark);
+            background: rgba(10, 10, 10, 0.85);
+            font-family: "Audiowide", cursive;
+            font-size: 0.6rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .member-designation span:last-child {
+            color: var(--visceral);
+        }
+
+        /* ── LABORATORIO ── */
+        .lab-layout {
+            display: grid;
+            grid-template-columns: 0.85fr 1.15fr;
+            gap: 1.5rem;
+            align-items: start;
+        }
+
+        .lab-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .lab-card {
+            padding: 1.2rem;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--line);
+            background: rgba(255, 255, 255, 0.03);
+            min-height: 100%;
+        }
+
+        .lab-card::after {
+            content: "";
+            position: absolute;
+            inset: auto -15% -35% auto;
+            width: 8rem;
+            height: 8rem;
+            background: radial-gradient(circle, rgba(210, 31, 60, 0.18), transparent 70%);
+            pointer-events: none;
+        }
+
+        .lab-card h3 {
+            margin: 0 0 0.6rem;
+            font-family: "Syncopate", sans-serif;
+            font-size: 0.88rem;
+            line-height: 1.4;
+            text-transform: uppercase;
+        }
+
+        .lab-card p {
+            color: var(--muted);
+            font-size: 0.88rem;
+            line-height: 1.6;
+        }
+
+        /* ── SEÑAL ── */
+        .signal-layout {
+            display: grid;
+            grid-template-columns: 0.85fr 1.15fr;
+            gap: 1.5rem;
+            align-items: start;
+        }
+
+        .signal-copy {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .signal-preface {
+            max-width: 28rem;
+            font-size: 0.88rem;
+            line-height: 1.75;
+            color: var(--muted-dark);
+        }
+
+        .signal-card {
+            padding: 1.3rem;
+            border: 1px solid var(--line);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .signal-list {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            display: grid;
+            gap: 0.8rem;
+        }
+
+        .signal-list li {
+            padding-top: 0.8rem;
+            border-top: 1px solid var(--line);
+            font-size: 0.9rem;
+        }
+
+        .signal-list a {
+            color: inherit;
+            word-break: break-word;
+            transition: color 180ms ease;
+        }
+
+        .signal-list a:hover { color: var(--visceral); }
+
+        /* ── FOOTER ── */
+        .footer {
+            padding: 1.5rem 0 2.5rem;
+            border-top: 1px solid var(--line);
+        }
+
+        .footer .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .footer p,
+        .footer a {
+            font-size: 0.72rem;
+            color: rgba(245, 245, 245, 0.45);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+        }
+
+        .footer a:hover { color: var(--visceral); }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        /* ── REDACTED TEXT EFFECT ── */
+        .redacted {
+            background: var(--void);
+            color: var(--void);
+            padding: 0 0.3em;
+            transition: color 0.3s ease;
+            cursor: default;
+        }
+
+        .section-light .redacted {
+            background: var(--void);
+            color: var(--void);
+        }
+
+        .redacted:hover {
+            color: var(--visceral);
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 1240px) {
+            .hero-ledger,
+            .identity-grid,
+            .release-grid,
+            .tension-formula {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .exclusion-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 1080px) {
+            .hero-grid,
+            .manifesto-layout,
+            .archive-layout,
+            .lab-layout,
+            .signal-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .pillar-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .hero-ledger,
+            .tension-formula {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .exclusion-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .tension-strip {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .triad-grid,
+            .release-grid,
+            .identity-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .hero-poster {
+                min-height: 28rem;
+            }
+        }
+
+        @media (max-width: 760px) {
+            .site-header .container {
+                min-height: 64px;
+            }
+
+            .menu-toggle {
+                display: inline-flex;
+            }
+
+            .site-nav {
+                position: absolute;
+                top: calc(100% + 1px);
+                left: 0;
+                right: 0;
+                display: none;
+                padding: 1rem;
+                border-bottom: 1px solid var(--line);
+                background: rgba(10, 10, 10, 0.98);
+            }
+
+            .site-nav.is-open {
+                display: grid;
+            }
+
+            .site-nav a {
+                padding: 0.5rem 0;
+            }
+
+            .section {
+                padding: 4rem 0;
+            }
+
+            .hero {
+                padding-top: 3rem;
+                min-height: auto;
+            }
+
+            .tension-strip,
+            .pillar-grid,
+            .triad-grid,
+            .lab-grid,
+            .release-grid,
+            .identity-grid,
+            .hero-ledger,
+            .exclusion-grid,
+            .tension-formula {
+                grid-template-columns: 1fr;
+            }
+
+            .release-card-feature {
+                grid-column: span 1;
+                grid-template-columns: 1fr;
+            }
+
+            .hero-poster {
+                min-height: 22rem;
+            }
+
+            .dossier-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .footer .container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .home-ambient-readout {
+                left: 0.75rem;
+                bottom: 0.75rem;
+                width: min(18rem, calc(100vw - 1.5rem));
+                padding: 0.82rem 0.85rem;
+            }
         }
     </style>
 </head>
-<body class="bg-void text-page font-body selection:bg-visceral selection:text-void overflow-x-hidden">
-
-    <!-- Global Noise/Texture Overlay -->
-    <div class="fixed inset-0 pointer-events-none z-50 bg-noise-conflict opacity-5 mix-blend-overlay bg-cover bg-center"></div>
-
-    <!-- Navigation -->
-    <nav class="fixed w-full z-40 bg-void/90 backdrop-blur border-b border-visceral/30">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <h1 class="font-minimal text-2xl font-bold tracking-tighter hover:text-visceral transition-colors cursor-pointer">
-                [<span class="text-visceral">SIC</span>]
-            </h1>
-            <div class="hidden md:flex space-x-8 font-minimal text-xs tracking-widest font-bold">
-                <a href="laboratory.html" class="hover:text-visceral decoration-visceral underline-offset-4 decoration-2 text-visceral">[ THE_LAB ]</a>
-                <a href="#manifesto" class="hover:text-visceral">MANIFESTO</a>
-                <a href="#archive" class="hover:text-visceral">THE_ARCHIVE</a>
-                <a href="#discography" class="hover:text-visceral">DISCOGRAPHY</a>
-                <a href="#triad" class="hover:text-visceral">THE_TRIAD</a>
-                <a href="#signal" class="hover:text-visceral">SIGNAL</a>
-            </div>
-            <button class="md:hidden text-visceral font-bold text-xl">///</button>
-        </div>
-    </nav>
-
-     <!-- Hero Section (Restored Ambiguity Version) -->
-     <header class="relative min-h-screen flex items-center justify-center overflow-hidden bg-geo-ambiguity bg-cover bg-center">
-        <!-- Dark Overlay -->
-        <div class="absolute inset-0 bg-void/75 transition-opacity duration-1000 hover:opacity-60"></div>
-        
-        <div class="relative z-10 text-center px-4">
-            <h2 class="font-minimal text-visceral text-xs md:text-sm tracking-[0.8em] mb-4 uppercase">Sentence In Conflict</h2>
-            <h1 class="font-minimal text-5xl md:text-8xl tracking-tighter mb-6 glitch-text text-page font-bold" data-text="[SIC]">
-                [SIC]
-            </h1>
-            <p class="font-minimal max-w-xl mx-auto text-page/70 text-xs md:text-sm leading-relaxed tracking-widest uppercase">
-                <span class="bg-visceral text-void px-1">Ideas</span> collide. Reality is rewritten.
-            </p>
-            
-            <div class="mt-12 flex justify-center gap-6">
-                <!-- CTA -->
-                 <a href="#discography" class="group relative px-8 py-3 bg-transparent text-page font-bold font-minimal text-xs uppercase overflow-hidden border border-visceral hover:bg-visceral transition-all duration-300">
-                    <span class="relative z-10 tracking-widest">ENTER_THE_SENTENCE</span>
-                </a>
-            </div>
+<body data-home-section="hero">
+    <canvas id="home-void-scene" class="home-void-scene" aria-hidden="true"></canvas>
+    <div class="home-ambient-glow" aria-hidden="true"></div>
+    <div class="home-ambient-readout" aria-hidden="true">
+        <span class="panel-label">SIC / Releven node</span>
+        <strong id="home-ambient-title">Hero pulse</strong>
+        <span id="home-ambient-copy">origin signal / sentence under pressure</span>
+    </div>
+    <header class="site-header">
+        <div class="container">
+            <a class="brand-mark" href="#top">[<span>SIC</span>]</a>
+            <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menú</button>
+            <nav id="site-nav" class="site-nav">
+                <a href="#manifiesto">Manifiesto</a>
+                <a href="#nucleo">Núcleo</a>
+                <a href="#sistema">Sistema</a>
+                <a href="#archivo">Archivo</a>
+                <a href="#triada">Triada</a>
+                <a href="#lab">Laboratorio</a>
+                <a href="universe.html">Universo 3D</a>
+                <a href="#senal">Señal</a>
+            </nav>
         </div>
     </header>
 
-    <!-- Manifesto Section -->
-    <section id="manifesto" class="py-32 bg-page text-void relative overflow-hidden">
-        <div class="max-w-4xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center relative z-10">
-            <div>
-                 <h3 class="text-4xl font-minimal uppercase mb-8 text-void font-bold">Mental<br><span class="text-visceral">Laboratory</span></h3>
-                 <div class="h-1 w-24 bg-visceral mb-8"></div>
-                 <p class="font-body text-sm leading-loose text-void/80 text-justify">
-                    **[SIC]** is not just a band. It is a <span class="font-bold underline decoration-visceral">note in the margin</span> of reality.
-                    <br><br>
-                    We operate in a mental laboratory where ideas are fluid, undefined, and chaotic until they collide with the structure of sound. We explore the tension between the written sentence and the internal conflict.
-                 </p>
-            </div>
-            
-            <div class="relative group">
-                <div class="absolute -inset-4 border border-visceral/20 transform rotate-6 group-hover:rotate-0 transition-transform duration-700"></div>
-                <img src="./assets/sic_bio_scene.png" alt="Band Performance" class="w-full h-auto object-cover grayscale contrast-150 mix-blend-multiply relative z-10">
-                <div class="absolute bottom-4 right-4 bg-void text-page px-4 py-2 font-minimal text-xs">
-                    FIG. 1: THE PERFORMANCE
+    <main id="top">
+
+        <!-- ════ HERO ════ -->
+        <section id="hero" class="hero section">
+            <div class="container hero-grid">
+                <div class="hero-copy">
+                    <p class="eyebrow">Sentence In Conflict</p>
+                    <h1>Así fue escrito. <span data-text="Así se quiebra.">Así se quiebra.</span></h1>
+                    <p class="hero-lead">
+                        Rock alternativo, grunge y fusión desde la tensión entre idea y materia. No ilustramos conceptos. Los sometemos a fricción hasta que se vuelven sonido.
+                    </p>
+                    <div class="hero-actions">
+                        <a class="button button-primary" href="#archivo">Entrar al archivo</a>
+                        <a class="button button-secondary" href="laboratory.html">Abrir laboratorio</a>
+                        <a class="button button-secondary" href="universe.html">Abrir universo 3D</a>
+                    </div>
+                    <div class="hero-ledger">
+                        <article class="ledger-card">
+                            <span class="ledger-label">Brand Core</span>
+                            <strong class="ledger-value">Idea / materia / contradicción</strong>
+                            <span class="ledger-line">El conflicto semántico no se decora. Se vuelve peso físico, ruido y forma.</span>
+                        </article>
+                        <article class="ledger-card">
+                            <span class="ledger-label">Brand Voice</span>
+                            <strong class="ledger-value">Enigmática / cerebral / contundente</strong>
+                            <span class="ledger-line">Frases densas, economía verbal y tensión constante entre claridad y herida.</span>
+                        </article>
+                        <article class="ledger-card">
+                            <span class="ledger-label">Brand Aesthetic</span>
+                            <strong class="ledger-value">Alto contraste editorial</strong>
+                            <span class="ledger-line">Negro y blanco dominantes. Rojo visceral como única señal táctica.</span>
+                        </article>
+                    </div>
+                </div>
+
+                <div class="hero-visual">
+                    <figure class="hero-poster">
+                        <img src="./assets/sic_phase_iv_ambiguity.png" alt="[SIC] — La verdad en lo ambiguo">
+                        <p class="poster-stamp">Pereira / 2017 →</p>
+                        <figcaption class="poster-caption">La ambigüedad no corrige la verdad. La expone.</figcaption>
+                    </figure>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
+        <div class="redline"></div>
 
-
-    <!-- THE ARCHIVE (History) - Classified Document Style -->
-    <section id="archive" class="py-32 bg-void text-page relative border-b border-page/10">
-        <div class="max-w-4xl mx-auto px-6 relative z-10">
-            <div class="border-l-2 border-visceral pl-8 md:pl-16 relative">
-                <!-- Decorative Terminal Header -->
-                <div class="absolute -left-[9px] top-0 w-4 h-4 bg-visceral"></div>
-                <div class="font-minimal text-[10px] text-visceral mb-4 tracking-widest">CLASSIFIED FILE // ORIGIN_STORY</div>
-                
-                <h2 class="text-4xl md:text-5xl font-minimal font-bold mb-12 uppercase">
-                    THE ARCHIVE
-                </h2>
-
-                <div class="space-y-12 font-body text-sm text-page/70 leading-relaxed max-w-2xl">
-                    <div class="relative">
-                        <h4 class="text-page font-bold mb-2 font-minimal text-xs uppercase text-visceral">> ORIGIN_POINT [2017]</h4>
+        <!-- ════ MANIFIESTO ════ -->
+        <section id="manifiesto" class="section section-light">
+            <div class="container manifesto-layout">
+                <div class="manifesto-copy">
+                    <div class="section-heading">
+                        <p class="eyebrow">Manifiesto</p>
+                        <h2>No simplificamos la contradicción. La habitamos.</h2>
                         <p>
-                            Subject [SIC] identified in <span class="bg-page text-void px-1 font-bold">PEREIRA, CO</span>. Initial formation detected mid-cycle. Core fusion of <span class="text-white">Daniel Castañeda</span> and <span class="text-white">Juan Pablo Hurtado</span> established.
+                            [SIC] proviene de <em>sic erat scriptum</em> — "así fue escrito" — y se lee también como <em>Sentence In Conflict</em>. La banda habita lo indeterminado, lo abstracto y lo visceral. No cuenta historias: abre preguntas, expone grietas y convierte conceptos en impacto <span class="redacted">clasificado</span> sonoro.
                         </p>
                     </div>
+                    <p class="manifesto-quote">
+                        "La música es pensamiento encarnado: cerebral en intención, física en ejecución."
+                    </p>
+                    <p style="font-size:0.92rem; line-height:1.7; color:var(--muted-dark);">
+                        Cada punto de contacto con [SIC] debe sentirse intenso, reflexivo e inquietante. Más cerca de un manifiesto que de una pieza promocional.
+                    </p>
 
-                    <div class="relative">
-                        <h4 class="text-page font-bold mb-2 font-minimal text-xs uppercase text-visceral">> SONIC_PROFILE</h4>
-                        <p>
-                            Analysis indicates a unstable compound of <span class="line-through decoration-visceral">Rock Alternativo</span> and <span class="line-through decoration-visceral">Grunge</span>. Secondary traces of Metal, Indie, and Latin rhythms detected. 
-                            <br><br>
-                            <span class="italic text-white">"A dynamic sound oscillating between expressivity and blunt force."</span>
-                        </p>
+                    <div class="tension-strip">
+                        <div class="tension-item">
+                            <strong>Idea / Materia</strong>
+                            <span>Lo conceptual toma peso físico.</span>
+                        </div>
+                        <div class="tension-item">
+                            <strong>Razón / Emoción</strong>
+                            <span>La claridad entra en disputa con la herida.</span>
+                        </div>
+                        <div class="tension-item">
+                            <strong>Orden / Caos</strong>
+                            <span>La estructura existe para soportar el quiebre.</span>
+                        </div>
+                        <div class="tension-item">
+                            <strong>Luz / Sombra</strong>
+                            <span>La verdad aparece en el borde.</span>
+                        </div>
                     </div>
+                </div>
 
-                    <div class="relative">
-                        <h4 class="text-page font-bold mb-2 font-minimal text-xs uppercase text-visceral">> OPERATIONAL_HISTORY</h4>
-                        <ul class="list-none space-y-4 font-mono text-xs border-l border-page/20 pl-4">
-                            <li><span class="text-visceral mr-2">[2018]</span> Eje Rock Festival // <span class="bg-visceral/20 text-visceral px-1">CLASSIFIED</span></li>
-                            <li><span class="text-visceral mr-2">[2018]</span> "Abre tus oídos" Showcase // Manizales</li>
-                            <li><span class="text-visceral mr-2">[2018]</span> "No + Silencio" // Roldanillo</li>
-                            <li><span class="text-visceral mr-2">[2021]</span> Telecafé Transmission [Area 53] // Broadcast Intercepted</li>
-                            <li><span class="text-visceral mr-2">[2021]</span> Eje Rock Festival // Top 12 Nominal Classification</li>
-                            <li><span class="text-visceral mr-2">[2022]</span> Protocol Launch: "Desde que el sol brilla"</li>
+                <aside class="dossier-card">
+                    <img src="./assets/sic_bio_scene.png" alt="[SIC] en vivo">
+                    <div class="dossier-data">
+                        <span class="panel-label">Dossier</span>
+                        <div class="dossier-row">
+                            <span>Género</span>
+                            <span>Rock alternativo / Grunge / Fusión</span>
+                        </div>
+                        <div class="dossier-row">
+                            <span>Territorio</span>
+                            <span>Ideas, conflicto, sombra, forma</span>
+                        </div>
+                        <div class="dossier-row">
+                            <span>Arquetipo</span>
+                            <span>El filósofo abstracto</span>
+                        </div>
+                        <div class="dossier-row">
+                            <span>Principio</span>
+                            <span>Sugerir más de lo que se explica</span>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+
+            <div class="container" style="margin-top: 2.5rem;">
+                <div class="pillar-grid">
+                    <article class="pillar-card">
+                        <span class="panel-label">Pilar I</span>
+                        <h3>Indeterminación</h3>
+                        <p>No hay verdades absolutas. Lo importante no es cerrar el sentido, sino sostener la pregunta.</p>
+                    </article>
+                    <article class="pillar-card">
+                        <span class="panel-label">Pilar II</span>
+                        <h3>Ambigüedad</h3>
+                        <p>Las cosas significan varias cosas al mismo tiempo. La ambigüedad no debilita: densifica.</p>
+                    </article>
+                    <article class="pillar-card">
+                        <span class="panel-label">Pilar III</span>
+                        <h3>Ideas</h3>
+                        <p>La canción no es fondo. Es postura, conflicto y materia pensante.</p>
+                    </article>
+                    <article class="pillar-card">
+                        <span class="panel-label">Pilar IV</span>
+                        <h3>Tensión</h3>
+                        <p>La identidad no opera desde neutralidad. Necesita contraste duro y cortes bruscos.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <div class="redline"></div>
+
+        <section id="nucleo" class="section">
+            <div class="container">
+                <div class="section-heading">
+                    <p class="eyebrow">Núcleo</p>
+                    <h2>El conflicto no es un tema. Es la forma.</h2>
+                    <p>
+                        El territorio conceptual de [SIC] es el mundo de las ideas y el conflicto semántico. La banda opera desde contrastes fuertes y convierte lo abstracto en impacto físico sin sacrificar ambigüedad.
+                    </p>
+                </div>
+
+                <div class="identity-grid">
+                    <article class="identity-card identity-card-feature">
+                        <span class="panel-label">Esencia</span>
+                        <h3><em>sic erat scriptum</em> / Sentence In Conflict</h3>
+                        <p>
+                            [SIC] habita la tensión entre idea y materia, razón y emoción, orden y caos, claridad y ambigüedad. No busca cerrar una verdad única; sostiene la pregunta.
+                        </p>
+                    </article>
+                    <article class="identity-card">
+                        <span class="panel-label">Arquetipo</span>
+                        <h3>El filósofo abstracto</h3>
+                        <ul class="identity-list">
+                            <li>Piensa en lo intangible y lo vuelve materia sonora.</li>
+                            <li>No simplifica la contradicción; la habita.</li>
+                            <li>Encuentra belleza en lo no resuelto.</li>
                         </ul>
-                    </div>
+                    </article>
+                    <article class="identity-card">
+                        <span class="panel-label">Promesa</span>
+                        <h3>Intenso. Reflexivo. Deliberado.</h3>
+                        <ul class="identity-list">
+                            <li>Cada pieza debe sentirse inquietante y contundente.</li>
+                            <li>La identidad evita neutralidad tibia y ornamento gratuito.</li>
+                            <li>La música funciona como pensamiento encarnado.</li>
+                        </ul>
+                    </article>
+                </div>
+
+                <div class="exclusion-grid">
+                    <article class="exclusion-card">
+                        <strong>No decorativa</strong>
+                        <span>La forma nunca es adorno sin concepto.</span>
+                    </article>
+                    <article class="exclusion-card">
+                        <strong>No complaciente</strong>
+                        <span>La marca evita cercanía blanda o nostalgia cómoda.</span>
+                    </article>
+                    <article class="exclusion-card">
+                        <strong>No colorista</strong>
+                        <span>La restricción manda sobre el gesto ecléctico.</span>
+                    </article>
+                    <article class="exclusion-card">
+                        <strong>No explicativa</strong>
+                        <span>Sugiere más de lo que resuelve o traduce.</span>
+                    </article>
+                    <article class="exclusion-card">
+                        <strong>No neutral</strong>
+                        <span>Opera desde contraste duro, nunca desde tibieza.</span>
+                    </article>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Discography Timeline -->
-    <section id="discography" class="py-32 bg-void relative">
-        <!-- Background Grid -->
-        <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px]"></div>
+        <div class="redline"></div>
 
-        <div class="max-w-7xl mx-auto px-6 relative z-10">
-            <div class="flex items-center justify-between mb-24">
-                <h2 class="text-5xl font-minimal font-bold tracking-tighter text-page">TIMELINE</h2>
-                <div class="h-[1px] flex-grow mx-8 bg-visceral/50"></div>
-                <span class="font-minimal text-xs font-bold bg-visceral text-void px-3 py-1">2018 - 2026</span>
-            </div>
+        <section id="sistema" class="section">
+            <div class="container">
+                <div class="section-heading">
+                    <p class="eyebrow">Sistema</p>
+                    <h2>Cómo piensa. Cómo habla. Cómo se ve.</h2>
+                    <p>
+                        La identidad de [SIC] no vive solo en el sonido. También se reconoce en una voz editorial precisa y en un sistema visual de alto contraste, hostil y contenido.
+                    </p>
+                </div>
 
-            <div class="grid md:grid-cols-5 gap-4">
-                
-                 <!-- Phase V: Ambiguous -->
-                 <article class="group relative aspect-square border border-page/10 bg-void hover:border-visceral transition-all duration-500 cursor-pointer overflow-hidden md:mt-12">
-                     <a href="#" class="block w-full h-full"> 
-                        <div class="absolute top-0 right-0 z-20 bg-visceral text-void font-bold text-[8px] font-minimal px-2 py-1">PHASE V</div>
-                        <img src="./assets/sic_album_ambiguous.png" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 grayscale group-hover:grayscale-0">
-                        <div class="absolute bottom-0 left-0 w-full p-2 bg-gradient-to-t from-void to-transparent z-10">
-                            <h3 class="text-lg font-minimal font-bold mb-0 text-page tracking-tighter">AMBIGUOUS</h3>
-                            <p class="font-minimal text-[8px] text-visceral">2026 // CONCEPT</p>
+                <div class="identity-grid">
+                    <article class="identity-card">
+                        <span class="panel-label">Brand Voice</span>
+                        <h3>Enigmática, cerebral, contundente.</h3>
+                        <ul class="identity-list">
+                            <li>Sugiere más de lo que explica y evita el tono promocional genérico.</li>
+                            <li>Usa frases densas, imágenes abstractas y contradicciones deliberadas.</li>
+                            <li>Campos semánticos: idea, conflicto, forma, ruido, herida, verdad, sombra, pulso, grieta.</li>
+                        </ul>
+                    </article>
+                    <article class="identity-card">
+                        <span class="panel-label">Brand Aesthetic</span>
+                        <h3>Alto contraste editorial.</h3>
+                        <ul class="identity-list">
+                            <li>Negro y blanco como base dominante. Rojo visceral como acento escaso y táctico.</li>
+                            <li>Bordes rectos, retículas rígidas, espacio negativo y cortes bruscos.</li>
+                            <li>Texturas controladas, ruido fino y tratamiento de imagen bitonal o en escala de grises.</li>
+                        </ul>
+                    </article>
+                    <article class="identity-card">
+                        <span class="panel-label">Paleta + tipografía</span>
+                        <h3>Restricción antes que ornamento.</h3>
+                        <div class="swatch-row">
+                            <div class="swatch-block">
+                                <div class="swatch-color" style="background:#0A0A0A;"></div>
+                                <span>Negro absoluto<br>#0A0A0A</span>
+                            </div>
+                            <div class="swatch-block">
+                                <div class="swatch-color" style="background:#F5F5F5;"></div>
+                                <span>Blanco crudo<br>#F5F5F5</span>
+                            </div>
+                            <div class="swatch-block">
+                                <div class="swatch-color" style="background:#D21F3C;"></div>
+                                <span>Rojo visceral<br>#D21F3C</span>
+                            </div>
                         </div>
-                    </a>
-                </article>
-
-                <!-- Phase IV: Así -->
-                <article class="group relative aspect-square border border-page/10 bg-void hover:border-visceral transition-all duration-500 cursor-pointer overflow-hidden">
-                    <a href="https://open.spotify.com/intl-es/album/4PxnIpMCF5wOzT7vtO6JO0?si=64dq-kJ4SxqF5CNZ5jzdUw" target="_blank" class="block w-full h-full">
-                       <div class="absolute top-0 right-0 z-20 bg-page/10 text-page font-bold text-[8px] font-minimal px-2 py-1">PHASE IV</div>
-                       <img src="./assets/sic_album_asi.jpg" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 grayscale group-hover:grayscale-0">
-                       <div class="absolute bottom-0 left-0 w-full p-2 bg-gradient-to-t from-void to-transparent z-10">
-                           <h3 class="text-lg font-minimal font-bold mb-0 text-page">ASÍ</h3>
-                           <p class="font-minimal text-[8px] text-visceral">2025 // SINGLE</p>
-                       </div>
-                   </a>
-               </article>
-
-                <!-- Phase III: Mss White -->
-                <article class="group relative aspect-square border border-page/10 bg-void hover:border-visceral transition-all duration-500 cursor-pointer overflow-hidden md:mt-12">
-                    <a href="https://open.spotify.com/intl-es/album/2SvkcZAU0u9b3k6lJmWfJf?si=Dah5mQJ9Qi-PfbWYyLxxGA" target="_blank" class="block w-full h-full">
-                        <div class="absolute top-0 right-0 z-20 bg-page/10 text-page font-bold text-[8px] font-minimal px-2 py-1">PHASE III</div>
-                        <img src="./assets/sic_album_mss_white.png" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-100 transition-all duration-500 grayscale group-hover:grayscale-0">
-                        <div class="absolute bottom-0 left-0 w-full p-2 bg-gradient-to-t from-void to-transparent z-10">
-                            <h3 class="text-lg font-minimal font-bold mb-0 text-page">MSS WHITE</h3>
-                            <p class="font-minimal text-[8px] text-visceral">2025 // SHADOW</p>
+                        <div class="font-stack">
+                            <span class="font-chip syncopate">Syncopate / titulares y frases de alto impacto</span>
+                            <span class="font-chip audiowide">Audiowide / labels técnicos y tono de laboratorio</span>
+                            <span class="font-chip">Orbitron / cuerpo, navegación e interfaz</span>
                         </div>
-                    </a>
-                </article>
+                    </article>
+                </div>
 
-                <!-- Phase II: Sol Brilla -->
-                <article class="group relative aspect-square border border-page/10 bg-void hover:border-visceral transition-all duration-500 cursor-pointer overflow-hidden">
-                     <a href="https://open.spotify.com/intl-es/album/0KIu74uNoPhDNFz49zuDyx?si=LmcsxKT5SrqCCm0W3ljdIQ" target="_blank" class="block w-full h-full">
-                        <div class="absolute top-0 right-0 z-20 bg-page/10 text-page font-bold text-[8px] font-minimal px-2 py-1">PHASE II</div>
-                        <img src="./assets/sic_album_desde_que_el_sol.jpg" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-100 transition-all duration-500 grayscale group-hover:grayscale-0">
-                        <div class="absolute bottom-0 left-0 w-full p-2 bg-gradient-to-t from-void to-transparent z-10">
-                            <h3 class="text-lg font-minimal font-bold mb-0 text-page leading-none">DESDE QUE EL SOL BRILLA</h3>
-                            <p class="font-minimal text-[8px] text-visceral">2022 // AWAKENING</p>
+                <div class="tension-formula">
+                    <article class="formula-card">
+                        <strong>Claridad / sombra</strong>
+                        <p>Cuando el texto se vuelve obvio, la sombra devuelve densidad y resonancia.</p>
+                    </article>
+                    <article class="formula-card">
+                        <strong>Control / quiebre</strong>
+                        <p>La estructura existe, pero su valor aparece cuando soporta la fractura.</p>
+                    </article>
+                    <article class="formula-card">
+                        <strong>Razón / herida</strong>
+                        <p>La idea no se presenta limpia: entra en contacto con lo físico y deja marca.</p>
+                    </article>
+                    <article class="formula-card">
+                        <strong>Definición / ambigüedad</strong>
+                        <p>La lectura debe ser clara en postura, pero no cerrada en significado.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <div class="redline"></div>
+
+        <!-- ════ ARCHIVO ════ -->
+        <section id="archivo" class="section">
+            <div class="container archive-layout">
+                <aside class="timeline">
+                    <div class="section-heading" style="margin-bottom: 1.2rem;">
+                        <p class="eyebrow">Archivo</p>
+                        <h2>Origen y rastro.</h2>
+                    </div>
+                    <ul class="timeline-list">
+                        <li class="timeline-item">
+                            <span class="timeline-year">2017</span>
+                            <p>Formación en Pereira. Núcleo inicial.</p>
+                        </li>
+                        <li class="timeline-item">
+                            <span class="timeline-year">2018</span>
+                            <p>Eje Rock Festival. "Abre tus oídos" en Manizales. "No + Silencio" en Roldanillo.</p>
+                        </li>
+                        <li class="timeline-item">
+                            <span class="timeline-year">2021</span>
+                            <p>Telecafé / Area 53. Top 12 en Eje Rock.</p>
+                        </li>
+                        <li class="timeline-item">
+                            <span class="timeline-year">2022 → 2026</span>
+                            <p>De "Desde que el sol brilla" a una fase marcada por ambigüedad, sombra y quiebre.</p>
+                        </li>
+                    </ul>
+                </aside>
+
+                <div>
+                    <div class="section-heading" style="margin-bottom: 1.2rem;">
+                        <p class="eyebrow">Discografía</p>
+                        <h2>Fases del conflicto.</h2>
+                    </div>
+                    <div class="release-grid">
+                        <a class="release-card" href="https://open.spotify.com/intl-es/album/4Rr1wEGeMCwCl0IN3NLufn?si=yto2li2iRAuBenzhMXcyqA" target="_blank" rel="noreferrer">
+                            <img src="./assets/sic_album_al_reves.png" alt="Al Revés">
+                            <div class="release-copy">
+                                <span class="release-meta">2018 / Phase I</span>
+                                <h3>Al Revés</h3>
+                                <p>Primer gesto de inversión.</p>
+                            </div>
+                        </a>
+                        <a class="release-card" href="https://open.spotify.com/intl-es/album/0KIu74uNoPhDNFz49zuDyx?si=LmcsxKT5SrqCCm0W3ljdIQ" target="_blank" rel="noreferrer">
+                            <img src="./assets/sic_album_desde_que_el_sol.jpg" alt="Desde que el sol brilla">
+                            <div class="release-copy">
+                                <span class="release-meta">2022 / Phase II</span>
+                                <h3>Desde que el sol brilla</h3>
+                                <p>Claridad atravesada por herida.</p>
+                            </div>
+                        </a>
+                        <a class="release-card" href="https://open.spotify.com/intl-es/album/2SvkcZAU0u9b3k6lJmWfJf?si=Dah5mQJ9Qi-PfbWYyLxxGA" target="_blank" rel="noreferrer">
+                            <img src="./assets/sic_album_mss_white.png" alt="MSS WHITE">
+                            <div class="release-copy">
+                                <span class="release-meta">2025 / Phase III</span>
+                                <h3>MSS WHITE</h3>
+                                <p>La sombra se vuelve archivo.</p>
+                            </div>
+                        </a>
+                        <a class="release-card" href="https://open.spotify.com/intl-es/album/4PxnIpMCF5wOzT7vtO6JO0?si=64dq-kJ4SxqF5CNZ5jzdUw" target="_blank" rel="noreferrer">
+                            <img src="./assets/sic_album_asi.jpg" alt="Así">
+                            <div class="release-copy">
+                                <span class="release-meta">2025 / Phase III</span>
+                                <h3>Así</h3>
+                                <p>Golpe directo. Sin anestesia.</p>
+                            </div>
+                        </a>
+                        <article class="release-card release-card-feature">
+                            <img src="./assets/sic_album_ambiguous.png" alt="Ambiguous">
+                            <div class="release-copy">
+                                <span class="release-flag">Foco actual</span>
+                                <span class="release-meta">2026 / Phase IV</span>
+                                <h3>Ambiguous</h3>
+                                <p>Verdad en disputa.</p>
+                                <p class="release-note">La fase que condensa el núcleo actual de [SIC]: archivo intervenido, conflicto semántico y pulso al borde del quiebre.</p>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="redline"></div>
+
+        <!-- ════ TRIADA ════ -->
+        <section id="triada" class="section section-light">
+            <div class="container">
+                <div class="section-heading">
+                    <p class="eyebrow">La triada</p>
+                    <h2>Tres funciones. Un mismo pulso.</h2>
+                </div>
+
+                <div class="triad-grid">
+                    <article class="member-card">
+                        <div class="member-media">
+                            <img src="./assets/sic_icon_daniel.png" alt="Daniel Castañeda — Estructura geométrica">
+                            <span class="member-stamp">SIC-01 / Voz + Guitarra</span>
                         </div>
-                    </a>
-                </article>
-
-                <!-- Phase I: Al Reves -->
-                <article class="group relative aspect-square border border-page/10 bg-void hover:border-visceral transition-all duration-500 cursor-pointer overflow-hidden md:mt-12">
-                    <a href="https://open.spotify.com/intl-es/album/4Rr1wEGeMCwCl0IN3NLufn?si=yto2li2iRAuBenzhMXcyqA" target="_blank" class="block w-full h-full">
-                        <div class="absolute top-0 right-0 z-20 bg-page/10 text-page font-bold text-[8px] font-minimal px-2 py-1">PHASE I</div>
-                        <img src="./assets/sic_album_al_reves.png" class="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-100 filter contrast-125 transition-all duration-500 grayscale group-hover:grayscale-0">
-                        <div class="absolute bottom-0 left-0 w-full p-2 bg-gradient-to-t from-void to-transparent z-10">
-                            <h3 class="text-lg font-minimal font-bold mb-0 text-page">AL REVÉS</h3>
-                            <p class="font-minimal text-[8px] text-visceral">2018 // INVERSION</p>
+                        <div class="member-designation">
+                            <span>Daniel Castañeda</span>
+                            <span>Activo</span>
                         </div>
-                    </a>
-                </article>
+                        <div class="member-copy">
+                            <h3>El arquitecto</h3>
+                            <p>Construye la forma antes del golpe. Lleva las ideas al borde donde empiezan a sonar como una herida precisa.</p>
+                        </div>
+                    </article>
 
-            </div>
-            
-            <div class="mt-16 text-center border-t border-page/10 pt-8">
-                 <a href="https://open.spotify.com/intl-es/album/4PxnIpMCF5wOzT7vtO6JO0?si=64dq-kJ4SxqF5CNZ5jzdUw" target="_blank" class="text-page/50 hover:text-visceral font-minimal text-xs transition-colors">
-                    LISTEN TO LATEST SINGLE "ASÍ" ON SPOTIFY <i class="fas fa-arrow-right ml-2"></i>
-                 </a>
-            </div>
-        </div>
-    </section>
+                    <article class="member-card">
+                        <div class="member-media">
+                            <img src="./assets/sic_icon_juan_refined.png" alt="Juan Pablo Hurtado — Vórtice cinético">
+                            <span class="member-stamp">SIC-02 / Batería</span>
+                        </div>
+                        <div class="member-designation">
+                            <span>Juan Pablo Hurtado</span>
+                            <span>Activo</span>
+                        </div>
+                        <div class="member-copy">
+                            <h3>El motor</h3>
+                            <p>Convierte la tensión en pulso. La fricción adquiere velocidad, peso y amenaza en su terreno.</p>
+                        </div>
+                    </article>
 
-    <!-- The Triad (Members) - Clean CSS Cropped Version -->
-    <section id="triad" class="py-32 bg-page text-void relative">
-         <div class="max-w-7xl mx-auto px-6 relative z-10">
-            <h2 class="font-minimal text-void mb-24 text-center text-4xl font-bold">THE TRIAD</h2>
-
-            <div class="grid md:grid-cols-3 gap-16">
-                <!-- Daniel -->
-                <div class="group text-center">
-                    <!-- CSS Crop wrapper: hides bottom 15% of image where text likely is -->
-                    <div class="relative w-56 h-56 mx-auto mb-8 animate-float overflow-hidden rounded-full">
-                        <div class="absolute inset-0 bg-visceral/10 rounded-full blur-xl group-hover:bg-visceral/30 transition-all opacity-0 group-hover:opacity-100"></div>
-                        <img src="./assets/sic_icon_daniel.png" class="relative z-10 w-full h-full object-cover object-center filter drop-shadow-md p-4 bg-void/5 rounded-full border border-void/10">
-                    </div>
-                    <h3 class="text-3xl font-minimal font-bold mb-2">DANIEL</h3>
-                    <p class="font-minimal text-[10px] text-visceral tracking-[0.3em] font-bold mb-4">THE ARCHITECT</p>
-                    <p class="font-body text-xs text-void/60 max-w-xs mx-auto">
-                        Voice + Guitar. <br>Constructs the melody from the chaos.
-                    </p>
-                </div>
-
-                <!-- Juan Pablo -->
-                <div class="group text-center md:mt-12">
-                    <div class="relative w-56 h-56 mx-auto mb-8 animate-float overflow-hidden rounded-full" style="animation-delay: 1s;">
-                         <div class="absolute inset-0 bg-visceral/10 rounded-full blur-xl group-hover:bg-visceral/30 transition-all opacity-0 group-hover:opacity-100"></div>
-                        <img src="./assets/sic_icon_juan_refined.png" class="relative z-10 w-full h-full object-cover object-center filter drop-shadow-md p-4 bg-void/5 rounded-full border border-void/10">
-                    </div>
-                    <h3 class="text-3xl font-minimal font-bold mb-2">JUAN PABLO</h3>
-                    <p class="font-minimal text-[10px] text-visceral tracking-[0.3em] font-bold mb-4">THE ENGINE</p>
-                    <p class="font-body text-xs text-void/60 max-w-xs mx-auto">
-                        Drums. <br>Drives the pulse of the conflict.
-                    </p>
-                </div>
-
-                <!-- Francisco -->
-                <div class="group text-center">
-                     <div class="relative w-56 h-56 mx-auto mb-8 animate-float overflow-hidden rounded-full" style="animation-delay: 2s;">
-                         <div class="absolute inset-0 bg-visceral/10 rounded-full blur-xl group-hover:bg-visceral/30 transition-all opacity-0 group-hover:opacity-100"></div>
-                        <img src="./assets/sic_icon_francisco.png" class="relative z-10 w-full h-full object-cover object-center filter drop-shadow-md p-4 bg-void/5 rounded-full border border-void/10">
-                    </div>
-                    <h3 class="text-3xl font-minimal font-bold mb-2">FRANCISCO</h3>
-                    <p class="font-minimal text-[10px] text-visceral tracking-[0.3em] font-bold mb-4">THE FOUNDATION</p>
-                    <p class="font-body text-xs text-void/60 max-w-xs mx-auto">
-                        Bass. <br>Solidifies the abstract.
-                    </p>
+                    <article class="member-card">
+                        <div class="member-media">
+                            <img src="./assets/sic_icon_francisco.png" alt="Francisco Valencia — Geometría sagrada">
+                            <span class="member-stamp">SIC-03 / Bajo</span>
+                        </div>
+                        <div class="member-designation">
+                            <span>Francisco Valencia</span>
+                            <span>Activo</span>
+                        </div>
+                        <div class="member-copy">
+                            <h3>La base</h3>
+                            <p>Le da masa a lo abstracto. La superficie donde el concepto deja de ser idea y se vuelve impacto físico.</p>
+                        </div>
+                    </article>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- EVIDENCE (Press) - Glitch/Intercept Style -->
-    <section id="evidence" class="py-24 bg-void relative overflow-hidden">
-        <!-- Glitch Background -->
-        <div class="absolute inset-0 opacity-10" style="background-image: repeating-linear-gradient(0deg, transparent, transparent 2px, #D21F3C 2px, #D21F3C 4px);"></div>
-        
-        <div class="max-w-6xl mx-auto px-6 relative z-10">
-            <h2 class="font-minimal text-center text-2xl text-page/50 mb-16 tracking-[0.5em]">INTERCEPTED_TRANSMISSIONS</h2>
-            
-            <div class="grid md:grid-cols-2 gap-12">
-                <!-- Quote 1 -->
-                <div class="border border-page/20 p-8 relative bg-void/80 backdrop-blur">
-                    <div class="absolute top-0 left-0 w-2 h-2 bg-visceral"></div>
-                    <div class="absolute bottom-0 right-0 w-2 h-2 bg-visceral"></div>
-                    <p class="font-minimal text-lg md:text-xl text-page italic mb-6 leading-relaxed">
-                        "UNA EXPLOSIÓN SONORA QUE REMUEVE LAS ENTRAÑAS."
-                    </p>
-                    <div class="flex items-center text-[10px] font-body tracking-wider text-visceral">
-                        <span class="w-2 h-2 bg-visceral rounded-full mr-2 animate-pulse"></span>
-                        SOURCE: REVISTA ROCKTOTAL
+        <!-- ════ LABORATORIO ════ -->
+        <section id="lab" class="section">
+            <div class="container lab-layout">
+                <div class="lab-intro">
+                    <div class="section-heading">
+                        <p class="eyebrow">The Mental Laboratory</p>
+                        <h2>Otra capa del mismo conflicto.</h2>
+                        <p>
+                            El universo [SIC] se extiende a un espacio experimental: física, audio, lógica y confrontación con la propia imagen. No es una página aparte. Es el laboratorio mental.
+                        </p>
+                    </div>
+                    <div class="hero-actions">
+                        <a class="button button-secondary" href="laboratory.html">Entrar al laboratorio</a>
+                        <a class="button button-secondary" href="universe.html">Recorrer plataforma 3</a>
                     </div>
                 </div>
 
-                <!-- Quote 2 -->
-                <div class="border border-page/20 p-8 relative bg-void/80 backdrop-blur">
-                    <div class="absolute top-0 right-0 w-2 h-2 bg-page"></div>
-                    <div class="absolute bottom-0 left-0 w-2 h-2 bg-page"></div>
-                    <p class="font-minimal text-lg md:text-xl text-page italic mb-6 leading-relaxed">
-                        "INTENSO Y EMOTIVO, REDEFINEN EL GRUNGE PARA NUEVAS GENERACIONES."
-                    </p>
-                    <div class="flex items-center text-[10px] font-body tracking-wider text-visceral">
-                        <span class="w-2 h-2 bg-visceral rounded-full mr-2 animate-pulse"></span>
-                        SOURCE: DIARIO ALTERNATIVO
+                <div class="lab-grid">
+                    <article class="lab-card">
+                        <span class="phase-label">Phase 1 / The Container</span>
+                        <h3>Visuales y física</h3>
+                        <p>Las palabras se comportan como materia. Colisión, textura, scanlines y distorsión.</p>
+                    </article>
+                    <article class="lab-card">
+                        <span class="phase-label">Phase 2 / The Ether</span>
+                        <h3>Audio y sintonía</h3>
+                        <p>Radio de onda corta. Ruido, señal y manifiesto se cruzan según la frecuencia.</p>
+                    </article>
+                    <article class="lab-card">
+                        <span class="phase-label">Phase 3 / The Subconscious</span>
+                        <h3>Lógica e interacción</h3>
+                        <p>Terminal y filtros de verdad. La máquina contesta sin entregar una salida limpia.</p>
+                    </article>
+                    <article class="lab-card">
+                        <span class="phase-label">Phase 4 / The Mirror</span>
+                        <h3>Hardware y realidad</h3>
+                        <p>La cámara como espejo de dualidad. Alto contraste, rastro fantasma, presencia intervenida.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <div class="redline"></div>
+
+        <!-- ════ SEÑAL ════ -->
+        <section id="senal" class="section section-light">
+            <div class="container signal-layout">
+                <div class="signal-copy">
+                    <div class="section-heading">
+                        <p class="eyebrow">Señal</p>
+                        <h2>Si la conversación vale la pena, la señal se abre.</h2>
                     </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- SIGNAL (Contact) - Terminal Style -->
-    <section id="signal" class="py-24 bg-page text-void relative">
-        <div class="max-w-3xl mx-auto px-6 text-center">
-            <h2 class="font-minimal text-4xl font-bold mb-2">SIGNAL</h2>
-            <div class="w-16 h-1 bg-visceral mx-auto mb-12"></div>
-
-            <div class="space-y-8 font-minimal text-sm md:text-base tracking-widest">
-                <div class="group cursor-pointer">
-                    <p class="text-visceral text-[10px] mb-1 font-bold">DIRECT UPLINK // EMAIL</p>
-                    <a href="mailto:sic.rockband@gmail.com" class="text-2xl font-bold hover:text-visceral transition-colors relative">
-                        sic.rockband@gmail.com
-                    </a>
+                    <p class="signal-preface">
+                        Prensa, booking, colaboraciones editoriales y apariciones en vivo. La entrada no se plantea como promoción genérica, sino como una extensión del mismo sistema conceptual.
+                    </p>
                 </div>
 
-                <div class="group cursor-pointer">
-                    <p class="text-visceral text-[10px] mb-1 font-bold">AUDIO FREQUENCY // PHONE</p>
-                    <a href="tel:+573168228662" class="text-2xl font-bold hover:text-visceral transition-colors">
-                        +57 316 822 8662
-                    </a>
+                <div class="signal-card" style="border-color: var(--line-dark);">
+                    <ul class="signal-list">
+                        <li style="border-color: rgba(10,10,10,0.12);">
+                            <span class="panel-label">Email</span><br>
+                            <a href="mailto:sic.rockband@gmail.com">sic.rockband@gmail.com</a>
+                        </li>
+                        <li style="border-color: rgba(10,10,10,0.12);">
+                            <span class="panel-label">Teléfono</span><br>
+                            <a href="tel:+573168228662">+57 316 822 8662</a>
+                        </li>
+                        <li style="border-color: rgba(10,10,10,0.12);">
+                            <span class="panel-label">Instagram</span><br>
+                            <a href="https://www.instagram.com/sic.band/?hl=es-la" target="_blank" rel="noreferrer">@sic.band</a>
+                        </li>
+                        <li style="border-color: rgba(10,10,10,0.12);">
+                            <span class="panel-label">YouTube</span><br>
+                            <a href="https://www.youtube.com/channel/UCFAShEu-88tWd8x7cjrVVlA" target="_blank" rel="noreferrer">Canal oficial</a>
+                        </li>
+                        <li style="border-color: rgba(10,10,10,0.12);">
+                            <span class="panel-label">Escucha</span><br>
+                            <a href="https://open.spotify.com/intl-es/album/4PxnIpMCF5wOzT7vtO6JO0?si=64dq-kJ4SxqF5CNZ5jzdUw" target="_blank" rel="noreferrer">Último lanzamiento en Spotify</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
-            
-            <div class="mt-16 p-4 border border-visceral/20 inline-block">
-                <p class="font-body text-[10px] text-void/60">
-                    FOR BOOKING, PRESS & COLLABORATIONS.<br>
-                    TRANSMISSION ENDS.
-                </p>
-            </div>
-        </div>
-    </section>
+        </section>
+    </main>
 
-    <!-- Footer -->
-    <footer class="bg-black py-16 border-t border-page/10 font-minimal text-xs text-page/40">
-        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
-            <div class="text-left">
-                <h2 class="text-2xl text-page font-bold tracking-widest mb-2">[SIC]</h2>
-                <p class="text-[10px]">SENTENCE IN CONFLICT // EST. 2017</p>
-            </div>
-            
-             <div class="flex space-x-8">
-               <a href="https://www.instagram.com/sic.band/?hl=es-la" target="_blank" class="hover:text-visceral transition-colors"><i class="fab fa-instagram text-xl"></i></a>
-               <a href="https://open.spotify.com/intl-es/artist/your_artist_id" target="_blank" class="hover:text-visceral transition-colors"><i class="fab fa-spotify text-xl"></i></a>
-               <a href="https://www.youtube.com/channel/UCFAShEu-88tWd8x7cjrVVlA" target="_blank" class="hover:text-visceral transition-colors"><i class="fab fa-youtube text-xl"></i></a>
-               <a href="mailto:sic.rockband@gmail.com" class="hover:text-visceral transition-colors"><i class="fas fa-envelope text-xl"></i></a>
+    <footer class="footer">
+        <div class="container">
+            <p>[SIC] / Sentence In Conflict / Releven node / Pereira, Colombia</p>
+            <div class="footer-links">
+                <a href="#top">Volver arriba</a>
+                <a href="laboratory.html">Laboratorio</a>
+                <a href="universe.html">Universo 3D</a>
             </div>
         </div>
     </footer>
 
+    <script>
+        /* ── Mobile menu ── */
+        const toggle = document.querySelector(".menu-toggle");
+        const nav = document.querySelector(".site-nav");
+
+        if (toggle && nav) {
+            toggle.addEventListener("click", () => {
+                const isOpen = nav.classList.toggle("is-open");
+                toggle.setAttribute("aria-expanded", String(isOpen));
+            });
+
+            nav.querySelectorAll("a").forEach((link) => {
+                link.addEventListener("click", () => {
+                    nav.classList.remove("is-open");
+                    toggle.setAttribute("aria-expanded", "false");
+                });
+            });
+        }
+
+        /* ── Fade-in on scroll ── */
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = "1";
+                    entry.target.style.transform = "translateY(0)";
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.12 });
+
+        document.querySelectorAll(".section-heading, .pillar-card, .release-card, .member-card, .lab-card, .tension-item, .timeline-item").forEach((el) => {
+            el.style.opacity = "0";
+            el.style.transform = "translateY(1.2rem)";
+            el.style.transition = "opacity 0.5s ease, transform 0.5s ease";
+            observer.observe(el);
+        });
+    </script>
+    <script type="module" src="./scripts/index-immersive.js"></script>
 </body>
 </html>
