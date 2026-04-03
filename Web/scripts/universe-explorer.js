@@ -207,6 +207,7 @@ const inspectTotal = doc.getElementById("inspect-total");
 const dockIndex = doc.getElementById("dock-index");
 const dockTitle = doc.getElementById("dock-title");
 const dockCopy = doc.getElementById("dock-copy");
+const commandDock = doc.getElementById("command-dock");
 const reticle = doc.getElementById("reticle");
 const reticleHint = doc.getElementById("reticle-hint");
 const movePad = doc.getElementById("move-pad");
@@ -249,6 +250,7 @@ const outlineEffect = new OutlineEffect(renderer, {
 });
 const toonGradientMap = createToonGradientMap();
 const surfaceTextures = createSurfaceTextures();
+const textureSlots = ["map", "normalMap", "roughnessMap", "metalnessMap", "aoMap", "emissiveMap", "alphaMap"];
 
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -269,8 +271,12 @@ const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
 const poseCamera = new THREE.PerspectiveCamera();
 const tempQuat = new THREE.Quaternion();
+const drawBufferSize = new THREE.Vector2();
 const accentColor = new THREE.Color(0xff6077);
 const hoverColor = new THREE.Color(0xffd1d8);
+const renderPoseTarget = new THREE.Vector3(1.7, 0.9, -0.86);
+const crystalPoseTarget = new THREE.Vector3(1.36, 1.88, -3.08);
+const sceneBoundsIgnorePrefixes = ["VoidBase", "CityStrip_"];
 
 const world = new THREE.Group();
 const atmosphereGroup = new THREE.Group();
@@ -339,6 +345,7 @@ const runtime = {
     mode: "frame",
     guideCollapsed: isCoarsePointer,
     modelRoot: null,
+    modelAnchor: new THREE.Vector3(),
     sceneBox: new THREE.Box3(),
     sceneSize: new THREE.Vector3(12, 6, 12),
     sceneCenter: new THREE.Vector3(),
@@ -500,6 +507,9 @@ function bindUI() {
             setTourActive(false);
             setActiveHotspot(targetId);
             focusHotspot(targetId, true);
+            if (isCoarsePointer) {
+                setGuideCollapsed(true);
+            }
         }
     });
 
@@ -521,6 +531,8 @@ function bindUI() {
     movePad?.addEventListener("pointermove", onMovePadMove);
     movePad?.addEventListener("pointerup", onMovePadUp);
     movePad?.addEventListener("pointercancel", onMovePadUp);
+
+    bindDockSwipe();
 }
 
 function setGuideCollapsed(collapsed) {
@@ -765,12 +777,20 @@ function handleLoaded(gltf) {
             sceneBoxMax: runtime.sceneBox.max.toArray(),
             sceneCenter: runtime.sceneCenter.toArray(),
             sceneSize: runtime.sceneSize.toArray(),
+            modelAnchor: runtime.modelAnchor.toArray(),
             cam1Pos: runtime.referencePose.position.toArray(),
             cam1Fov: runtime.referencePose.fov,
             cam2Pos: runtime.referencePose2.position.toArray(),
             cam2Fov: runtime.referencePose2.fov,
             hotspots: {}
         };
+        window.__sic_runtime_root = runtime.modelRoot;
+        if (win.location.hostname === "127.0.0.1" || win.location.hostname === "localhost") {
+            window.__sic_camera = camera;
+            window.__sic_runtime = runtime;
+            window.__sic_world = world;
+            window.__sic_three = THREE;
+        }
         runtime.hotspotNodes.forEach((nodes, id) => {
             if (nodes[0]) {
                 const wp = new THREE.Vector3();
@@ -828,10 +848,11 @@ function centerModel(root) {
     const box = new THREE.Box3().setFromObject(root);
     const center = box.getCenter(new THREE.Vector3());
     const anchor = new THREE.Vector3(center.x, box.min.y, center.z);
+    runtime.modelAnchor.copy(anchor);
     root.position.sub(anchor);
     root.updateMatrixWorld(true);
 
-    runtime.sceneBox.setFromObject(root);
+    runtime.sceneBox.copy(computeFocusBounds(root));
     runtime.sceneBox.getCenter(runtime.sceneCenter);
     runtime.sceneBox.getSize(runtime.sceneSize);
 
@@ -843,6 +864,37 @@ function centerModel(root) {
     shadowPlane.scale.setScalar(Math.max(runtime.sceneSize.x, runtime.sceneSize.z) / 8.5);
     shadowPlane.position.copy(runtime.sceneCenter);
     shadowPlane.position.y = 0.012;
+}
+
+function computeFocusBounds(root) {
+    const focusBox = new THREE.Box3();
+    const meshBox = new THREE.Box3();
+    let hasContent = false;
+
+    root.traverse((node) => {
+        if (!node?.isMesh) {
+            return;
+        }
+
+        if (sceneBoundsIgnorePrefixes.some((prefix) => node.name?.startsWith(prefix))) {
+            return;
+        }
+
+        meshBox.setFromObject(node);
+        if (meshBox.isEmpty()) {
+            return;
+        }
+
+        if (!hasContent) {
+            focusBox.copy(meshBox);
+            hasContent = true;
+            return;
+        }
+
+        focusBox.union(meshBox);
+    });
+
+    return hasContent ? focusBox : new THREE.Box3().setFromObject(root);
 }
 
 function buildAtmosphere(root) {
@@ -915,17 +967,25 @@ function createStylizedMaterial(material, object) {
     const opacity = material?.opacity ?? 1;
     const alphaTest = material?.alphaTest ?? 0;
     const originalMap = material?.map || null;
+    const normalMap = material?.normalMap || null;
+    const roughnessMap = material?.roughnessMap || null;
+    const metalnessMap = material?.metalnessMap || null;
+    const aoMap = material?.aoMap || null;
+    const emissiveMap = material?.emissiveMap || null;
+    const alphaMap = material?.alphaMap || null;
     const side = object.name.startsWith("Poster_") || object.name.includes("_label") || object.name.includes("_art")
         ? THREE.DoubleSide
         : material?.side ?? THREE.FrontSide;
     const isGraphic = object.name.startsWith("Poster_") || object.name.includes("_label") || object.name.includes("_art") || object.name.startsWith("CardStack_");
     const isGlass = transparent || object.name.includes("Glass") || object.name.startsWith("Crystal_");
+    const hasSurfaceMaps = Boolean(originalMap || normalMap || roughnessMap || metalnessMap || aoMap || emissiveMap || alphaMap);
     const proceduralMap = !isGraphic && !isGlass && !originalMap ? pickProceduralTexture(object, baseColor) : null;
 
     if (isGraphic) {
         return rememberMaterialState(new THREE.MeshBasicMaterial({
             color: originalMap ? new THREE.Color(0xffffff) : baseColor,
             map: originalMap,
+            alphaMap,
             transparent,
             opacity,
             alphaTest: alphaTest || 0.05,
@@ -935,24 +995,50 @@ function createStylizedMaterial(material, object) {
 
     if (isGlass) {
         return rememberMaterialState(new THREE.MeshPhysicalMaterial({
-            color: baseColor,
+            color: originalMap ? new THREE.Color(0xffffff) : baseColor,
+            map: originalMap,
+            normalMap,
+            roughnessMap,
+            alphaMap,
             transparent: true,
             opacity: Math.min(opacity, 0.88),
-            roughness: 0.12,
+            roughness: roughnessMap ? material?.roughness ?? 0.16 : 0.12,
             metalness: 0.04,
-            transmission: 0.22,
+            transmission: object.name.startsWith("Crystal_") ? 0.72 : 0.34,
             thickness: 0.58,
             clearcoat: 0.9,
             clearcoatRoughness: 0.16,
             emissive,
             emissiveIntensity: 0.16,
             side,
+            depthWrite: false,
+        }));
+    }
+
+    if (hasSurfaceMaps) {
+        return rememberMaterialState(new THREE.MeshStandardMaterial({
+            color: originalMap ? new THREE.Color(0xffffff) : baseColor,
+            map: originalMap || proceduralMap,
+            normalMap,
+            roughnessMap,
+            metalnessMap,
+            aoMap,
+            emissive,
+            emissiveMap,
+            emissiveIntensity: material?.emissiveIntensity ?? 0,
+            alphaMap,
+            transparent,
+            opacity,
+            alphaTest,
+            roughness: material?.roughness ?? 0.72,
+            metalness: material?.metalness ?? 0.08,
+            side,
         }));
     }
 
     return rememberMaterialState(new THREE.MeshToonMaterial({
         color: baseColor,
-        map: proceduralMap,
+        map: originalMap || proceduralMap,
         gradientMap: toonGradientMap,
         transparent,
         opacity,
@@ -967,6 +1053,57 @@ function rememberMaterialState(material) {
     material.userData.baseEmissive = material.emissive?.clone?.() || null;
     material.userData.baseEmissiveIntensity = material.emissiveIntensity ?? 0;
     return material;
+}
+
+function setMaterialTextureAnisotropy(material, anisotropy) {
+    textureSlots.forEach((slot) => {
+        const texture = material?.[slot];
+        if (texture) {
+            texture.anisotropy = anisotropy;
+        }
+    });
+}
+
+function bindDockSwipe() {
+    if (!commandDock || !isCoarsePointer) {
+        return;
+    }
+
+    const touchState = {
+        active: false,
+        startX: 0,
+        startY: 0,
+    };
+
+    commandDock.addEventListener("pointerdown", (event) => {
+        if (event.pointerType !== "touch") {
+            return;
+        }
+        touchState.active = true;
+        touchState.startX = event.clientX;
+        touchState.startY = event.clientY;
+    });
+
+    commandDock.addEventListener("pointerup", (event) => {
+        if (!touchState.active || event.pointerType !== "touch") {
+            return;
+        }
+
+        const deltaX = event.clientX - touchState.startX;
+        const deltaY = event.clientY - touchState.startY;
+        touchState.active = false;
+
+        if (Math.abs(deltaX) < 48 || Math.abs(deltaX) < Math.abs(deltaY) * 1.2) {
+            return;
+        }
+
+        setTourActive(false);
+        focusRelativeHotspot(deltaX < 0 ? 1 : -1);
+    });
+
+    commandDock.addEventListener("pointercancel", () => {
+        touchState.active = false;
+    });
 }
 
 function pickProceduralTexture(object, baseColor) {
@@ -1011,18 +1148,14 @@ function prepareModel(root) {
                 return material;
             }
 
-            if (material.map) {
-                material.map.anisotropy = anisotropy;
-            }
+            setMaterialTextureAnisotropy(material, anisotropy);
 
             if (!object.name.startsWith("Poster_") && !object.name.includes("_label") && !object.name.includes("_art")) {
                 object.geometry.computeVertexNormals();
             }
 
             const nextMaterial = createStylizedMaterial(material, object);
-            if (nextMaterial.map) {
-                nextMaterial.map.anisotropy = anisotropy;
-            }
+            setMaterialTextureAnisotropy(nextMaterial, anisotropy);
 
             nextMaterial.needsUpdate = true;
             nextMaterial.userData.outlineParameters = {
@@ -1073,35 +1206,34 @@ function captureReferencePose(gltf) {
     const sx = runtime.sceneSize.x;
     const sy = runtime.sceneSize.y;
     const sz = runtime.sceneSize.z;
-    const cx = runtime.sceneCenter;
-
-    // uv1 — try GLTF embedded SceneCamera first (exported by build script: 56mm/~20° FOV)
-    let cameraNode = runtime.modelRoot?.getObjectByName("SceneCamera");
+    let cameraNode = gltf.scene?.getObjectByName("SceneCamera") || runtime.modelRoot?.getObjectByName("SceneCamera");
     if (!cameraNode && Array.isArray(gltf.cameras) && gltf.cameras.length) {
         cameraNode = gltf.cameras[0];
     }
 
     if (cameraNode && cameraNode.isCamera) {
-        runtime.referencePose.position.copy(cameraNode.getWorldPosition(new THREE.Vector3()));
-        runtime.referencePose.quaternion.copy(cameraNode.getWorldQuaternion(new THREE.Quaternion()));
+        const cameraPosition = cameraNode.getWorldPosition(new THREE.Vector3());
+        runtime.referencePose.position.copy(cameraPosition);
+        runtime.referencePose.quaternion.copy(quaternionFromLookAt(cameraPosition, renderPoseTarget));
         runtime.referencePose.fov = cameraNode.fov || 20;
     } else {
-        // Fallback: isometric view derived from scene bounds (matches build-script camera style)
-        const t1 = cx.clone().add(new THREE.Vector3(sx * 0.08, -sy * 0.15, -sz * 0.08));
+        const t1 = renderPoseTarget.clone();
         const p1 = t1.clone().add(new THREE.Vector3(-sx * 0.42, sy * 2.8, sz * 0.66));
         runtime.referencePose.position.copy(p1);
         runtime.referencePose.quaternion.copy(quaternionFromLookAt(p1, t1));
         runtime.referencePose.fov = 20;
     }
 
-    // uv2 — crystal-centered frame: same elevation, shifted toward crystal/spire
-    const t2 = cx.clone().add(new THREE.Vector3(sx * 0.05, -sy * 0.15, -sz * 0.16));
-    const p2 = t2.clone().add(new THREE.Vector3(sx * 0.05, sy * 2.8, sz * 0.66));
+    const crystalObject = runtime.modelRoot?.getObjectByName("Crystal_0") || runtime.modelRoot?.getObjectByName("Crystal_Base");
+    const t2 = crystalObject
+        ? new THREE.Box3().setFromObject(crystalObject).getCenter(new THREE.Vector3()).setY(crystalPoseTarget.y)
+        : crystalPoseTarget.clone();
+    const p2 = t2.clone().add(new THREE.Vector3(sx * 0.12, sy * 2.55, sz * 0.54));
     runtime.referencePose2.position.copy(p2);
     runtime.referencePose2.quaternion.copy(quaternionFromLookAt(p2, t2));
     runtime.referencePose2.fov = 22;
 
-    const baseDirection = runtime.referencePose.position.clone().sub(cx);
+    const baseDirection = runtime.referencePose.position.clone().sub(renderPoseTarget);
     if (baseDirection.lengthSq() > 0) {
         runtime.referenceOffsetDirection.copy(baseDirection.normalize());
     }
@@ -1150,6 +1282,9 @@ function setMode(mode, fromUser) {
     if (runtime.mode === "explore") {
         reticle?.classList.add("is-visible");
         if (fromUser) {
+            if (isCoarsePointer) {
+                setGuideCollapsed(true);
+            }
             resetExplorePose(false);
         }
         if (modeStatus) {
@@ -1219,6 +1354,9 @@ function enterExploreFromHotspot(hotspotId) {
     runtime.explore.pitch = clamp(Math.asin(lookDirection.y), -0.75, 0.42);
 
     setMode("explore", false);
+    if (isCoarsePointer) {
+        setGuideCollapsed(true);
+    }
     applyExploreCamera(true);
     setActiveHotspot(hotspotId);
 }
@@ -1718,6 +1856,10 @@ function render() {
         sprite.material.opacity = (index < 3 ? 0.11 : 0.04) + Math.sin(elapsed * 1.3 + phase) * 0.018;
     });
 
+    renderer.getDrawingBufferSize(drawBufferSize);
+    renderer.setScissorTest(false);
+    renderer.setViewport(0, 0, drawBufferSize.x, drawBufferSize.y);
+    renderer.clear(true, true, true);
     outlineEffect.render(scene, camera);
 }
 
@@ -1728,6 +1870,7 @@ function resize() {
 
     renderer.setPixelRatio(pixelRatio);
     renderer.setSize(width, height, false);
+    outlineEffect.setSize(width, height);
     camera.aspect = width / Math.max(height, 1);
     camera.updateProjectionMatrix();
 }

@@ -2,3 +2,12 @@ template-EPK-SCI/
 *.wav
 Web/node_modules/
 node_modules/
+.playwright-mcp/
+blender_outputs/__pycache__/
+*.blend1
+tmp-playwright*
+cam-probe-*.png
+cam-test-*.png
+playwright-live-*.png
+playwright-hide-*.png
+canvas-dataurl-prefix.json
