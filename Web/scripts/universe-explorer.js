@@ -10,7 +10,7 @@ const HOTSPOTS = [
         label: "Portal / Line to Body",
         type: "Gateway",
         phase: "Core system",
-        copy: "El umbral fija la sintaxis del universo: editorial, tránsito y tensión material antes de que aparezca la música."
+        copy: "El umbral fija la sintaxis del universo: editorial, transito y tension material antes de que aparezca la musica."
     },
     {
         id: "platform",
@@ -19,7 +19,7 @@ const HOTSPOTS = [
         label: "Platform 3",
         type: "Signal",
         phase: "Transit",
-        copy: "La señalética vuelve explícita la ficción ferroviaria del andén: navegar [SIC] implica pasar por estaciones conceptuales."
+        copy: "La senaletica vuelve explicita la ficcion ferroviaria del anden: navegar [SIC] implica pasar por estaciones conceptuales."
     },
     {
         id: "poster-ambiguity",
@@ -28,7 +28,7 @@ const HOTSPOTS = [
         label: "Poster / Ambiguity",
         type: "Poster",
         phase: "Phase IV",
-        copy: "La ambigüedad ya no es ruido lateral sino una verdad material, impresa y dejada a la vista dentro del campo."
+        copy: "La ambiguedad ya no es ruido lateral sino una verdad material, impresa y dejada a la vista dentro del campo."
     },
     {
         id: "poster-mss-white",
@@ -37,7 +37,7 @@ const HOTSPOTS = [
         label: "Poster / MSS WHITE",
         type: "Poster",
         phase: "Phase III",
-        copy: "La fase oscura entra al escenario como expediente visual: densidad, repetición y una blancura que no resuelve la herida."
+        copy: "La fase oscura entra al escenario como expediente visual: densidad, repeticion y una blancura que no resuelve la herida."
     },
     {
         id: "poster-desde-sol",
@@ -46,16 +46,16 @@ const HOTSPOTS = [
         label: "Poster / Desde el sol",
         type: "Poster",
         phase: "Phase II",
-        copy: "La luz aparece en el andén como prueba de exposición emocional, no como cierre. El sistema recuerda el momento del despertar."
+        copy: "La luz aparece en el anden como prueba de exposicion emocional, no como cierre. El sistema recuerda el momento del despertar."
     },
     {
         id: "poster-al-reves",
         objectName: "Poster_AlReves",
         aliases: ["Poster_AlReves"],
-        label: "Poster / Al revés",
+        label: "Poster / Al reves",
         type: "Poster",
         phase: "Phase I",
-        copy: "La inversión original se incrusta en la arquitectura del tren: mirar de lado para entender lo que el frente no muestra."
+        copy: "La inversion original se incrusta en la arquitectura del tren: mirar de lado para entender lo que el frente no muestra."
     },
     {
         id: "poster-map",
@@ -64,7 +64,7 @@ const HOTSPOTS = [
         label: "Mapa del universo",
         type: "Lore map",
         phase: "Archive",
-        copy: "El mapa no describe un lugar estable; registra cómo las fases y símbolos de [SIC] se conectan dentro del mismo laboratorio mental."
+        copy: "El mapa no describe un lugar estable; registra como las fases y simbolos de [SIC] se conectan dentro del mismo laboratorio mental."
     },
     {
         id: "cassette-mss-white",
@@ -73,16 +73,16 @@ const HOTSPOTS = [
         label: "Cassette / MSS WHITE",
         type: "Cassette",
         phase: "Phase III",
-        copy: "Objeto de archivo físico. El soporte magnético aterriza la abstracción y hace legible la música como rastro tangible."
+        copy: "Objeto de archivo fisico. El soporte magnetico aterriza la abstraccion y hace legible la musica como rastro tangible."
     },
     {
         id: "cassette-al-reves",
         objectName: "Cassette_AlReves",
         aliases: ["Cassette_AlReves"],
-        label: "Cassette / Al revés",
+        label: "Cassette / Al reves",
         type: "Cassette",
         phase: "Phase I",
-        copy: "Cinta de origen. El gesto de invertir no es nostalgia: es un método para romper la lectura lineal del sistema."
+        copy: "Cinta de origen. El gesto de invertir no es nostalgia: es un metodo para romper la lectura lineal del sistema."
     },
     {
         id: "cassette-desde-sol",
@@ -91,7 +91,7 @@ const HOTSPOTS = [
         label: "Cassette / Desde el sol",
         type: "Cassette",
         phase: "Phase II",
-        copy: "La claridad entra como cassette de tránsito, dejado a la mano como si fuera una señal abierta sobre el banco del andén."
+        copy: "La claridad entra como cassette de transito, dejado a la mano como si fuera una senal abierta sobre el banco del anden."
     },
     {
         id: "cassette-ambiguity",
@@ -109,31 +109,32 @@ const HOTSPOTS = [
         label: "Tarjetas [SIC]",
         type: "Field cards",
         phase: "Editorial mark",
-        copy: "Las tarjetas repliegan el símbolo en formato objeto. No son merch: funcionan como piezas de navegación dentro del dossier físico."
+        copy: "Las tarjetas repliegan el simbolo en formato objeto. No son merch: funcionan como piezas de navegacion dentro del dossier fisico."
     }
 ];
 
 const HOTSPOT_BY_ID = new Map(HOTSPOTS.map((item) => [item.id, item]));
+const HOTSPOT_ORDER = HOTSPOTS.map((item) => item.id);
 const HOTSPOT_MEDIA = {
     portal: {
         src: "./assets/sic_universe_station_preview.png",
         alt: "Vista general de la plataforma [SIC]",
-        caption: "Umbral principal y encuadre maestro de la estación."
+        caption: "Umbral principal y encuadre maestro de la estacion."
     },
     platform: {
         src: "./assets/sic_universe_station_preview.png",
-        alt: "Señalética de Platform 3",
-        caption: "La señal funciona como nodo de tránsito dentro del recorrido."
+        alt: "Senaletica de Platform 3",
+        caption: "La senal funciona como nodo de transito dentro del recorrido."
     },
     "poster-ambiguity": {
         src: "./assets/sic_phase_iv_ambiguity.png",
         alt: "Poster Ambiguity",
-        caption: "Fase IV fijada como pieza editorial dentro del andén."
+        caption: "Fase IV fijada como pieza editorial dentro del anden."
     },
     "poster-mss-white": {
         src: "./assets/sic_album_mss_white_universe.png",
         alt: "Poster MSS WHITE",
-        caption: "Portada utilizada como objeto físico y punto de memoria."
+        caption: "Portada utilizada como objeto fisico y punto de memoria."
     },
     "poster-desde-sol": {
         src: "./assets/sic_album_desde_sol.png",
@@ -142,13 +143,13 @@ const HOTSPOT_MEDIA = {
     },
     "poster-al-reves": {
         src: "./assets/sic_album_al_reves.png",
-        alt: "Poster Al revés",
+        alt: "Poster Al reves",
         caption: "Archivo de origen montado sobre la arquitectura del tren."
     },
     "poster-map": {
         src: "./assets/sic_universe_map.png",
         alt: "Mapa del universo SIC",
-        caption: "Mapa conceptual para leer relaciones, fases y símbolos."
+        caption: "Mapa conceptual para leer relaciones, fases y simbolos."
     },
     "cassette-mss-white": {
         src: "./assets/sic_album_mss_white_universe.png",
@@ -157,13 +158,13 @@ const HOTSPOT_MEDIA = {
     },
     "cassette-al-reves": {
         src: "./assets/sic_album_al_reves.png",
-        alt: "Cassette Al revés",
+        alt: "Cassette Al reves",
         caption: "Cinta de origen integrada al recorrido como pieza interactiva."
     },
     "cassette-desde-sol": {
         src: "./assets/sic_album_desde_sol.png",
         alt: "Cassette Desde el sol",
-        caption: "Soporte de tránsito luminoso dentro de la estación."
+        caption: "Soporte de transito luminoso dentro de la estacion."
     },
     "cassette-ambiguity": {
         src: "./assets/sic_phase_iv_ambiguity.png",
@@ -173,7 +174,7 @@ const HOTSPOT_MEDIA = {
     cards: {
         src: "./assets/sic_symbol_daniel.png",
         alt: "Tarjetas SIC",
-        caption: "Tarjetas de campo usadas como interfaz editorial y símbolo."
+        caption: "Tarjetas de campo usadas como interfaz editorial y simbolo."
     }
 };
 
@@ -191,12 +192,21 @@ const modeStatus = doc.getElementById("mode-status");
 const focusStatus = doc.getElementById("focus-status");
 const hotspotList = doc.getElementById("hotspot-list");
 const quickHotspots = doc.getElementById("quick-hotspots");
+const hotspotCounter = doc.getElementById("hotspot-counter");
 const inspectTitle = doc.getElementById("inspect-title");
 const inspectImage = doc.getElementById("inspect-image");
 const inspectCaption = doc.getElementById("inspect-caption");
 const inspectCopy = doc.getElementById("inspect-copy");
 const inspectType = doc.getElementById("inspect-type");
 const inspectPhase = doc.getElementById("inspect-phase");
+const inspectTypePill = doc.getElementById("inspect-type-pill");
+const inspectPhasePill = doc.getElementById("inspect-phase-pill");
+const inspectModePill = doc.getElementById("inspect-mode-pill");
+const inspectIndex = doc.getElementById("inspect-index");
+const inspectTotal = doc.getElementById("inspect-total");
+const dockIndex = doc.getElementById("dock-index");
+const dockTitle = doc.getElementById("dock-title");
+const dockCopy = doc.getElementById("dock-copy");
 const reticle = doc.getElementById("reticle");
 const reticleHint = doc.getElementById("reticle-hint");
 const movePad = doc.getElementById("move-pad");
@@ -206,6 +216,14 @@ const mobileInspect = doc.getElementById("mobile-inspect");
 const modeButtons = Array.from(doc.querySelectorAll("[data-mode]"));
 const resetViewButton = doc.getElementById("reset-view");
 const focusHotspotButton = doc.getElementById("focus-hotspot");
+const enterExploreButton = doc.getElementById("enter-explore");
+const prevHotspotButton = doc.getElementById("prev-hotspot");
+const nextHotspotButton = doc.getElementById("next-hotspot");
+const dockPrevButton = doc.getElementById("dock-prev");
+const dockNextButton = doc.getElementById("dock-next");
+const dockFocusButton = doc.getElementById("dock-focus");
+const tourHotspotsButton = doc.getElementById("tour-hotspots");
+const toggleGuideButton = doc.getElementById("toggle-guide");
 const toggleHudButton = doc.getElementById("toggle-hud");
 const hudFab = doc.getElementById("hud-fab");
 
@@ -220,27 +238,29 @@ const renderer = new THREE.WebGLRenderer({
     canvas,
     antialias: !isCoarsePointer,
     alpha: true,
-    powerPreference: "high-performance"
+    powerPreference: "high-performance",
+    preserveDrawingBuffer: true
 });
 const outlineEffect = new OutlineEffect(renderer, {
-    defaultThickness: 0.0035,
+    defaultThickness: 0.0036,
     defaultColor: [0.07, 0.05, 0.06],
-    defaultAlpha: 0.86,
+    defaultAlpha: 0.88,
     defaultKeepAlive: true
 });
 const toonGradientMap = createToonGradientMap();
+const surfaceTextures = createSurfaceTextures();
 
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.16;
+renderer.toneMappingExposure = 1.18;
 renderer.setClearColor(0x050505, 1);
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFShadowMap;
 
 const scene = new THREE.Scene();
-scene.fog = new THREE.FogExp2(0x151113, isCoarsePointer ? 0.03 : 0.026);
+scene.fog = new THREE.FogExp2(0x151113, isCoarsePointer ? 0.028 : 0.024);
 
-const camera = new THREE.PerspectiveCamera(46, 1, 0.1, 120);
+const camera = new THREE.PerspectiveCamera(20, 1, 0.1, 120);
 camera.position.set(0, 5, 14);
 
 const timer = new THREE.Timer();
@@ -249,11 +269,15 @@ const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
 const poseCamera = new THREE.PerspectiveCamera();
 const tempQuat = new THREE.Quaternion();
+const accentColor = new THREE.Color(0xff6077);
+const hoverColor = new THREE.Color(0xffd1d8);
 
 const world = new THREE.Group();
+const atmosphereGroup = new THREE.Group();
 scene.add(world);
+scene.add(atmosphereGroup);
 
-const hoverLight = new THREE.PointLight(0xd4434c, 1.2, 12, 2);
+const hoverLight = new THREE.PointLight(0xd4434c, 1.15, 12, 2);
 hoverLight.position.set(0, 3.5, 0);
 scene.add(hoverLight);
 
@@ -271,7 +295,7 @@ keyLight.shadow.camera.top = 16;
 keyLight.shadow.camera.bottom = -16;
 scene.add(keyLight);
 
-const fillLight = new THREE.DirectionalLight(0xd82d39, 0.95);
+const fillLight = new THREE.DirectionalLight(0xd82d39, 1.05);
 fillLight.position.set(10, 8, -2);
 scene.add(fillLight);
 
@@ -302,7 +326,7 @@ const beaconLine = new THREE.Line(
     new THREE.LineBasicMaterial({
         color: 0xf6f1ea,
         transparent: true,
-        opacity: 0.45
+        opacity: 0.46
     })
 );
 beacon.add(beaconRing);
@@ -313,6 +337,7 @@ scene.add(beacon);
 
 const runtime = {
     mode: "frame",
+    guideCollapsed: isCoarsePointer,
     modelRoot: null,
     sceneBox: new THREE.Box3(),
     sceneSize: new THREE.Vector3(12, 6, 12),
@@ -323,8 +348,8 @@ const runtime = {
         minZ: -5,
         maxZ: 5
     },
-    activeHotspotId: "portal",
-    focusHotspotId: "portal",
+    activeHotspotId: HOTSPOT_ORDER[0],
+    focusHotspotId: HOTSPOT_ORDER[0],
     reticleHotspotId: null,
     hotspotNodes: new Map(),
     hotspotObjects: [],
@@ -337,11 +362,22 @@ const runtime = {
         fov: 46
     },
     referencePose: {
-        position: new THREE.Vector3(0, 5, 14),
+        position: new THREE.Vector3(-9.35, 5.10, 7.32),
         quaternion: new THREE.Quaternion(),
-        fov: 46
+        fov: 20
+    },
+    referencePose2: {
+        position: new THREE.Vector3(0.20, 5.90, 7.80),
+        quaternion: new THREE.Quaternion(),
+        fov: 22
     },
     referenceOffsetDirection: new THREE.Vector3(-0.68, 0.45, 0.57).normalize(),
+    atmosphereSprites: [],
+    tour: {
+        active: false,
+        nextAdvanceAt: 0,
+        duration: 4.8
+    },
     explore: {
         activeLook: false,
         pointerId: null,
@@ -376,6 +412,9 @@ const runtime = {
 buildHotspotList();
 buildQuickHotspots();
 bindUI();
+setGuideCollapsed(runtime.guideCollapsed);
+setTourActive(false);
+setHudHidden(false);
 resize();
 win.addEventListener("resize", resize);
 loader.load(
@@ -395,15 +434,56 @@ function bindUI() {
     });
 
     resetViewButton?.addEventListener("click", () => {
+        setTourActive(false);
         if (runtime.mode === "explore") {
             resetExplorePose(true);
             return;
         }
-        applyReferencePose(true);
+        const poseIndex = runtime.mode === "frame2" ? 1 : 0;
+        applyReferencePose(true, poseIndex);
     });
 
     focusHotspotButton?.addEventListener("click", () => {
+        setTourActive(false);
         focusHotspot(runtime.activeHotspotId, true);
+    });
+
+    enterExploreButton?.addEventListener("click", () => {
+        setTourActive(false);
+        enterExploreFromHotspot(runtime.activeHotspotId);
+    });
+
+    prevHotspotButton?.addEventListener("click", () => {
+        setTourActive(false);
+        focusRelativeHotspot(-1);
+    });
+
+    nextHotspotButton?.addEventListener("click", () => {
+        setTourActive(false);
+        focusRelativeHotspot(1);
+    });
+
+    dockPrevButton?.addEventListener("click", () => {
+        setTourActive(false);
+        focusRelativeHotspot(-1);
+    });
+
+    dockNextButton?.addEventListener("click", () => {
+        setTourActive(false);
+        focusRelativeHotspot(1);
+    });
+
+    dockFocusButton?.addEventListener("click", () => {
+        setTourActive(false);
+        focusHotspot(runtime.activeHotspotId, true);
+    });
+
+    tourHotspotsButton?.addEventListener("click", () => {
+        setTourActive(!runtime.tour.active);
+    });
+
+    toggleGuideButton?.addEventListener("click", () => {
+        setGuideCollapsed(!runtime.guideCollapsed);
     });
 
     toggleHudButton?.addEventListener("click", () => {
@@ -417,6 +497,7 @@ function bindUI() {
     mobileInspect?.addEventListener("click", () => {
         const targetId = runtime.reticleHotspotId || runtime.activeHotspotId;
         if (targetId) {
+            setTourActive(false);
             setActiveHotspot(targetId);
             focusHotspot(targetId, true);
         }
@@ -430,11 +511,24 @@ function bindUI() {
 
     doc.addEventListener("keydown", onKeyDown);
     doc.addEventListener("keyup", onKeyUp);
+    doc.addEventListener("visibilitychange", () => {
+        if (doc.hidden) {
+            setTourActive(false);
+        }
+    });
 
     movePad?.addEventListener("pointerdown", onMovePadDown);
     movePad?.addEventListener("pointermove", onMovePadMove);
     movePad?.addEventListener("pointerup", onMovePadUp);
     movePad?.addEventListener("pointercancel", onMovePadUp);
+}
+
+function setGuideCollapsed(collapsed) {
+    runtime.guideCollapsed = collapsed;
+    doc.body.classList.toggle("guide-collapsed", collapsed);
+    if (toggleGuideButton) {
+        toggleGuideButton.textContent = collapsed ? "Mostrar guia" : "Ocultar guia";
+    }
 }
 
 function setHudHidden(hidden) {
@@ -445,6 +539,22 @@ function setHudHidden(hidden) {
     }
     if (hudFab) {
         hudFab.textContent = hidden ? "Ver UI" : "UI";
+    }
+}
+
+function setTourActive(active) {
+    runtime.tour.active = active;
+    runtime.tour.nextAdvanceAt = timer.getElapsed() + runtime.tour.duration;
+
+    if (tourHotspotsButton) {
+        tourHotspotsButton.textContent = active ? "Detener tour" : "Iniciar tour";
+        tourHotspotsButton.classList.toggle("is-active", active);
+    }
+
+    if (active) {
+        if (runtime.mode === "explore") {
+            setMode("frame", false);
+        }
     }
 }
 
@@ -462,8 +572,9 @@ function buildHotspotList() {
         button.dataset.hotspot = hotspot.id;
         button.innerHTML = `<strong>${hotspot.label}</strong><span>${hotspot.type} / ${hotspot.phase}</span>`;
         button.addEventListener("click", () => {
+            setTourActive(false);
             setActiveHotspot(hotspot.id);
-            setMode("frame", true);
+            setMode("frame", false);
             focusHotspot(hotspot.id, true);
         });
         hotspotList.appendChild(button);
@@ -485,6 +596,7 @@ function buildQuickHotspots() {
         button.dataset.hotspot = hotspot.id;
         button.textContent = hotspot.label;
         button.addEventListener("click", () => {
+            setTourActive(false);
             setActiveHotspot(hotspot.id);
             setMode("frame", false);
             focusHotspot(hotspot.id, true);
@@ -496,20 +608,133 @@ function buildQuickHotspots() {
 
 function createToonGradientMap() {
     const colors = new Uint8Array([
-        24, 24, 24, 255,
-        54, 54, 54, 255,
-        86, 86, 86, 255,
+        22, 22, 22, 255,
+        48, 48, 48, 255,
+        82, 82, 82, 255,
         118, 118, 118, 255,
         152, 152, 152, 255,
         184, 184, 184, 255,
         214, 214, 214, 255,
-        242, 242, 242, 255,
+        244, 244, 244, 255,
     ]);
     const texture = new THREE.DataTexture(colors, 8, 1, THREE.RGBAFormat);
     texture.colorSpace = THREE.SRGBColorSpace;
     texture.magFilter = THREE.NearestFilter;
     texture.minFilter = THREE.NearestFilter;
     texture.generateMipmaps = false;
+    texture.needsUpdate = true;
+    return texture;
+}
+
+function createSurfaceTextures() {
+    return {
+        paper: makeCanvasTexture(256, 7, 7, (ctx, size) => {
+            ctx.fillStyle = "#f3ede4";
+            ctx.fillRect(0, 0, size, size);
+            ctx.strokeStyle = "rgba(70, 54, 50, 0.14)";
+            ctx.lineWidth = 2;
+            for (let y = 20; y < size + 20; y += 28) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.bezierCurveTo(size * 0.2, y - 9, size * 0.74, y + 8, size, y - 3);
+                ctx.stroke();
+            }
+            for (let i = 0; i < 180; i += 1) {
+                ctx.fillStyle = `rgba(120, 96, 88, ${0.04 + (i % 5) * 0.01})`;
+                ctx.fillRect((i * 17) % size, (i * 37) % size, 2, 2);
+            }
+        }),
+        panel: makeCanvasTexture(256, 3.2, 2.6, (ctx, size) => {
+            ctx.fillStyle = "#dfd3c5";
+            ctx.fillRect(0, 0, size, size);
+            ctx.strokeStyle = "rgba(24, 17, 18, 0.12)";
+            ctx.lineWidth = 6;
+            for (let x = -size; x < size * 2; x += 34) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x + size, size);
+                ctx.stroke();
+            }
+            ctx.strokeStyle = "rgba(255, 255, 255, 0.12)";
+            ctx.lineWidth = 2;
+            for (let y = 18; y < size; y += 52) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(size, y);
+                ctx.stroke();
+            }
+            ctx.fillStyle = "rgba(24, 17, 18, 0.08)";
+            for (let i = 0; i < 90; i += 1) {
+                ctx.fillRect((i * 29) % size, (i * 53) % size, 3, 3);
+            }
+        }),
+        halftone: makeCanvasTexture(256, 4.5, 4.5, (ctx, size) => {
+            ctx.fillStyle = "#efe5de";
+            ctx.fillRect(0, 0, size, size);
+            ctx.fillStyle = "rgba(80, 16, 24, 0.18)";
+            for (let y = 14; y < size; y += 22) {
+                for (let x = 14; x < size; x += 22) {
+                    const radius = 2 + ((x + y) % 3);
+                    ctx.beginPath();
+                    ctx.arc(x, y, radius, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+            ctx.strokeStyle = "rgba(255, 255, 255, 0.08)";
+            ctx.lineWidth = 1;
+            ctx.strokeRect(4, 4, size - 8, size - 8);
+        }),
+        organic: makeCanvasTexture(256, 3.8, 3.8, (ctx, size) => {
+            ctx.fillStyle = "#f2e9dc";
+            ctx.fillRect(0, 0, size, size);
+            ctx.strokeStyle = "rgba(40, 24, 28, 0.12)";
+            ctx.lineWidth = 3;
+            for (let i = 0; i < 22; i += 1) {
+                const startX = (i * 41) % size;
+                const startY = (i * 67) % size;
+                ctx.beginPath();
+                ctx.moveTo(startX, startY);
+                ctx.bezierCurveTo(startX + 18, startY - 12, startX + 34, startY + 14, startX + 58, startY + 2);
+                ctx.stroke();
+            }
+            ctx.fillStyle = "rgba(30, 20, 20, 0.05)";
+            for (let i = 0; i < 140; i += 1) {
+                ctx.fillRect((i * 19) % size, (i * 71) % size, 2, 2);
+            }
+        }),
+        glow: makeRadialTexture(),
+    };
+}
+
+function makeCanvasTexture(size, repeatX, repeatY, painter) {
+    const textureCanvas = doc.createElement("canvas");
+    textureCanvas.width = size;
+    textureCanvas.height = size;
+    const ctx = textureCanvas.getContext("2d");
+    painter(ctx, size);
+    const texture = new THREE.CanvasTexture(textureCanvas);
+    texture.colorSpace = THREE.SRGBColorSpace;
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.wrapT = THREE.RepeatWrapping;
+    texture.repeat.set(repeatX, repeatY);
+    texture.needsUpdate = true;
+    return texture;
+}
+
+function makeRadialTexture() {
+    const textureCanvas = doc.createElement("canvas");
+    textureCanvas.width = 256;
+    textureCanvas.height = 256;
+    const ctx = textureCanvas.getContext("2d");
+    const gradient = ctx.createRadialGradient(128, 128, 0, 128, 128, 128);
+    gradient.addColorStop(0, "rgba(255,255,255,1)");
+    gradient.addColorStop(0.22, "rgba(255,255,255,0.78)");
+    gradient.addColorStop(0.58, "rgba(255,255,255,0.18)");
+    gradient.addColorStop(1, "rgba(255,255,255,0)");
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, 256, 256);
+    const texture = new THREE.CanvasTexture(textureCanvas);
+    texture.colorSpace = THREE.SRGBColorSpace;
     texture.needsUpdate = true;
     return texture;
 }
@@ -523,18 +748,43 @@ function handleLoaded(gltf) {
         runtime.modelRoot.updateMatrixWorld(true);
         prepareModel(runtime.modelRoot);
         cacheHotspots(runtime.modelRoot);
+        buildAtmosphere(runtime.modelRoot);
         captureReferencePose(gltf);
-        applyReferencePose(false);
+        applyReferencePose(true);
         resetExplorePose(false);
-        setActiveHotspot("portal");
+        setActiveHotspot(HOTSPOT_ORDER[0]);
 
         let nodeCount = 0;
         runtime.modelRoot.traverse(() => {
             nodeCount += 1;
         });
 
-        sceneStatus.textContent = `modelo listo / ${nodeCount} nodos`;
-        loadingCopy.textContent = "Modelo cargado. Puedes abrir objetos del lore o entrar en modo recorrido.";
+        // DEBUG: expose scene metrics globally
+        window.__sic_debug = {
+            sceneBoxMin: runtime.sceneBox.min.toArray(),
+            sceneBoxMax: runtime.sceneBox.max.toArray(),
+            sceneCenter: runtime.sceneCenter.toArray(),
+            sceneSize: runtime.sceneSize.toArray(),
+            cam1Pos: runtime.referencePose.position.toArray(),
+            cam1Fov: runtime.referencePose.fov,
+            cam2Pos: runtime.referencePose2.position.toArray(),
+            cam2Fov: runtime.referencePose2.fov,
+            hotspots: {}
+        };
+        runtime.hotspotNodes.forEach((nodes, id) => {
+            if (nodes[0]) {
+                const wp = new THREE.Vector3();
+                nodes[0].getWorldPosition(wp);
+                window.__sic_debug.hotspots[id] = wp.toArray();
+            }
+        });
+
+        if (sceneStatus) {
+            sceneStatus.textContent = `modelo listo / ${nodeCount} nodos`;
+        }
+        if (loadingCopy) {
+            loadingCopy.textContent = "Modelo cargado. Puedes abrir objetos del lore, iniciar el tour o entrar en modo recorrido.";
+        }
         loadingScreen?.classList.add("is-hidden");
         doc.body.dataset.universeReady = "true";
         console.info("SIC universe ready");
@@ -545,7 +795,7 @@ function handleLoaded(gltf) {
             sceneStatus.textContent = "error al inicializar el modelo";
         }
         if (loadingCopy) {
-            loadingCopy.textContent = error?.message || "Falló la inicialización del universo 3D.";
+            loadingCopy.textContent = error?.message || "Fallo la inicializacion del universo 3D.";
         }
     }
 }
@@ -595,57 +845,153 @@ function centerModel(root) {
     shadowPlane.position.y = 0.012;
 }
 
+function buildAtmosphere(root) {
+    runtime.atmosphereSprites.forEach((sprite) => {
+        sprite.material.dispose?.();
+    });
+    runtime.atmosphereSprites = [];
+    atmosphereGroup.clear();
+
+    const glowTexture = surfaceTextures.glow;
+    const crystal = root.getObjectByName("Crystal_Base");
+    const frontCar = root.getObjectByName("FrontCar");
+    const portal = root.getObjectByName("Portal_Board");
+
+    if (crystal) {
+        const sprite = createGlowSprite(glowTexture, 0xff7185, 0.18, new THREE.Vector3(6.4, 6.4, 1));
+        sprite.position.copy(crystal.getWorldPosition(new THREE.Vector3()));
+        sprite.position.y += 1.7;
+        atmosphereGroup.add(sprite);
+        runtime.atmosphereSprites.push(sprite);
+    }
+
+    if (frontCar) {
+        const sprite = createGlowSprite(glowTexture, 0xff9d86, 0.12, new THREE.Vector3(9.6, 5.4, 1));
+        sprite.position.copy(frontCar.getWorldPosition(new THREE.Vector3()));
+        sprite.position.y += 0.9;
+        atmosphereGroup.add(sprite);
+        runtime.atmosphereSprites.push(sprite);
+    }
+
+    if (portal) {
+        const sprite = createGlowSprite(glowTexture, 0xffffff, 0.08, new THREE.Vector3(5.8, 4.8, 1));
+        sprite.position.copy(portal.getWorldPosition(new THREE.Vector3()));
+        sprite.position.y += 1.2;
+        atmosphereGroup.add(sprite);
+        runtime.atmosphereSprites.push(sprite);
+    }
+
+    for (let index = 0; index < 7; index += 1) {
+        const sprite = createGlowSprite(glowTexture, index % 2 === 0 ? 0xff6477 : 0xfff0e3, 0.04, new THREE.Vector3(1.5, 1.5, 1));
+        sprite.position.set(
+            runtime.sceneBox.min.x + 1.5 + (index * 1.7) % Math.max(runtime.sceneSize.x - 3, 1),
+            1.2 + (index % 3) * 0.5,
+            runtime.sceneBox.min.z + 1.2 + (index * 2.1) % Math.max(runtime.sceneSize.z - 2.4, 1)
+        );
+        sprite.userData.floatPhase = index * 0.7;
+        atmosphereGroup.add(sprite);
+        runtime.atmosphereSprites.push(sprite);
+    }
+}
+
+function createGlowSprite(map, color, opacity, scale) {
+    const material = new THREE.SpriteMaterial({
+        map,
+        color,
+        transparent: true,
+        opacity,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending
+    });
+    const sprite = new THREE.Sprite(material);
+    sprite.scale.copy(scale);
+    return sprite;
+}
+
 function createStylizedMaterial(material, object) {
     const baseColor = material?.color?.clone?.() || new THREE.Color(0xffffff);
     const emissive = material?.emissive?.clone?.() || new THREE.Color(0x000000);
     const transparent = Boolean(material?.transparent);
     const opacity = material?.opacity ?? 1;
     const alphaTest = material?.alphaTest ?? 0;
-    const map = material?.map || null;
+    const originalMap = material?.map || null;
     const side = object.name.startsWith("Poster_") || object.name.includes("_label") || object.name.includes("_art")
         ? THREE.DoubleSide
         : material?.side ?? THREE.FrontSide;
     const isGraphic = object.name.startsWith("Poster_") || object.name.includes("_label") || object.name.includes("_art") || object.name.startsWith("CardStack_");
     const isGlass = transparent || object.name.includes("Glass") || object.name.startsWith("Crystal_");
+    const proceduralMap = !isGraphic && !isGlass && !originalMap ? pickProceduralTexture(object, baseColor) : null;
 
     if (isGraphic) {
-        return new THREE.MeshBasicMaterial({
-            color: map ? new THREE.Color(0xffffff) : baseColor,
-            map,
+        return rememberMaterialState(new THREE.MeshBasicMaterial({
+            color: originalMap ? new THREE.Color(0xffffff) : baseColor,
+            map: originalMap,
             transparent,
             opacity,
             alphaTest: alphaTest || 0.05,
             side,
-        });
+        }));
     }
 
     if (isGlass) {
-        return new THREE.MeshPhysicalMaterial({
+        return rememberMaterialState(new THREE.MeshPhysicalMaterial({
             color: baseColor,
             transparent: true,
-            opacity: Math.min(opacity, 0.9),
-            roughness: 0.18,
-            metalness: 0.02,
-            transmission: 0.18,
-            thickness: 0.55,
-            clearcoat: 0.8,
-            clearcoatRoughness: 0.14,
+            opacity: Math.min(opacity, 0.88),
+            roughness: 0.12,
+            metalness: 0.04,
+            transmission: 0.22,
+            thickness: 0.58,
+            clearcoat: 0.9,
+            clearcoatRoughness: 0.16,
             emissive,
-            emissiveIntensity: 0.18,
+            emissiveIntensity: 0.16,
             side,
-        });
+        }));
     }
 
-    return new THREE.MeshToonMaterial({
+    return rememberMaterialState(new THREE.MeshToonMaterial({
         color: baseColor,
-        map,
+        map: proceduralMap,
         gradientMap: toonGradientMap,
         transparent,
         opacity,
         emissive,
         emissiveIntensity: material?.emissiveIntensity ?? 0,
         side,
-    });
+    }));
+}
+
+function rememberMaterialState(material) {
+    material.userData.baseColor = material.color?.clone?.() || null;
+    material.userData.baseEmissive = material.emissive?.clone?.() || null;
+    material.userData.baseEmissiveIntensity = material.emissiveIntensity ?? 0;
+    return material;
+}
+
+function pickProceduralTexture(object, baseColor) {
+    const name = object.name;
+    const isRedDominant = baseColor.r > baseColor.g * 1.22 && baseColor.r > baseColor.b * 1.12;
+
+    if (
+        name.startsWith("Ground") ||
+        name.startsWith("Platform") ||
+        name.startsWith("Back_Platform") ||
+        name.startsWith("Right_Service_Pad") ||
+        name.startsWith("FloorLine")
+    ) {
+        return surfaceTextures.paper;
+    }
+
+    if (name.startsWith("Tree_")) {
+        return surfaceTextures.organic;
+    }
+
+    if (isRedDominant) {
+        return surfaceTextures.halftone;
+    }
+
+    return surfaceTextures.panel;
 }
 
 function prepareModel(root) {
@@ -660,7 +1006,6 @@ function prepareModel(root) {
         object.receiveShadow = true;
 
         const materials = Array.isArray(object.material) ? object.material : [object.material];
-
         const stylizedMaterials = materials.map((material) => {
             if (!material) {
                 return material;
@@ -675,9 +1020,17 @@ function prepareModel(root) {
             }
 
             const nextMaterial = createStylizedMaterial(material, object);
+            if (nextMaterial.map) {
+                nextMaterial.map.anisotropy = anisotropy;
+            }
+
             nextMaterial.needsUpdate = true;
             nextMaterial.userData.outlineParameters = {
-                thickness: object.name.startsWith("Poster_") ? 0.0012 : object.name.includes("Crystal_") ? 0.0018 : 0.0028,
+                thickness: object.name.startsWith("Poster_")
+                    ? 0.0013
+                    : object.name.includes("Crystal_")
+                        ? 0.0018
+                        : 0.0029,
                 color: [0.08, 0.06, 0.07],
                 alpha: 0.88,
                 keepAlive: true,
@@ -717,8 +1070,13 @@ function cacheHotspots(root) {
 }
 
 function captureReferencePose(gltf) {
-    let cameraNode = runtime.modelRoot?.getObjectByName("SceneCamera");
+    const sx = runtime.sceneSize.x;
+    const sy = runtime.sceneSize.y;
+    const sz = runtime.sceneSize.z;
+    const cx = runtime.sceneCenter;
 
+    // uv1 — try GLTF embedded SceneCamera first (exported by build script: 56mm/~20° FOV)
+    let cameraNode = runtime.modelRoot?.getObjectByName("SceneCamera");
     if (!cameraNode && Array.isArray(gltf.cameras) && gltf.cameras.length) {
         cameraNode = gltf.cameras[0];
     }
@@ -726,32 +1084,35 @@ function captureReferencePose(gltf) {
     if (cameraNode && cameraNode.isCamera) {
         runtime.referencePose.position.copy(cameraNode.getWorldPosition(new THREE.Vector3()));
         runtime.referencePose.quaternion.copy(cameraNode.getWorldQuaternion(new THREE.Quaternion()));
-        runtime.referencePose.fov = cameraNode.fov || 46;
+        runtime.referencePose.fov = cameraNode.fov || 20;
     } else {
-        const fallbackTarget = runtime.sceneCenter.clone().add(new THREE.Vector3(0.1, runtime.sceneSize.y * 0.18, -0.1));
-        const fallbackPosition = fallbackTarget.clone().add(
-            new THREE.Vector3(
-                -runtime.sceneSize.x * 0.95,
-                runtime.sceneSize.y * 0.82,
-                runtime.sceneSize.z * 0.9
-            )
-        );
-        runtime.referencePose.position.copy(fallbackPosition);
-        runtime.referencePose.quaternion.copy(quaternionFromLookAt(fallbackPosition, fallbackTarget));
-        runtime.referencePose.fov = 46;
+        // Fallback: isometric view derived from scene bounds (matches build-script camera style)
+        const t1 = cx.clone().add(new THREE.Vector3(sx * 0.08, -sy * 0.15, -sz * 0.08));
+        const p1 = t1.clone().add(new THREE.Vector3(-sx * 0.42, sy * 2.8, sz * 0.66));
+        runtime.referencePose.position.copy(p1);
+        runtime.referencePose.quaternion.copy(quaternionFromLookAt(p1, t1));
+        runtime.referencePose.fov = 20;
     }
 
-    const baseDirection = runtime.referencePose.position.clone().sub(runtime.sceneCenter);
+    // uv2 — crystal-centered frame: same elevation, shifted toward crystal/spire
+    const t2 = cx.clone().add(new THREE.Vector3(sx * 0.05, -sy * 0.15, -sz * 0.16));
+    const p2 = t2.clone().add(new THREE.Vector3(sx * 0.05, sy * 2.8, sz * 0.66));
+    runtime.referencePose2.position.copy(p2);
+    runtime.referencePose2.quaternion.copy(quaternionFromLookAt(p2, t2));
+    runtime.referencePose2.fov = 22;
+
+    const baseDirection = runtime.referencePose.position.clone().sub(cx);
     if (baseDirection.lengthSq() > 0) {
         runtime.referenceOffsetDirection.copy(baseDirection.normalize());
     }
 }
 
-function applyReferencePose(instant) {
-    runtime.focusHotspotId = "portal";
-    runtime.targetPose.position.copy(runtime.referencePose.position);
-    runtime.targetPose.quaternion.copy(runtime.referencePose.quaternion);
-    runtime.targetPose.fov = runtime.referencePose.fov;
+function applyReferencePose(instant, poseIndex) {
+    const pose = poseIndex === 1 ? runtime.referencePose2 : runtime.referencePose;
+    runtime.focusHotspotId = HOTSPOT_ORDER[0];
+    runtime.targetPose.position.copy(pose.position);
+    runtime.targetPose.quaternion.copy(pose.quaternion);
+    runtime.targetPose.fov = pose.fov;
 
     if (instant) {
         camera.position.copy(runtime.targetPose.position);
@@ -760,38 +1121,57 @@ function applyReferencePose(instant) {
         camera.updateProjectionMatrix();
     }
 
-    setActiveHotspot("portal");
+    setActiveHotspot(HOTSPOT_ORDER[0]);
 }
 
 function setMode(mode, fromUser) {
-    runtime.mode = mode === "explore" ? "explore" : "frame";
+    if (mode === "explore") {
+        runtime.mode = "explore";
+    } else if (mode === "frame2") {
+        runtime.mode = "frame2";
+    } else {
+        runtime.mode = "frame";
+    }
 
     modeButtons.forEach((button) => {
         button.classList.toggle("is-active", button.dataset.mode === runtime.mode);
     });
 
-    if (runtime.mode === "explore") {
-        if (reticle) {
-            reticle.classList.add("is-visible");
+    if (inspectModePill) {
+        if (runtime.mode === "explore") {
+            inspectModePill.textContent = "Explore";
+        } else if (runtime.mode === "frame2") {
+            inspectModePill.textContent = "Frame / UV2";
+        } else {
+            inspectModePill.textContent = "Frame / UV1";
         }
+    }
+
+    if (runtime.mode === "explore") {
+        reticle?.classList.add("is-visible");
         if (fromUser) {
             resetExplorePose(false);
         }
-        modeStatus.textContent = "recorrido libre";
+        if (modeStatus) {
+            modeStatus.textContent = "recorrido libre";
+        }
         return;
     }
 
     runtime.reticleHotspotId = null;
     setReticleHint("");
-    if (reticle) {
-        reticle.classList.remove("is-visible");
+    reticle?.classList.remove("is-visible");
+
+    if (modeStatus) {
+        modeStatus.textContent = runtime.mode === "frame2" ? "encuadre cristal" : "encuadre exacto";
     }
-    modeStatus.textContent = "encuadre exacto";
+
     if (fromUser) {
-        if (runtime.activeHotspotId && runtime.activeHotspotId !== "portal") {
+        const poseIndex = runtime.mode === "frame2" ? 1 : 0;
+        if (poseIndex === 0 && runtime.activeHotspotId && runtime.activeHotspotId !== HOTSPOT_ORDER[0]) {
             focusHotspot(runtime.activeHotspotId, false);
         } else {
-            applyReferencePose(false);
+            applyReferencePose(false, poseIndex);
         }
     }
 }
@@ -816,6 +1196,31 @@ function resetExplorePose(instant) {
     if (instant) {
         applyExploreCamera(true);
     }
+}
+
+function enterExploreFromHotspot(hotspotId) {
+    const object = getHotspotObject(hotspotId);
+    if (!object) {
+        return;
+    }
+
+    const bounds = new THREE.Box3().setFromObject(object);
+    const focusPoint = bounds.getCenter(new THREE.Vector3());
+    const radius = Math.max(bounds.getSize(new THREE.Vector3()).length(), 0.65);
+    const approach = runtime.referenceOffsetDirection.clone().multiplyScalar(-Math.max(radius * 1.55, 1.5));
+    const position = focusPoint.clone().add(approach);
+    position.y = 1.58;
+
+    runtime.explore.position.copy(position);
+    clampExplorePosition();
+
+    const lookDirection = focusPoint.clone().sub(runtime.explore.position).normalize();
+    runtime.explore.yaw = Math.atan2(lookDirection.x, lookDirection.z);
+    runtime.explore.pitch = clamp(Math.asin(lookDirection.y), -0.75, 0.42);
+
+    setMode("explore", false);
+    applyExploreCamera(true);
+    setActiveHotspot(hotspotId);
 }
 
 function applyExploreCamera(instant) {
@@ -848,17 +1253,30 @@ function focusHotspot(hotspotId, forceFrame) {
     const bounds = new THREE.Box3().setFromObject(object);
     const focusPoint = bounds.getCenter(new THREE.Vector3());
     const radius = Math.max(bounds.getSize(new THREE.Vector3()).length(), 0.65);
-    const distance = clamp(radius * 4.6, runtime.sceneSize.length() * 0.11, runtime.sceneSize.length() * 0.26);
+    const distance = clamp(radius * 4.45, runtime.sceneSize.length() * 0.11, runtime.sceneSize.length() * 0.26);
     const position = focusPoint.clone().add(runtime.referenceOffsetDirection.clone().multiplyScalar(distance));
 
-    position.y = Math.max(position.y, focusPoint.y + radius * 1.4);
+    position.y = Math.max(position.y, focusPoint.y + radius * 1.36);
 
     runtime.targetPose.position.copy(position);
     runtime.targetPose.quaternion.copy(quaternionFromLookAt(position, focusPoint));
-    runtime.targetPose.fov = hotspot.type === "Cassette" ? 34 : 42;
+    runtime.targetPose.fov = hotspot.type === "Cassette" ? 34 : hotspot.type === "Poster" ? 38 : 42;
     runtime.focusHotspotId = hotspotId;
 
     setActiveHotspot(hotspotId);
+}
+
+function focusRelativeHotspot(direction) {
+    const currentIndex = getHotspotIndex(runtime.activeHotspotId);
+    const nextIndex = (currentIndex + direction + HOTSPOT_ORDER.length) % HOTSPOT_ORDER.length;
+    const nextHotspotId = HOTSPOT_ORDER[nextIndex];
+    setActiveHotspot(nextHotspotId);
+    focusHotspot(nextHotspotId, true);
+}
+
+function getHotspotIndex(hotspotId) {
+    const index = HOTSPOT_ORDER.indexOf(hotspotId);
+    return index >= 0 ? index : 0;
 }
 
 function setActiveHotspot(hotspotId) {
@@ -871,11 +1289,49 @@ function setActiveHotspot(hotspotId) {
 
     runtime.activeHotspotId = hotspotId;
 
-    inspectTitle.textContent = hotspot.label;
-    inspectCopy.textContent = hotspot.copy;
-    inspectType.textContent = hotspot.type;
-    inspectPhase.textContent = hotspot.phase;
-    focusStatus.textContent = hotspot.label.toLowerCase();
+    const hotspotIndex = getHotspotIndex(hotspotId);
+    const indexLabel = `${String(hotspotIndex + 1).padStart(2, "0")} / ${String(HOTSPOT_ORDER.length).padStart(2, "0")}`;
+    const compactIndex = String(hotspotIndex + 1).padStart(2, "0");
+
+    if (inspectTitle) {
+        inspectTitle.textContent = hotspot.label;
+    }
+    if (inspectCopy) {
+        inspectCopy.textContent = hotspot.copy;
+    }
+    if (inspectType) {
+        inspectType.textContent = hotspot.type;
+    }
+    if (inspectPhase) {
+        inspectPhase.textContent = hotspot.phase;
+    }
+    if (inspectTypePill) {
+        inspectTypePill.textContent = hotspot.type;
+    }
+    if (inspectPhasePill) {
+        inspectPhasePill.textContent = hotspot.phase;
+    }
+    if (inspectIndex) {
+        inspectIndex.textContent = compactIndex;
+    }
+    if (inspectTotal) {
+        inspectTotal.textContent = `/ ${String(HOTSPOT_ORDER.length).padStart(2, "0")}`;
+    }
+    if (focusStatus) {
+        focusStatus.textContent = hotspot.label.toLowerCase();
+    }
+    if (hotspotCounter) {
+        hotspotCounter.textContent = indexLabel;
+    }
+    if (dockIndex) {
+        dockIndex.textContent = compactIndex;
+    }
+    if (dockTitle) {
+        dockTitle.textContent = hotspot.label;
+    }
+    if (dockCopy) {
+        dockCopy.textContent = hotspot.copy;
+    }
 
     const media = HOTSPOT_MEDIA[hotspotId] || HOTSPOT_MEDIA.portal;
     if (inspectImage && media) {
@@ -975,6 +1431,7 @@ function onCanvasPointerUp(event) {
 
     const hit = raycastHotspot(event.clientX, event.clientY);
     if (hit) {
+        setTourActive(false);
         setActiveHotspot(hit);
         focusHotspot(hit, false);
     }
@@ -1036,15 +1493,41 @@ function onKeyDown(event) {
     if (event.code === "ShiftLeft" || event.code === "ShiftRight") {
         runtime.explore.keyState.sprint = true;
     }
+    if (event.code === "KeyQ") {
+        event.preventDefault();
+        setTourActive(false);
+        focusRelativeHotspot(-1);
+    }
     if (event.code === "KeyE") {
-        const targetId = runtime.reticleHotspotId || runtime.activeHotspotId;
-        if (targetId) {
-            setActiveHotspot(targetId);
-            focusHotspot(targetId, true);
+        event.preventDefault();
+        if (runtime.mode === "explore") {
+            const targetId = runtime.reticleHotspotId || runtime.activeHotspotId;
+            if (targetId) {
+                setTourActive(false);
+                setActiveHotspot(targetId);
+                focusHotspot(targetId, true);
+            }
+        } else {
+            setTourActive(false);
+            focusRelativeHotspot(1);
         }
     }
+    if (event.code === "KeyT") {
+        event.preventDefault();
+        setTourActive(!runtime.tour.active);
+    }
+    if (event.code === "KeyG") {
+        event.preventDefault();
+        setGuideCollapsed(!runtime.guideCollapsed);
+    }
     if (event.code === "KeyH") {
+        event.preventDefault();
         setHudHidden(!runtime.hudHidden);
+    }
+    if (event.code === "Tab") {
+        event.preventDefault();
+        setTourActive(false);
+        focusRelativeHotspot(event.shiftKey ? -1 : 1);
     }
 }
 
@@ -1119,7 +1602,7 @@ function updateExplore(dt) {
 
     const moveLength = Math.hypot(axisX, axisY);
     if (moveLength > 0.01) {
-        const speed = runtime.explore.keyState.sprint ? 5.2 : 3.3;
+        const speed = runtime.explore.keyState.sprint ? 5.4 : 3.35;
         const forward = new THREE.Vector3(Math.sin(runtime.explore.yaw), 0, Math.cos(runtime.explore.yaw));
         const right = new THREE.Vector3(forward.z, 0, -forward.x);
         runtime.explore.position.addScaledVector(forward, (axisY / moveLength) * speed * dt);
@@ -1152,6 +1635,59 @@ function updateExploreCamera(dt) {
     camera.updateProjectionMatrix();
 }
 
+function updateTour(elapsed) {
+    if (!runtime.tour.active) {
+        return;
+    }
+
+    if (elapsed >= runtime.tour.nextAdvanceAt) {
+        const nextIndex = (getHotspotIndex(runtime.activeHotspotId) + 1) % HOTSPOT_ORDER.length;
+        const nextHotspotId = HOTSPOT_ORDER[nextIndex];
+        setActiveHotspot(nextHotspotId);
+        focusHotspot(nextHotspotId, true);
+        runtime.tour.nextAdvanceAt = elapsed + runtime.tour.duration;
+    }
+}
+
+function updateHotspotVisuals(elapsed) {
+    runtime.hotspotNodes.forEach((nodes, hotspotId) => {
+        const isActive = hotspotId === runtime.activeHotspotId;
+        const isReticle = hotspotId === runtime.reticleHotspotId;
+        const pulse = 0.1 + (Math.sin(elapsed * 3.4) + 1) * 0.05;
+        const mixAmount = isActive ? 0.16 + pulse : isReticle ? 0.08 : 0;
+        const targetColor = isActive ? accentColor : hoverColor;
+
+        nodes.forEach((node) => {
+            if (!node.isMesh) {
+                return;
+            }
+
+            const materials = Array.isArray(node.material) ? node.material : [node.material];
+            materials.forEach((material) => {
+                if (!material?.userData?.baseColor) {
+                    return;
+                }
+
+                material.color.copy(material.userData.baseColor);
+                if (mixAmount > 0) {
+                    material.color.lerp(targetColor, mixAmount);
+                }
+
+                if (material.emissive && material.userData.baseEmissive) {
+                    material.emissive.copy(material.userData.baseEmissive);
+                    if (mixAmount > 0) {
+                        material.emissive.lerp(accentColor, Math.min(mixAmount * 0.6, 0.22));
+                    }
+                }
+
+                if (typeof material.userData.baseEmissiveIntensity === "number") {
+                    material.emissiveIntensity = material.userData.baseEmissiveIntensity + (isActive ? 0.14 + pulse * 0.3 : isReticle ? 0.06 : 0);
+                }
+            });
+        });
+    });
+}
+
 function render() {
     timer.update();
     const dt = Math.min(timer.getDelta(), 0.05);
@@ -1165,13 +1701,22 @@ function render() {
         updateFrameCamera(dt);
     }
 
+    updateTour(elapsed);
+    updateHotspotVisuals(elapsed);
+
     if (beacon.visible) {
         beacon.rotation.y = elapsed * 0.8;
-        beaconRing.material.opacity = 0.76 + Math.sin(elapsed * 2.4) * 0.16;
+        beaconRing.material.opacity = 0.74 + Math.sin(elapsed * 2.4) * 0.16;
         beacon.position.y = beacon.userData.baseY + Math.sin(elapsed * 1.8) * 0.045;
     }
 
-    hoverLight.intensity = 1.1 + Math.sin(elapsed * 2.8) * 0.18;
+    hoverLight.intensity = 1.08 + Math.sin(elapsed * 2.8) * 0.18;
+
+    runtime.atmosphereSprites.forEach((sprite, index) => {
+        const phase = sprite.userData.floatPhase ?? index * 0.37;
+        sprite.position.y += Math.sin(elapsed * 0.7 + phase) * 0.0009;
+        sprite.material.opacity = (index < 3 ? 0.11 : 0.04) + Math.sin(elapsed * 1.3 + phase) * 0.018;
+    });
 
     outlineEffect.render(scene, camera);
 }

@@ -25,52 +25,78 @@
     <div class="universe-noise" aria-hidden="true"></div>
     <div class="universe-scanlines" aria-hidden="true"></div>
     <div class="universe-vignette" aria-hidden="true"></div>
+    <div class="universe-grid" aria-hidden="true"></div>
     <div id="reticle" class="reticle" aria-hidden="true">
         <span></span>
         <span></span>
     </div>
 
     <header class="universe-topbar">
-        <a class="topbar-link" href="index.html">&lt; Volver al manifiesto</a>
-        <div class="topbar-mark">[SIC] / PLATFORM 3</div>
+        <div class="topbar-cluster">
+            <a class="topbar-link" href="index.html">&lt; Volver al manifiesto</a>
+            <button id="toggle-guide" class="topbar-button" type="button">Ocultar guia</button>
+        </div>
+        <div class="topbar-center">
+            <div class="topbar-mark">[SIC] / PLATFORM 3</div>
+            <div class="topbar-submark">Viewer / interactable field build</div>
+        </div>
         <div class="topbar-links">
             <a class="topbar-link" href="laboratory.html">Laboratorio</a>
-            <a class="topbar-link" href="#explorer-panel">Explorador</a>
+            <a class="topbar-link" href="#inspector-panel">Objeto</a>
+            <span id="hotspot-counter" class="topbar-counter">01 / 12</span>
             <button id="toggle-hud" class="topbar-button" type="button">Ocultar UI</button>
         </div>
     </header>
 
     <main class="universe-layout">
         <section id="explorer-panel" class="hud-panel intro-panel">
+            <div class="panel-chip-row">
+                <span class="panel-chip is-live">Live scene</span>
+                <span class="panel-chip">12 nodos</span>
+            </div>
             <p class="eyebrow">Universe node / station build</p>
             <h1>Anden mental con <span>objetos vivos.</span></h1>
             <p class="intro-copy">
-                El encuadre inicial replica la referencia y el modo de recorrido abre el sistema para navegar posters, cassettes, señalética y rastros físicos del universo [SIC].
+                El encuadre inicial replica la referencia y el modo de recorrido abre el sistema para navegar posters, cassettes, senaletica y rastros fisicos del universo [SIC].
             </p>
 
             <div class="mode-bar" role="group" aria-label="Modos de camara">
-                <button class="mode-button is-active" type="button" data-mode="frame">Encuadre</button>
+                <button class="mode-button is-active" type="button" data-mode="frame">UV1 / Tren</button>
+                <button class="mode-button" type="button" data-mode="frame2">UV2 / Cristal</button>
                 <button class="mode-button" type="button" data-mode="explore">Recorrer</button>
                 <button class="utility-button" id="reset-view" type="button">Reset</button>
             </div>
 
+            <div class="mission-grid">
+                <article class="mission-card">
+                    <span class="label">Ruta</span>
+                    <strong>Recorre, enfoca y encadena objetos.</strong>
+                    <p>Frame para leer la composicion. Recorrer para entrar al anden y abrir el campo.</p>
+                </article>
+                <article class="mission-card">
+                    <span class="label">Interaccion</span>
+                    <strong>Tour, ciclo de nodos y entrada guiada.</strong>
+                    <p>Usa el dock inferior, los atajos o el tour para pasar de una pieza a otra sin perder contexto.</p>
+                </article>
+            </div>
+
             <div class="quick-hotspot-shell">
-                <span class="label">Saltos rápidos</span>
+                <span class="label">Saltos rapidos</span>
                 <div id="quick-hotspots" class="quick-hotspots" role="list"></div>
             </div>
 
             <div class="control-grid">
                 <article class="control-card">
                     <span class="label">Desktop</span>
-                    <p>`W A S D` mueve, arrastrar mira, `E` inspecciona y `H` despeja la interfaz.</p>
+                    <p>`W A S D` mueve, arrastrar mira, `E` inspecciona, `Tab` cicla y `H` despeja la interfaz.</p>
                 </article>
                 <article class="control-card">
                     <span class="label">Mobile</span>
-                    <p>Joystick izquierdo para mover, desliza sobre la escena para mirar y usa los saltos rápidos.</p>
+                    <p>Joystick izquierdo para mover, desliza para mirar y usa el dock y los saltos para cambiar de nodo.</p>
                 </article>
                 <article class="control-card">
-                    <span class="label">Inspección</span>
-                    <p>Toca un objeto o usa la lista para abrir su ficha dentro del lore SIC.</p>
+                    <span class="label">Flujo</span>
+                    <p>`Q/E` navega, `T` activa el tour y el panel de inspeccion abre una entrada guiada al objeto.</p>
                 </article>
             </div>
 
@@ -91,14 +117,31 @@
         </section>
 
         <aside class="hud-panel inspector-panel" id="inspector-panel">
-            <span class="panel-kicker">INSPECT / ACTIVE NODE</span>
+            <div class="inspector-toolbar">
+                <div>
+                    <span class="panel-kicker">INSPECT / ACTIVE NODE</span>
+                    <div class="inspector-index">
+                        <strong id="inspect-index">01</strong>
+                        <span id="inspect-total">/ 12</span>
+                    </div>
+                </div>
+                <div class="inspector-actions">
+                    <button id="prev-hotspot" class="nav-button" type="button">Anterior</button>
+                    <button id="next-hotspot" class="nav-button" type="button">Siguiente</button>
+                </div>
+            </div>
             <h2 id="inspect-title">Portal de ingreso</h2>
+            <div class="inspect-pill-row">
+                <span id="inspect-type-pill" class="inspect-pill">Gateway</span>
+                <span id="inspect-phase-pill" class="inspect-pill">Core system</span>
+                <span id="inspect-mode-pill" class="inspect-pill">Frame</span>
+            </div>
             <figure class="inspect-media" id="inspect-media">
                 <img id="inspect-image" src="./assets/sic_universe_station_preview.png" alt="Vista del hotspot activo">
                 <figcaption id="inspect-caption">Referencia visual del nodo activo dentro del universo [SIC].</figcaption>
             </figure>
             <p id="inspect-copy">
-                El umbral fija la gramática del universo: tránsito, tensión geométrica y lectura editorial aplicada al espacio.
+                El umbral fija la gramatica del universo: transito, tension geometrica y lectura editorial aplicada al espacio.
             </p>
             <dl class="inspect-meta">
                 <div>
@@ -110,7 +153,10 @@
                     <dd id="inspect-phase">Core system</dd>
                 </div>
             </dl>
-            <button id="focus-hotspot" class="utility-button wide" type="button">Enfocar objeto</button>
+            <div class="inspector-cta-row">
+                <button id="focus-hotspot" class="utility-button wide" type="button">Enfocar objeto</button>
+                <button id="enter-explore" class="utility-button wide" type="button">Recorrer desde aqui</button>
+            </div>
         </aside>
 
         <section class="hud-panel hotspot-panel">
@@ -118,9 +164,32 @@
                 <span class="panel-kicker">FIELD OBJECTS</span>
                 <p>Elementos interactivos dentro del universo.</p>
             </div>
+            <div class="route-strip">
+                <div>
+                    <span class="label">Atajos</span>
+                    <p>`Tab` cicla nodos, `Q/E` navega, `T` inicia tour y `H` limpia la interfaz.</p>
+                </div>
+                <button id="tour-hotspots" class="utility-button" type="button">Iniciar tour</button>
+            </div>
             <div id="hotspot-list" class="hotspot-list" role="list"></div>
         </section>
     </main>
+
+    <section id="command-dock" class="hud-panel command-dock">
+        <div class="dock-summary">
+            <span id="dock-index" class="dock-index">01</span>
+            <div class="dock-copy-wrap">
+                <span class="label">Nodo activo</span>
+                <strong id="dock-title">Portal / Line to Body</strong>
+                <p id="dock-copy">El umbral fija la sintaxis del universo y abre el recorrido del campo.</p>
+            </div>
+        </div>
+        <div class="dock-actions">
+            <button id="dock-prev" class="dock-button" type="button">Anterior</button>
+            <button id="dock-next" class="dock-button" type="button">Siguiente</button>
+            <button id="dock-focus" class="dock-button dock-button--accent" type="button">Enfocar</button>
+        </div>
+    </section>
 
     <div class="mobile-joystick-shell" aria-hidden="true">
         <div id="move-pad" class="move-pad">

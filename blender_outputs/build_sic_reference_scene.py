@@ -331,6 +331,34 @@ def add_plane(name, location, scale, material=None, rotation=(0.0, 0.0, 0.0), pa
     return obj
 
 
+def add_tapered_block(name, location, scale, material=None, rotation=(0.0, 0.0, 0.0), parent=None, top_scale=(0.76, 0.76), top_offset=(0.0, 0.0)):
+    mesh = bpy.data.meshes.new(f"{name}_mesh")
+    obj = bpy.data.objects.new(name, mesh)
+    bpy.context.collection.objects.link(obj)
+    obj.parent = parent
+    obj.location = location
+    obj.rotation_euler = rotation
+
+    bm = bmesh.new()
+    bmesh.ops.create_cube(bm, size=2.0)
+
+    for vert in bm.verts:
+        top = vert.co.z > 0.0
+        vert.co.x *= scale[0] * (top_scale[0] if top else 1.0)
+        vert.co.y *= scale[1] * (top_scale[1] if top else 1.0)
+        vert.co.z *= scale[2]
+        if top:
+            vert.co.x += top_offset[0]
+            vert.co.y += top_offset[1]
+
+    bm.to_mesh(mesh)
+    bm.free()
+
+    if material:
+        assign_material(obj, material)
+    return obj
+
+
 def add_polyline(name, points, width, material):
     curve = bpy.data.curves.new(name=name, type="CURVE")
     curve.dimensions = "3D"
@@ -390,21 +418,86 @@ def make_train_body(name, location, rotation_z, body_mat, trim_mat, glass_mat):
     bm.free()
     assign_material(obj, body_mat)
 
-    add_cube(f"{name}_base", (-0.2, 0.0, -0.56), (1.95, 0.76, 0.07), trim_mat, parent=obj)
-    add_cube(f"{name}_roof", (-0.65, 0.0, 0.74), (1.48, 0.58, 0.045), trim_mat, parent=obj)
-    add_cube(f"{name}_roof_cap", (0.92, 0.0, 0.76), (0.54, 0.46, 0.042), trim_mat, parent=obj)
-    add_cube(f"{name}_nose_glass", (2.92, 0.0, 0.02), (0.34, 0.28, 0.34), glass_mat, parent=obj)
-    add_cube(f"{name}_window_left", (0.12, 0.54, 0.08), (1.95, 0.055, 0.29), glass_mat, parent=obj)
-    add_cube(f"{name}_window_right", (0.12, -0.54, 0.08), (1.95, 0.055, 0.29), glass_mat, parent=obj)
-    add_cube(f"{name}_window_left_front", (1.9, 0.42, 0.12), (0.46, 0.055, 0.22), glass_mat, rotation=(0.0, math.radians(-18), 0.0), parent=obj)
-    add_cube(f"{name}_window_right_front", (1.9, -0.42, 0.12), (0.46, 0.055, 0.22), glass_mat, rotation=(0.0, math.radians(-18), 0.0), parent=obj)
-    add_cube(f"{name}_trim_left", (-0.18, 0.74, -0.28), (2.34, 0.025, 0.065), trim_mat, parent=obj)
-    add_cube(f"{name}_trim_right", (-0.18, -0.74, -0.28), (2.34, 0.025, 0.065), trim_mat, parent=obj)
+    add_tapered_block(f"{name}_base", (-0.2, 0.0, -0.56), (1.95, 0.76, 0.07), trim_mat, parent=obj, top_scale=(0.92, 0.98))
+    add_tapered_block(f"{name}_roof", (-0.65, 0.0, 0.74), (1.48, 0.58, 0.045), trim_mat, parent=obj, top_scale=(0.78, 0.84), top_offset=(0.14, 0.0))
+    add_tapered_block(f"{name}_roof_cap", (0.92, 0.0, 0.76), (0.54, 0.46, 0.042), trim_mat, parent=obj, top_scale=(0.56, 0.86), top_offset=(0.08, 0.0))
+    add_tapered_block(
+        f"{name}_nose_glass",
+        (2.92, 0.0, 0.02),
+        (0.34, 0.26, 0.34),
+        glass_mat,
+        rotation=(0.0, math.radians(8), 0.0),
+        parent=obj,
+        top_scale=(0.58, 0.76),
+        top_offset=(0.07, 0.0),
+    )
+    add_tapered_block(
+        f"{name}_window_left",
+        (0.12, 0.54, 0.08),
+        (1.95, 0.055, 0.29),
+        glass_mat,
+        parent=obj,
+        top_scale=(0.9, 0.66),
+        top_offset=(0.08, 0.0),
+    )
+    add_tapered_block(
+        f"{name}_window_right",
+        (0.12, -0.54, 0.08),
+        (1.95, 0.055, 0.29),
+        glass_mat,
+        parent=obj,
+        top_scale=(0.9, 0.66),
+        top_offset=(0.08, 0.0),
+    )
+    add_tapered_block(
+        f"{name}_window_left_front",
+        (1.9, 0.42, 0.12),
+        (0.46, 0.055, 0.22),
+        glass_mat,
+        rotation=(0.0, math.radians(-18), 0.0),
+        parent=obj,
+        top_scale=(0.72, 0.7),
+        top_offset=(0.05, 0.0),
+    )
+    add_tapered_block(
+        f"{name}_window_right_front",
+        (1.9, -0.42, 0.12),
+        (0.46, 0.055, 0.22),
+        glass_mat,
+        rotation=(0.0, math.radians(-18), 0.0),
+        parent=obj,
+        top_scale=(0.72, 0.7),
+        top_offset=(0.05, 0.0),
+    )
+    add_tapered_block(f"{name}_trim_left", (-0.18, 0.74, -0.28), (2.34, 0.025, 0.065), trim_mat, parent=obj, top_scale=(0.94, 0.72))
+    add_tapered_block(f"{name}_trim_right", (-0.18, -0.74, -0.28), (2.34, 0.025, 0.065), trim_mat, parent=obj, top_scale=(0.94, 0.72))
+    add_tapered_block(f"{name}_skid_left", (-0.28, 0.54, -0.56), (1.82, 0.09, 0.05), trim_mat, parent=obj, top_scale=(0.72, 0.82))
+    add_tapered_block(f"{name}_skid_right", (-0.28, -0.54, -0.56), (1.82, 0.09, 0.05), trim_mat, parent=obj, top_scale=(0.72, 0.82))
+    add_tapered_block(f"{name}_side_fin_left", (1.02, 0.68, -0.18), (0.9, 0.03, 0.14), trim_mat, rotation=(0.0, math.radians(-14), 0.0), parent=obj, top_scale=(0.46, 0.82), top_offset=(0.14, 0.0))
+    add_tapered_block(f"{name}_side_fin_right", (1.02, -0.68, -0.18), (0.9, 0.03, 0.14), trim_mat, rotation=(0.0, math.radians(14), 0.0), parent=obj, top_scale=(0.46, 0.82), top_offset=(0.14, 0.0))
+    add_tapered_block(f"{name}_nose_fin_left", (2.62, 0.48, -0.12), (0.32, 0.03, 0.18), trim_mat, rotation=(0.0, math.radians(-24), 0.0), parent=obj, top_scale=(0.42, 0.74), top_offset=(0.08, 0.0))
+    add_tapered_block(f"{name}_nose_fin_right", (2.62, -0.48, -0.12), (0.32, 0.03, 0.18), trim_mat, rotation=(0.0, math.radians(24), 0.0), parent=obj, top_scale=(0.42, 0.74), top_offset=(0.08, 0.0))
     for index, x in enumerate((-1.0, -0.25, 0.5, 1.18)):
         offset = 0.53
         size_x = 0.06 if index < 3 else 0.04
-        add_cube(f"{name}_brace_left_{index}", (x, offset, 0.12), (size_x, 0.03, 0.34), trim_mat, rotation=(0.0, math.radians(-18), 0.0), parent=obj)
-        add_cube(f"{name}_brace_right_{index}", (x, -offset, 0.12), (size_x, 0.03, 0.34), trim_mat, rotation=(0.0, math.radians(18), 0.0), parent=obj)
+        add_tapered_block(
+            f"{name}_brace_left_{index}",
+            (x, offset, 0.12),
+            (size_x, 0.03, 0.34),
+            trim_mat,
+            rotation=(0.0, math.radians(-18), 0.0),
+            parent=obj,
+            top_scale=(0.72, 0.82),
+        )
+        add_tapered_block(
+            f"{name}_brace_right_{index}",
+            (x, -offset, 0.12),
+            (size_x, 0.03, 0.34),
+            trim_mat,
+            rotation=(0.0, math.radians(18), 0.0),
+            parent=obj,
+            top_scale=(0.72, 0.82),
+        )
     return obj
 
 
@@ -464,19 +557,67 @@ def create_lamp(name, location, post_mat, glow_mat):
 
 
 def create_bench(name, location, rotation_z, wood_mat, dark_mat):
-    add_cube(f"{name}_seat", (location[0], location[1], location[2] + 0.28), (0.58, 0.14, 0.05), wood_mat, rotation=(0.0, 0.0, rotation_z))
-    add_cube(f"{name}_back", (location[0] - 0.1 * math.cos(rotation_z), location[1] - 0.1 * math.sin(rotation_z), location[2] + 0.55), (0.56, 0.08, 0.05), wood_mat, rotation=(math.radians(18), 0.0, rotation_z))
-    leg_offsets = [(-0.35, -0.08), (0.35, -0.08), (-0.35, 0.08), (0.35, 0.08)]
+    def world_offset(dx, dy, dz):
+        return (
+            location[0] + math.cos(rotation_z) * dx - math.sin(rotation_z) * dy,
+            location[1] + math.sin(rotation_z) * dx + math.cos(rotation_z) * dy,
+            location[2] + dz,
+        )
+
+    for idx, dy in enumerate((-0.11, 0.0, 0.11)):
+        add_tapered_block(
+            f"{name}_seat_{idx}",
+            world_offset(0.0, dy, 0.28 + idx * 0.003),
+            (0.58, 0.04, 0.03),
+            wood_mat,
+            rotation=(0.0, 0.0, rotation_z),
+            top_scale=(0.88, 0.82),
+        )
+
+    for idx, dy in enumerate((-0.06, 0.06)):
+        add_tapered_block(
+            f"{name}_back_{idx}",
+            world_offset(-0.09, dy, 0.55 + idx * 0.02),
+            (0.54, 0.035, 0.028),
+            wood_mat,
+            rotation=(math.radians(18), 0.0, rotation_z),
+            top_scale=(0.84, 0.78),
+        )
+
+    leg_offsets = [(-0.35, -0.12), (0.35, -0.12), (-0.35, 0.12), (0.35, 0.12)]
     for idx, (dx, dy) in enumerate(leg_offsets):
-        px = location[0] + math.cos(rotation_z) * dx - math.sin(rotation_z) * dy
-        py = location[1] + math.sin(rotation_z) * dx + math.cos(rotation_z) * dy
-        add_cube(f"{name}_leg_{idx}", (px, py, location[2] + 0.12), (0.04, 0.04, 0.16), dark_mat, rotation=(0.0, 0.0, rotation_z))
+        add_cylinder(f"{name}_leg_{idx}", world_offset(dx, dy, 0.14), 0.028, 0.28, dark_mat, rotation=(0.0, 0.0, rotation_z), vertices=10)
+
+    add_cylinder(f"{name}_brace_left", world_offset(-0.18, 0.0, 0.19), 0.022, 0.62, dark_mat, rotation=(math.pi / 2.0, 0.0, rotation_z), vertices=10)
+    add_cylinder(f"{name}_brace_right", world_offset(0.18, 0.0, 0.19), 0.022, 0.62, dark_mat, rotation=(math.pi / 2.0, 0.0, rotation_z), vertices=10)
 
 
 def create_tree(name, location, trunk_mat, foliage_mat, accent_mat):
-    add_cylinder(f"{name}_trunk", (location[0], location[1], location[2] + 0.62), 0.08, 1.25, trunk_mat)
-    add_ico(f"{name}_crown", (location[0], location[1], location[2] + 1.65), 0.62, (1.0, 1.0, 1.35), foliage_mat)
-    add_ico(f"{name}_accent", (location[0] + 0.2, location[1] - 0.12, location[2] + 1.45), 0.34, (1.1, 0.85, 1.0), accent_mat)
+    add_cylinder(f"{name}_trunk", (location[0], location[1], location[2] + 0.62), 0.08, 1.25, trunk_mat, vertices=8)
+    crown_specs = [
+        (f"{name}_crown", (location[0], location[1], location[2] + 1.66), 0.52, (1.02, 0.96, 1.34), foliage_mat, 2),
+        (f"{name}_crown_left", (location[0] - 0.16, location[1] + 0.08, location[2] + 1.5), 0.32, (0.94, 0.88, 1.0), foliage_mat, 1),
+        (f"{name}_crown_right", (location[0] + 0.18, location[1] - 0.06, location[2] + 1.56), 0.3, (0.9, 0.9, 0.98), foliage_mat, 1),
+        (f"{name}_accent", (location[0] + 0.2, location[1] - 0.12, location[2] + 1.42), 0.26, (1.0, 0.82, 0.96), accent_mat, 1),
+    ]
+    for crown_name, crown_loc, radius, scale, material, subdivisions in crown_specs:
+        add_ico(crown_name, crown_loc, radius, scale, material, subdivisions=subdivisions)
+
+    for index, angle in enumerate((0.2, 1.32, 2.52, 3.82, 5.04)):
+        add_cone(
+            f"{name}_spike_{index}",
+            (
+                location[0] + math.cos(angle) * 0.2,
+                location[1] + math.sin(angle) * 0.2,
+                location[2] + 1.74,
+            ),
+            0.08,
+            0.38,
+            accent_mat if index % 2 else foliage_mat,
+            rotation=(math.radians(18), 0.0, angle),
+            radius2=0.02,
+            vertices=5,
+        )
 
 
 def create_starburst_tree(name, location, trunk_mat, spike_mat):
@@ -522,13 +663,48 @@ def create_city_strip(materials):
         depth = 0.12 + (index % 3) * 0.05
         width = 0.12 + (index % 4) * 0.04
         mat = red if index % 4 == 0 else graphite if index % 2 else charcoal
-        add_cube(
-            f"CityStrip_Back_{index}",
-            (x_pos, y_pos, height / 2.0),
-            (width, depth, height / 2.0),
-            mat,
-            rotation=(0.0, math.radians((index % 3) * 7), math.radians(index * 5)),
-        )
+        rotation = (0.0, math.radians((index % 3) * 7), math.radians(index * 5))
+        if index % 4 == 0:
+            add_tapered_block(
+                f"CityStrip_Back_{index}",
+                (x_pos, y_pos, height / 2.0),
+                (width, depth, height / 2.0),
+                mat,
+                rotation=rotation,
+                top_scale=(0.68, 0.82),
+                top_offset=(0.0, 0.02),
+            )
+        elif index % 4 == 1:
+            add_cone(
+                f"CityStrip_Back_{index}",
+                (x_pos, y_pos, height / 2.0),
+                max(width, depth) * 1.12,
+                height,
+                mat,
+                rotation=rotation,
+                radius2=max(width, depth) * 0.78,
+                vertices=6,
+            )
+        elif index % 4 == 2:
+            add_cylinder(
+                f"CityStrip_Back_{index}",
+                (x_pos, y_pos, height / 2.0),
+                max(width, depth) * 0.94,
+                height,
+                mat,
+                rotation=rotation,
+                vertices=6,
+            )
+        else:
+            add_tapered_block(
+                f"CityStrip_Back_{index}",
+                (x_pos, y_pos, height / 2.0),
+                (width, depth, height / 2.0),
+                mat,
+                rotation=rotation,
+                top_scale=(0.54, 0.92),
+                top_offset=(0.03, 0.0),
+            )
 
     side_specs = [
         ("CityStrip_Left", (-7.98, 1.95, 0.0), math.radians(6)),
@@ -543,13 +719,38 @@ def create_city_strip(materials):
             x = origin[0] + math.cos(rot) * offset
             y = origin[1] + math.sin(rot) * offset
             mat = crimson if index % 3 == 1 else graphite if index % 2 else charcoal
-            add_cube(
-                f"{prefix}_{index}",
-                (x, y, height / 2.0),
-                (width, depth, height / 2.0),
-                mat,
-                rotation=(0.0, math.radians(index * 3 - 6), rot),
-            )
+            rotation = (0.0, math.radians(index * 3 - 6), rot)
+            if index % 3 == 0:
+                add_tapered_block(
+                    f"{prefix}_{index}",
+                    (x, y, height / 2.0),
+                    (width, depth, height / 2.0),
+                    mat,
+                    rotation=rotation,
+                    top_scale=(0.6, 0.84),
+                    top_offset=(0.02, 0.0),
+                )
+            elif index % 3 == 1:
+                add_cone(
+                    f"{prefix}_{index}",
+                    (x, y, height / 2.0),
+                    max(width, depth) * 1.05,
+                    height,
+                    mat,
+                    rotation=rotation,
+                    radius2=max(width, depth) * 0.76,
+                    vertices=5,
+                )
+            else:
+                add_cylinder(
+                    f"{prefix}_{index}",
+                    (x, y, height / 2.0),
+                    max(width, depth) * 0.9,
+                    height,
+                    mat,
+                    rotation=rotation,
+                    vertices=6,
+                )
 
 
 def create_crystal_cluster(glass_mat, dark_mat, red_mat):
@@ -559,29 +760,32 @@ def create_crystal_cluster(glass_mat, dark_mat, red_mat):
     for index, angle in enumerate([0.22, 1.25, 2.34, 3.34, 4.26, 5.22]):
         x = center.x + math.cos(angle) * 0.94
         y = center.y + math.sin(angle) * 0.94
-        add_cube(
+        add_tapered_block(
             f"Crystal_Support_{index}",
             (x, y, 0.44),
             (0.07, 0.15, 0.44),
             red_mat if index % 2 else dark_mat,
             rotation=(math.radians(20), 0.0, angle + math.pi / 2.0),
+            top_scale=(0.54, 0.84),
         )
-        add_cube(
+        add_tapered_block(
             f"Crystal_Foot_{index}",
             (x, y, 0.14),
             (0.15, 0.1, 0.08),
             dark_mat,
             rotation=(0.0, 0.0, angle),
+            top_scale=(0.72, 0.72),
         )
     for index, angle in enumerate([0.0, 1.58, 3.12, 4.72]):
         x = center.x + math.cos(angle) * 0.56
         y = center.y + math.sin(angle) * 0.56
-        add_cube(
+        add_tapered_block(
             f"Crystal_Brace_{index}",
             (x, y, 0.92),
             (0.08, 0.14, 0.12),
             red_mat if index % 2 else dark_mat,
             rotation=(math.radians(14), 0.0, angle),
+            top_scale=(0.62, 0.84),
         )
 
     crystal_specs = [
@@ -604,8 +808,8 @@ def create_crystal_cluster(glass_mat, dark_mat, red_mat):
 def create_sign(name, location, rotation_z, text, width, height, frame_mat, board_mat, text_mat, post_height=1.3):
     post = add_cylinder(f"{name}_post", (location[0], location[1], location[2] + post_height / 2.0), 0.07, post_height, frame_mat)
     post.rotation_euler = (0.0, 0.0, rotation_z)
-    add_cube(f"{name}_board_frame", (0.0, 0.0, post_height / 2.0 + 0.34), (width, 0.075, height), board_mat, parent=post)
-    add_cube(f"{name}_board", (0.0, 0.0, post_height / 2.0 + 0.34), (width * 0.92, 0.07, height * 0.84), frame_mat, parent=post)
+    add_tapered_block(f"{name}_board_frame", (0.0, 0.0, post_height / 2.0 + 0.34), (width, 0.075, height), board_mat, parent=post, top_scale=(0.86, 0.78))
+    add_tapered_block(f"{name}_board", (0.0, 0.0, post_height / 2.0 + 0.34), (width * 0.92, 0.07, height * 0.84), frame_mat, parent=post, top_scale=(0.8, 0.72))
     text_obj = add_text(
         f"{name}_text",
         text,
@@ -621,12 +825,20 @@ def create_sign(name, location, rotation_z, text, width, height, frame_mat, boar
 
 
 def create_portal_sign(frame_mat, board_mat, text_mat):
-    left_post = add_cylinder("Portal_Post_Left", (-3.78, 1.92, 1.38), 0.08, 2.76, frame_mat)
-    right_post = add_cylinder("Portal_Post_Right", (-1.02, 1.9, 1.32), 0.08, 2.62, frame_mat)
-    add_cube("Portal_Top", (-2.42, 1.91, 2.58), (1.54, 0.08, 0.1), frame_mat)
-    add_cube("Portal_Board_Frame", (-2.44, 1.91, 2.18), (1.1, 0.065, 0.28), board_mat)
-    sign_board = add_cube("Portal_Board", (-2.44, 1.91, 2.18), (1.0, 0.06, 0.22), frame_mat)
+    left_post = add_cylinder("Portal_Post_Left", (-3.78, 1.92, 1.38), 0.08, 2.76, frame_mat, vertices=10)
+    right_post = add_cylinder("Portal_Post_Right", (-1.02, 1.9, 1.32), 0.08, 2.62, frame_mat, vertices=10)
+    add_tapered_block("Portal_Post_Left_Foot", (-3.78, 1.92, 0.1), (0.18, 0.16, 0.08), frame_mat, top_scale=(0.66, 0.72))
+    add_tapered_block("Portal_Post_Right_Foot", (-1.02, 1.9, 0.1), (0.18, 0.16, 0.08), frame_mat, top_scale=(0.66, 0.72))
+    add_tapered_block("Portal_Top", (-2.42, 1.91, 2.58), (1.54, 0.08, 0.1), frame_mat, top_scale=(0.84, 0.78))
+    add_tapered_block("Portal_Top_End_Left", (-3.62, 1.91, 2.58), (0.18, 0.08, 0.12), board_mat, top_scale=(0.44, 0.82), top_offset=(-0.04, 0.0))
+    add_tapered_block("Portal_Top_End_Right", (-1.22, 1.91, 2.58), (0.18, 0.08, 0.12), board_mat, top_scale=(0.44, 0.82), top_offset=(0.04, 0.0))
+    add_tapered_block("Portal_Board_Frame", (-2.44, 1.91, 2.18), (1.1, 0.065, 0.28), board_mat, top_scale=(0.84, 0.78))
+    sign_board = add_tapered_block("Portal_Board", (-2.44, 1.91, 2.18), (1.0, 0.06, 0.22), frame_mat, top_scale=(0.8, 0.74))
     sign_board.rotation_euler = (0.0, 0.0, 0.0)
+    add_tapered_block("Portal_Brace_Left", (-3.18, 1.91, 1.84), (0.12, 0.05, 0.58), frame_mat, rotation=(math.radians(-18), 0.0, 0.0), top_scale=(0.46, 0.82))
+    add_tapered_block("Portal_Brace_Right", (-1.7, 1.91, 1.84), (0.12, 0.05, 0.58), frame_mat, rotation=(math.radians(-18), 0.0, 0.0), top_scale=(0.46, 0.82))
+    add_tapered_block("Portal_Board_Accent_Left", (-2.96, 1.98, 2.18), (0.08, 0.016, 0.18), board_mat, top_scale=(0.48, 0.8))
+    add_tapered_block("Portal_Board_Accent_Right", (-1.94, 1.98, 2.18), (0.08, 0.016, 0.18), board_mat, top_scale=(0.48, 0.8))
     text = add_text(
         "Portal_Text",
         "[SIC] LINE - TO: BODY",
@@ -648,12 +860,15 @@ def create_border_spikes(name, start, end, count, dark_mat, red_mat, height_base
         is_red = index % 3 == 1
         height = height_base + (index % 4) * 0.18
         width = 0.06 + (index % 3) * 0.02
-        add_cube(
+        add_cone(
             f"{name}_{index}",
             (x, y, height / 2.0),
-            (width, 0.05, height / 2.0),
+            width * 1.3,
+            height,
             red_mat if is_red else dark_mat,
             rotation=(0.0, 0.0, math.radians((index % 5) * 5 - 8)),
+            radius2=width * 0.26,
+            vertices=4 if index % 2 else 5,
         )
 
 
@@ -724,26 +939,33 @@ def create_wall_poster(name, image_path, location, rotation_z, size, frame_mat):
 
 
 def create_train_canopy(train_angle, dark_mat, red_mat, glass_mat):
-    add_cube("Canopy_Spine", (5.92, 2.06, 1.18), (1.22, 0.5, 0.18), dark_mat, rotation=(0.0, math.radians(11), train_angle))
-    add_cube("Canopy_Wing_A", (5.34, 1.76, 1.0), (0.78, 0.12, 0.12), red_mat, rotation=(math.radians(32), 0.0, train_angle + math.radians(34)))
-    add_cube("Canopy_Wing_B", (6.52, 2.5, 1.02), (0.88, 0.12, 0.12), red_mat, rotation=(math.radians(-18), 0.0, train_angle - math.radians(22)))
-    add_cube("Canopy_Fin", (6.82, 2.92, 1.32), (0.52, 0.1, 0.4), dark_mat, rotation=(0.0, math.radians(16), train_angle))
-    add_cube("Canopy_Glass", (5.52, 1.78, 1.02), (0.46, 0.18, 0.26), glass_mat, rotation=(0.0, math.radians(12), train_angle))
-    add_cube("Canopy_Glass_B", (6.2, 2.28, 1.08), (0.42, 0.14, 0.24), glass_mat, rotation=(0.0, math.radians(14), train_angle + math.radians(14)))
-    add_cube("Canopy_Post_A", (5.0, 1.5, 0.6), (0.1, 0.1, 0.6), dark_mat)
-    add_cube("Canopy_Post_B", (6.38, 2.54, 0.66), (0.1, 0.1, 0.66), dark_mat)
+    add_tapered_block("Canopy_Spine", (5.92, 2.06, 1.18), (1.22, 0.5, 0.18), dark_mat, rotation=(0.0, math.radians(11), train_angle), top_scale=(0.72, 0.78), top_offset=(0.18, 0.0))
+    add_tapered_block("Canopy_Spine_Cap", (5.96, 2.12, 1.34), (0.92, 0.32, 0.05), red_mat, rotation=(0.0, math.radians(9), train_angle), top_scale=(0.62, 0.84), top_offset=(0.14, 0.0))
+    add_tapered_block("Canopy_Wing_A", (5.34, 1.76, 1.0), (0.78, 0.12, 0.12), red_mat, rotation=(math.radians(32), 0.0, train_angle + math.radians(34)), top_scale=(0.48, 0.82), top_offset=(0.18, 0.0))
+    add_tapered_block("Canopy_Wing_B", (6.52, 2.5, 1.02), (0.88, 0.12, 0.12), red_mat, rotation=(math.radians(-18), 0.0, train_angle - math.radians(22)), top_scale=(0.44, 0.84), top_offset=(0.22, 0.0))
+    add_tapered_block("Canopy_Wing_C", (5.98, 2.18, 0.94), (0.52, 0.1, 0.1), dark_mat, rotation=(math.radians(14), 0.0, train_angle + math.radians(8)), top_scale=(0.42, 0.82), top_offset=(0.12, 0.0))
+    add_tapered_block("Canopy_Fin", (6.82, 2.92, 1.32), (0.52, 0.1, 0.4), dark_mat, rotation=(0.0, math.radians(16), train_angle), top_scale=(0.42, 0.86), top_offset=(0.14, 0.0))
+    add_tapered_block("Canopy_Glass", (5.52, 1.78, 1.02), (0.46, 0.18, 0.26), glass_mat, rotation=(0.0, math.radians(12), train_angle), top_scale=(0.6, 0.78), top_offset=(0.08, 0.0))
+    add_tapered_block("Canopy_Glass_B", (6.2, 2.28, 1.08), (0.42, 0.14, 0.24), glass_mat, rotation=(0.0, math.radians(14), train_angle + math.radians(14)), top_scale=(0.58, 0.8), top_offset=(0.08, 0.0))
+    add_tapered_block("Canopy_Rib_A", (5.44, 1.82, 0.9), (0.08, 0.08, 0.56), dark_mat, rotation=(math.radians(-16), 0.0, train_angle + math.radians(18)), top_scale=(0.42, 0.82))
+    add_tapered_block("Canopy_Rib_B", (6.16, 2.28, 0.94), (0.08, 0.08, 0.52), dark_mat, rotation=(math.radians(12), 0.0, train_angle - math.radians(12)), top_scale=(0.42, 0.82))
+    add_cylinder("Canopy_Post_A", (5.0, 1.5, 0.6), 0.085, 1.2, dark_mat, vertices=10)
+    add_cylinder("Canopy_Post_B", (6.38, 2.54, 0.66), 0.085, 1.32, dark_mat, vertices=10)
+    add_tapered_block("Canopy_Post_A_Base", (5.0, 1.5, 0.08), (0.16, 0.16, 0.08), red_mat, top_scale=(0.64, 0.74))
+    add_tapered_block("Canopy_Post_B_Base", (6.38, 2.54, 0.08), (0.16, 0.16, 0.08), red_mat, top_scale=(0.64, 0.74))
 
 
 def create_cassette(name, image_path, location, rotation_z, body_mat, trim_mat, reel_mat):
-    body = add_cube(
+    body = add_tapered_block(
         name,
         (location[0], location[1], location[2] + 0.05),
         (0.24, 0.16, 0.05),
         body_mat,
         rotation=(0.0, 0.0, rotation_z),
+        top_scale=(0.92, 0.92),
     )
-    add_cube(f"{name}_stripe", (0.0, 0.0, 0.0), (0.26, 0.03, 0.012), trim_mat, parent=body)
-    add_cube(f"{name}_window", (0.0, 0.0, 0.008), (0.12, 0.045, 0.006), reel_mat, parent=body)
+    add_tapered_block(f"{name}_stripe", (0.0, 0.0, 0.0), (0.26, 0.03, 0.012), trim_mat, parent=body, top_scale=(0.82, 0.82))
+    add_tapered_block(f"{name}_window", (0.0, 0.0, 0.008), (0.12, 0.045, 0.006), reel_mat, parent=body, top_scale=(0.88, 0.88))
     for index, x in enumerate((-0.1, 0.1)):
         add_cylinder(
             f"{name}_reel_{index}",
@@ -755,7 +977,28 @@ def create_cassette(name, image_path, location, rotation_z, body_mat, trim_mat, 
             vertices=20,
             parent=body,
         )
-    add_cube(f"{name}_label_frame", (0.0, 0.0, 0.051), (0.18, 0.075, 0.004), trim_mat, parent=body)
+        add_cylinder(
+            f"{name}_hub_{index}",
+            (x, 0.0, 0.013),
+            0.012,
+            0.014,
+            body_mat,
+            rotation=(math.pi / 2.0, 0.0, 0.0),
+            vertices=12,
+            parent=body,
+        )
+    for index, (x, y) in enumerate(((-0.18, -0.09), (-0.18, 0.09), (0.18, -0.09), (0.18, 0.09))):
+        add_cylinder(
+            f"{name}_screw_{index}",
+            (x, y, 0.048),
+            0.01,
+            0.008,
+            trim_mat,
+            rotation=(math.pi / 2.0, 0.0, 0.0),
+            vertices=10,
+            parent=body,
+        )
+    add_tapered_block(f"{name}_label_frame", (0.0, 0.0, 0.051), (0.18, 0.075, 0.004), trim_mat, parent=body, top_scale=(0.86, 0.86))
     label_mat = make_image_material(f"{name}_label_image", image_path, roughness=0.4, emission_strength=0.12)
     add_plane(
         f"{name}_label",
@@ -765,6 +1008,8 @@ def create_cassette(name, image_path, location, rotation_z, body_mat, trim_mat, 
         rotation=(0.0, 0.0, 0.0),
         parent=body,
     )
+    add_tapered_block(f"{name}_foot_left", (-0.16, 0.0, -0.04), (0.03, 0.05, 0.01), trim_mat, parent=body, top_scale=(0.72, 0.82))
+    add_tapered_block(f"{name}_foot_right", (0.16, 0.0, -0.04), (0.03, 0.05, 0.01), trim_mat, parent=body, top_scale=(0.72, 0.82))
     return body
 
 
@@ -794,6 +1039,69 @@ def create_card_stack(name, location, rotation_z, top_mat, bottom_mat, dark_mat,
         )
 
 
+def create_suitcase(name, location, rotation_z, body_mat, trim_mat):
+    body = add_tapered_block(
+        name,
+        (location[0], location[1], location[2] + 0.18),
+        (0.22, 0.14, 0.18),
+        body_mat,
+        rotation=(0.0, 0.0, rotation_z),
+        top_scale=(0.9, 0.92),
+    )
+    add_tapered_block(f"{name}_lid", (0.0, 0.0, 0.06), (0.2, 0.12, 0.03), trim_mat, parent=body, top_scale=(0.78, 0.84))
+    add_torus(
+        f"{name}_handle",
+        (0.0, 0.0, 0.18),
+        0.05,
+        0.012,
+        trim_mat,
+        rotation=(math.pi / 2.0, 0.0, 0.0),
+        major_segments=14,
+        minor_segments=6,
+        parent=body,
+    )
+    add_tapered_block(f"{name}_lock", (0.0, 0.0, 0.0), (0.03, 0.05, 0.03), trim_mat, parent=body, top_scale=(0.7, 0.82))
+    add_tapered_block(f"{name}_foot_left", (-0.12, 0.0, -0.16), (0.025, 0.04, 0.015), trim_mat, parent=body, top_scale=(0.72, 0.82))
+    add_tapered_block(f"{name}_foot_right", (0.12, 0.0, -0.16), (0.025, 0.04, 0.015), trim_mat, parent=body, top_scale=(0.72, 0.82))
+    return body
+
+
+def create_bin(name, location, body_mat, accent_mat):
+    body = add_cone(
+        name,
+        (location[0], location[1], location[2] + 0.26),
+        0.11,
+        0.5,
+        body_mat,
+        radius2=0.075,
+        vertices=6,
+    )
+    add_tapered_block(f"{name}_lid", (0.0, 0.0, 0.26), (0.12, 0.12, 0.02), accent_mat, parent=body, top_scale=(0.72, 0.72))
+    add_tapered_block(f"{name}_slot", (0.0, 0.06, 0.285), (0.035, 0.01, 0.006), body_mat, parent=body, top_scale=(0.8, 0.8))
+    return body
+
+
+def create_pillar_marker(name, location, body_mat, accent_mat):
+    shaft = add_cylinder(name, (location[0], location[1], location[2] + 0.42), 0.1, 0.84, body_mat, vertices=8)
+    add_tapered_block(f"{name}_cap", (0.0, 0.0, 0.44), (0.14, 0.14, 0.05), accent_mat, parent=shaft, top_scale=(0.68, 0.76))
+    add_tapered_block(f"{name}_base", (0.0, 0.0, -0.44), (0.16, 0.16, 0.06), body_mat, parent=shaft, top_scale=(0.74, 0.82))
+    return shaft
+
+
+def create_terminal_pod(name, location, rotation_z, body_mat, accent_mat):
+    body = add_tapered_block(
+        name,
+        (location[0], location[1], location[2] + 0.24),
+        (0.18, 0.12, 0.24),
+        body_mat,
+        rotation=(0.0, 0.0, rotation_z),
+        top_scale=(0.72, 0.82),
+    )
+    add_tapered_block(f"{name}_screen", (0.0, 0.07, 0.05), (0.1, 0.012, 0.08), accent_mat, parent=body, top_scale=(0.86, 0.86))
+    add_tapered_block(f"{name}_base", (0.0, 0.0, -0.22), (0.12, 0.1, 0.03), body_mat, parent=body, top_scale=(0.64, 0.74))
+    return body
+
+
 def create_prop_cluster(materials):
     charcoal = materials["charcoal"]
     graphite = materials["graphite"]
@@ -804,13 +1112,13 @@ def create_prop_cluster(materials):
     create_border_spikes("Fence_Left", (-7.04, -4.0, 0.0), (-7.02, 0.62, 0.0), 11, graphite, red, height_base=0.52)
     create_border_spikes("Fence_Right", (6.28, -4.12, 0.0), (8.38, -1.9, 0.0), 10, graphite, red, height_base=0.52)
 
-    add_cube("Terminal_Left", (-1.88, 1.92, 0.18), (0.16, 0.16, 0.18), graphite)
-    add_cube("Kiosk_A", (-0.22, 2.36, 0.24), (0.14, 0.14, 0.24), charcoal)
-    add_cube("Kiosk_B", (0.54, 2.58, 0.18), (0.1, 0.1, 0.18), red)
-    add_cube("Seat_Block", (5.68, 0.2, 0.22), (0.2, 0.12, 0.22), charcoal)
-    add_cube("Cone_Marker", (5.86, -2.18, 0.52), (0.12, 0.12, 0.52), charcoal)
-    add_cube("Plinth_A", (-5.36, 0.36, 0.24), (0.18, 0.18, 0.24), graphite)
-    add_cube("Plinth_B", (6.9, 0.96, 0.26), (0.22, 0.18, 0.26), charcoal)
+    add_tapered_block("Terminal_Left", (-1.88, 1.92, 0.18), (0.16, 0.16, 0.18), graphite, top_scale=(0.62, 0.72))
+    add_cylinder("Kiosk_A", (-0.22, 2.36, 0.24), 0.12, 0.48, charcoal, vertices=6)
+    add_cone("Kiosk_B", (0.54, 2.58, 0.18), 0.12, 0.36, red, radius2=0.08, vertices=5)
+    add_tapered_block("Seat_Block", (5.68, 0.2, 0.22), (0.2, 0.12, 0.22), charcoal, top_scale=(0.74, 0.82))
+    add_cone("Cone_Marker", (5.86, -2.18, 0.52), 0.12, 1.04, charcoal, radius2=0.02, vertices=4)
+    add_tapered_block("Plinth_A", (-5.36, 0.36, 0.24), (0.18, 0.18, 0.24), graphite, top_scale=(0.56, 0.56))
+    add_tapered_block("Plinth_B", (6.9, 0.96, 0.26), (0.22, 0.18, 0.26), charcoal, top_scale=(0.6, 0.62))
 
 
 
@@ -824,8 +1132,6 @@ def stylize_scene_objects():
         "Rail_",
         "Sleeper_",
         "FloorLine_",
-        "Fence_",
-        "CityStrip_",
     )
     rounded_hero_prefixes = (
         "FrontCar",
@@ -946,19 +1252,19 @@ def create_scene():
 
     front_car = make_train_body("FrontCar", (2.9, 0.52, 0.76), train_angle, graphite, red, glass_red)
     rear_car = make_train_body("RearCar", (5.88, 1.82, 0.84), train_angle, graphite, red, glass_red)
-    add_cube("Train_Connector", (4.42, 1.16, 0.74), (0.44, 0.42, 0.34), charcoal, rotation=(0.0, 0.0, train_angle))
-    add_cube("FrontCar_RoofStrip", (-0.72, 0.0, 0.88), (0.74, 0.08, 0.024), red_glow, parent=front_car)
-    add_cube("RearCar_RoofStrip", (-0.84, 0.0, 0.88), (0.82, 0.08, 0.024), red_glow, parent=rear_car)
-    add_cube("FrontCar_Door_Frame", (-0.44, 0.68, 0.0), (0.42, 0.02, 0.36), red, parent=front_car)
-    add_cube("RearCar_Door_Frame", (-0.34, 0.68, 0.0), (0.38, 0.02, 0.36), red, parent=rear_car)
-    add_cube("RearCar_Cap", (2.44, 0.0, 0.08), (0.42, 0.32, 0.3), graphite, parent=rear_car)
-    add_cube("FrontCar_FrontTrim", (2.96, 0.0, -0.38), (0.09, 0.64, 0.035), red, parent=front_car)
-    add_cube("FrontCar_Window_Frame", (0.3, 0.58, 0.14), (2.12, 0.03, 0.3), red, parent=front_car)
-    add_cube("RearCar_Window_Frame", (0.14, 0.58, 0.14), (2.12, 0.03, 0.3), red, parent=rear_car)
+    add_tapered_block("Train_Connector", (4.42, 1.16, 0.74), (0.44, 0.42, 0.34), charcoal, rotation=(0.0, 0.0, train_angle), top_scale=(0.82, 0.88))
+    add_tapered_block("FrontCar_RoofStrip", (-0.72, 0.0, 0.88), (0.74, 0.08, 0.024), red_glow, parent=front_car, top_scale=(0.72, 0.84))
+    add_tapered_block("RearCar_RoofStrip", (-0.84, 0.0, 0.88), (0.82, 0.08, 0.024), red_glow, parent=rear_car, top_scale=(0.72, 0.84))
+    add_tapered_block("FrontCar_Door_Frame", (-0.44, 0.68, 0.0), (0.42, 0.02, 0.36), red, parent=front_car, top_scale=(0.62, 0.82))
+    add_tapered_block("RearCar_Door_Frame", (-0.34, 0.68, 0.0), (0.38, 0.02, 0.36), red, parent=rear_car, top_scale=(0.62, 0.82))
+    add_tapered_block("RearCar_Cap", (2.44, 0.0, 0.08), (0.42, 0.32, 0.3), graphite, parent=rear_car, top_scale=(0.64, 0.8), top_offset=(0.05, 0.0))
+    add_tapered_block("FrontCar_FrontTrim", (2.96, 0.0, -0.38), (0.09, 0.64, 0.035), red, parent=front_car, top_scale=(0.8, 0.76))
+    add_tapered_block("FrontCar_Window_Frame", (0.3, 0.58, 0.14), (2.12, 0.03, 0.3), red, parent=front_car, top_scale=(0.88, 0.74), top_offset=(0.06, 0.0))
+    add_tapered_block("RearCar_Window_Frame", (0.14, 0.58, 0.14), (2.12, 0.03, 0.3), red, parent=rear_car, top_scale=(0.88, 0.74), top_offset=(0.06, 0.0))
 
-    add_cube("Platform_Wedge", (6.22, 2.28, 0.66), (0.88, 0.38, 0.62), red, rotation=(0.0, math.radians(10), train_angle))
-    add_cube("Platform_Wedge_Trim", (6.24, 2.32, 1.0), (0.82, 0.32, 0.05), graphite, rotation=(0.0, math.radians(10), train_angle))
-    add_cube("Platform_Wedge_Glass", (5.92, 2.08, 0.98), (0.4, 0.14, 0.26), glass_red, rotation=(0.0, math.radians(8), train_angle))
+    add_tapered_block("Platform_Wedge", (6.22, 2.28, 0.66), (0.88, 0.38, 0.62), red, rotation=(0.0, math.radians(10), train_angle), top_scale=(0.72, 0.68), top_offset=(0.12, 0.0))
+    add_tapered_block("Platform_Wedge_Trim", (6.24, 2.32, 1.0), (0.82, 0.32, 0.05), graphite, rotation=(0.0, math.radians(10), train_angle), top_scale=(0.74, 0.76))
+    add_tapered_block("Platform_Wedge_Glass", (5.92, 2.08, 0.98), (0.4, 0.14, 0.26), glass_red, rotation=(0.0, math.radians(8), train_angle), top_scale=(0.64, 0.76), top_offset=(0.08, 0.0))
     create_train_canopy(train_angle, graphite, red, glass_red)
 
     create_crystal_cluster(crystal, graphite, red)
@@ -982,15 +1288,15 @@ def create_scene():
     for name, loc, rot in bench_specs:
         create_bench(name, loc, rot, red, charcoal)
 
-    add_cube("Luggage_A", (-4.08, -2.42, 0.19), (0.22, 0.14, 0.19), charcoal)
-    add_cube("Luggage_B", (-4.44, -2.58, 0.16), (0.16, 0.12, 0.16), red)
-    add_cube("Bin_A", (-2.18, -2.08, 0.36), (0.1, 0.1, 0.36), red)
-    add_cube("Bin_B", (6.1, 0.78, 0.25), (0.1, 0.1, 0.25), charcoal)
-    add_cube("Pillar_A", (5.88, -2.1, 0.58), (0.16, 0.16, 0.58), charcoal)
-    add_cube("Pillar_B", (-0.16, 2.66, 0.34), (0.14, 0.14, 0.34), charcoal)
-    add_cube("Seat_Console", (0.06, 2.9, 0.18), (0.14, 0.14, 0.18), red)
-    add_cube("Terminal_Box", (-6.14, -1.32, 0.26), (0.18, 0.12, 0.26), charcoal)
-    add_cube("Terminal_Box_B", (7.42, -0.12, 0.28), (0.2, 0.12, 0.28), graphite)
+    create_suitcase("Luggage_A", (-4.08, -2.42, 0.0), math.radians(8), charcoal, red)
+    create_suitcase("Luggage_B", (-4.44, -2.58, 0.0), math.radians(-12), red, cream)
+    create_bin("Bin_A", (-2.18, -2.08, 0.0), red, charcoal)
+    create_bin("Bin_B", (6.1, 0.78, 0.0), charcoal, red)
+    create_pillar_marker("Pillar_A", (5.88, -2.1, 0.0), charcoal, red)
+    create_pillar_marker("Pillar_B", (-0.16, 2.66, 0.0), charcoal, graphite)
+    create_terminal_pod("Seat_Console", (0.06, 2.9, 0.0), math.radians(4), red, cream)
+    create_terminal_pod("Terminal_Box", (-6.14, -1.32, 0.0), math.radians(6), charcoal, red)
+    create_terminal_pod("Terminal_Box_B", (7.42, -0.12, 0.0), math.radians(-12), graphite, cream)
 
     create_tree("Tree_Left_Red", (-5.08, 0.74, 0.0), charcoal, crimson, red)
     create_starburst_tree("Tree_Left_Black", (-6.58, 0.84, 0.0), charcoal, charcoal)
