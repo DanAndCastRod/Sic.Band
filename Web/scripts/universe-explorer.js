@@ -1,6 +1,10 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { OutlineEffect } from "three/addons/effects/OutlineEffect.js";
+import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
+import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
 const HOTSPOTS = [
     {
@@ -110,6 +114,15 @@ const HOTSPOTS = [
         type: "Field cards",
         phase: "Editorial mark",
         copy: "Las tarjetas repliegan el simbolo en formato objeto. No son merch: funcionan como piezas de navegacion dentro del dossier fisico."
+    },
+    {
+        id: "crystal-fortress",
+        objectName: "Crystal_Base",
+        aliases: ["Crystal_Base", "Crystal_0", "Crystal_"],
+        label: "Fortaleza de cristal",
+        type: "Monumento",
+        phase: "Core system",
+        copy: "La fortaleza de cristal emerge del centro del anden como un sistema nervioso visible. Cada aguja es una frecuencia congelada del universo [SIC]."
     }
 ];
 
@@ -175,6 +188,11 @@ const HOTSPOT_MEDIA = {
         src: "./assets/sic_symbol_daniel.png",
         alt: "Tarjetas SIC",
         caption: "Tarjetas de campo usadas como interfaz editorial y simbolo."
+    },
+    "crystal-fortress": {
+        src: "./assets/sic_universe_station_preview.png",
+        alt: "Fortaleza de cristal",
+        caption: "Agujas de cristal emergen del centro del anden, frecuencias congeladas del universo [SIC]."
     }
 };
 
@@ -248,22 +266,37 @@ const outlineEffect = new OutlineEffect(renderer, {
     defaultAlpha: 0.88,
     defaultKeepAlive: true
 });
+
+// Post-processing: bloom para cristales y emisiones
+const composer = new EffectComposer(renderer);
+const bloomPass = new UnrealBloomPass(
+    new THREE.Vector2(win.innerWidth, win.innerHeight),
+    0.35,   // strength — sutil, solo cristales y emisiones
+    0.5,    // radius
+    0.92    // threshold — alto para que solo lo más brillante haga bloom
+);
+
 const toonGradientMap = createToonGradientMap();
 const surfaceTextures = createSurfaceTextures();
 const textureSlots = ["map", "normalMap", "roughnessMap", "metalnessMap", "aoMap", "emissiveMap", "alphaMap"];
 
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.18;
-renderer.setClearColor(0x050505, 1);
+renderer.toneMappingExposure = 0.82;
+renderer.setClearColor(0x090809, 1);
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFShadowMap;
 
 const scene = new THREE.Scene();
-scene.fog = new THREE.FogExp2(0x151113, isCoarsePointer ? 0.028 : 0.024);
+scene.fog = new THREE.FogExp2(0x090809, isCoarsePointer ? 0.026 : 0.022);
 
 const camera = new THREE.PerspectiveCamera(20, 1, 0.1, 120);
 camera.position.set(0, 5, 14);
+
+// Inicializar composer con bloom
+composer.addPass(new RenderPass(scene, camera));
+composer.addPass(bloomPass);
+composer.addPass(new OutputPass());
 
 const timer = new THREE.Timer();
 const loader = new GLTFLoader();
@@ -287,10 +320,11 @@ const hoverLight = new THREE.PointLight(0xd4434c, 1.15, 12, 2);
 hoverLight.position.set(0, 3.5, 0);
 scene.add(hoverLight);
 
-scene.add(new THREE.HemisphereLight(0xfff5e8, 0x251417, 2.15));
+scene.add(new THREE.HemisphereLight(0xfff4ea, 0x0a0608, 0.45));
 
-const keyLight = new THREE.DirectionalLight(0xfff3eb, 2.6);
-keyLight.position.set(-12, 15, 10);
+// KeyLight — matches Blender AREA 5000W at (-4.6,-3.9,8.2) [BL] → (-4.6,8.2,3.9) [Three]
+const keyLight = new THREE.DirectionalLight(0xffffff, 2.2);
+keyLight.position.set(-4.6, 8.2, 3.9);
 keyLight.castShadow = true;
 keyLight.shadow.mapSize.set(isCoarsePointer ? 1024 : 2048, isCoarsePointer ? 1024 : 2048);
 keyLight.shadow.camera.near = 0.5;
@@ -301,9 +335,15 @@ keyLight.shadow.camera.top = 16;
 keyLight.shadow.camera.bottom = -16;
 scene.add(keyLight);
 
-const fillLight = new THREE.DirectionalLight(0xd82d39, 1.05);
-fillLight.position.set(10, 8, -2);
+// FillLight — matches Blender AREA 1500W at (6.7,2.6,5.0) [BL] → (6.7,5.0,-2.6) [Three]
+const fillLight = new THREE.DirectionalLight(0xffffff, 0.7);
+fillLight.position.set(6.7, 5.0, -2.6);
 scene.add(fillLight);
+
+// RimLight — matches Blender SUN 1.8W rot(44°,-2°,132°), lights from rear-left
+const rimLight = new THREE.DirectionalLight(0xe8f0ff, 0.32);
+rimLight.position.set(-6, 9, -8);
+scene.add(rimLight);
 
 const shadowPlane = new THREE.Mesh(
     new THREE.CircleGeometry(8.5, 64),
@@ -380,6 +420,8 @@ const runtime = {
     },
     referenceOffsetDirection: new THREE.Vector3(-0.68, 0.45, 0.57).normalize(),
     atmosphereSprites: [],
+    crystalFortress: null,
+    dustParticles: null,
     tour: {
         active: false,
         nextAdvanceAt: 0,
@@ -771,34 +813,6 @@ function handleLoaded(gltf) {
             nodeCount += 1;
         });
 
-        // DEBUG: expose scene metrics globally
-        window.__sic_debug = {
-            sceneBoxMin: runtime.sceneBox.min.toArray(),
-            sceneBoxMax: runtime.sceneBox.max.toArray(),
-            sceneCenter: runtime.sceneCenter.toArray(),
-            sceneSize: runtime.sceneSize.toArray(),
-            modelAnchor: runtime.modelAnchor.toArray(),
-            cam1Pos: runtime.referencePose.position.toArray(),
-            cam1Fov: runtime.referencePose.fov,
-            cam2Pos: runtime.referencePose2.position.toArray(),
-            cam2Fov: runtime.referencePose2.fov,
-            hotspots: {}
-        };
-        window.__sic_runtime_root = runtime.modelRoot;
-        if (win.location.hostname === "127.0.0.1" || win.location.hostname === "localhost") {
-            window.__sic_camera = camera;
-            window.__sic_runtime = runtime;
-            window.__sic_world = world;
-            window.__sic_three = THREE;
-        }
-        runtime.hotspotNodes.forEach((nodes, id) => {
-            if (nodes[0]) {
-                const wp = new THREE.Vector3();
-                nodes[0].getWorldPosition(wp);
-                window.__sic_debug.hotspots[id] = wp.toArray();
-            }
-        });
-
         if (sceneStatus) {
             sceneStatus.textContent = `modelo listo / ${nodeCount} nodos`;
         }
@@ -909,13 +923,50 @@ function buildAtmosphere(root) {
     const frontCar = root.getObjectByName("FrontCar");
     const portal = root.getObjectByName("Portal_Board");
 
+    // Lamp post warm point lights — match Blender 5× point 650W #fff4ea
+    const lampNames = ["LampPost_01", "LampPost_02", "LampPost_03", "LampPost_04", "LampPost_05",
+                       "Lamp_Post_1", "Lamp_Post_2", "Lamp_Post_3", "Lamp_Post_4", "Lamp_Post_5"];
+    const seenLamps = new Set();
+    root.traverse((node) => {
+        const matchedName = lampNames.find((n) => node.name === n || node.name.startsWith(n));
+        if (matchedName && !seenLamps.has(matchedName)) {
+            seenLamps.add(matchedName);
+            const lampPos = node.getWorldPosition(new THREE.Vector3());
+            const lampLight = new THREE.PointLight(0xfff4ea, 1.4, 14, 2);
+            lampLight.position.set(lampPos.x, lampPos.y + 2.2, lampPos.z);
+            atmosphereGroup.add(lampLight);
+        }
+    });
+
     if (crystal) {
-        const sprite = createGlowSprite(glowTexture, 0xff7185, 0.18, new THREE.Vector3(6.4, 6.4, 1));
-        sprite.position.copy(crystal.getWorldPosition(new THREE.Vector3()));
-        sprite.position.y += 1.7;
+        const crystalPos = crystal.getWorldPosition(new THREE.Vector3());
+
+        // Fortaleza de la Soledad — cluster de cristales procedurales
+        const fortressBase = crystalPos.clone();
+        fortressBase.y = 0;
+        runtime.crystalFortress = buildCrystalFortress(fortressBase, atmosphereGroup);
+
+        // Glow sprite central
+        const sprite = createGlowSprite(glowTexture, 0x88bbff, 0.32, new THREE.Vector3(10, 10, 1));
+        sprite.position.copy(crystalPos);
+        sprite.position.y += 3.5;
         atmosphereGroup.add(sprite);
         runtime.atmosphereSprites.push(sprite);
+
+        // Segundo glow más concentrado
+        const innerGlow = createGlowSprite(glowTexture, 0xffffff, 0.16, new THREE.Vector3(4, 6, 1));
+        innerGlow.position.copy(crystalPos);
+        innerGlow.position.y += 2.2;
+        atmosphereGroup.add(innerGlow);
+        runtime.atmosphereSprites.push(innerGlow);
     }
+
+    // Partículas de polvo brillante
+    runtime.dustParticles = buildDustParticles(
+        isCoarsePointer ? 220 : 500,
+        runtime.sceneBox,
+        atmosphereGroup
+    );
 
     if (frontCar) {
         const sprite = createGlowSprite(glowTexture, 0xff9d86, 0.12, new THREE.Vector3(9.6, 5.4, 1));
@@ -960,6 +1011,168 @@ function createGlowSprite(map, color, opacity, scale) {
     return sprite;
 }
 
+// Genera una aguja de cristal individual (geometría procedural hexagonal)
+function createCrystalShard(height, radius, color, emissiveColor, emissiveIntensity) {
+    const sides = 6;
+    const geo = new THREE.ConeGeometry(radius, height, sides, 1, false);
+    // Estirar asimetría para aspecto natural
+    const pos = geo.attributes.position;
+    for (let i = 0; i < pos.count; i++) {
+        const y = pos.getY(i);
+        if (y > height * 0.35) {
+            pos.setX(i, pos.getX(i) * 0.55);
+            pos.setZ(i, pos.getZ(i) * 0.55);
+        }
+    }
+    geo.computeVertexNormals();
+
+    const mat = new THREE.MeshPhysicalMaterial({
+        color,
+        roughness: 0.04,
+        metalness: 0.02,
+        transmission: 0.68,
+        thickness: 1.2,
+        clearcoat: 1.0,
+        clearcoatRoughness: 0.03,
+        emissive: emissiveColor,
+        emissiveIntensity,
+        transparent: true,
+        opacity: 0.82,
+        depthWrite: false,
+        side: THREE.DoubleSide,
+    });
+
+    const mesh = new THREE.Mesh(geo, mat);
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
+    return mesh;
+}
+
+// Genera el cluster de cristales tipo "Fortaleza de la Soledad" alrededor de un punto
+function buildCrystalFortress(basePosition, parentGroup) {
+    const crystalGroup = new THREE.Group();
+    crystalGroup.position.copy(basePosition);
+    crystalGroup.userData.isCrystalFortress = true;
+
+    // Paleta de cristales — tonos hielo/blanco/rojo-profundo
+    const palettes = [
+        { color: 0xe8f0ff, emissive: 0x8ab4ff, intensity: 0.35 }, // hielo azulado
+        { color: 0xf7f4f9, emissive: 0xb8d4ff, intensity: 0.28 }, // blanco cristal
+        { color: 0xd0d8f0, emissive: 0x6e9fff, intensity: 0.32 }, // steel-ice
+        { color: 0xfff0f3, emissive: 0xff4466, intensity: 0.22 }, // cristal rosado [SIC]
+        { color: 0x561419, emissive: 0xff2244, intensity: 0.40 }, // rojo profundo
+    ];
+
+    // Aguja central — la más alta y visible
+    const mainShard = createCrystalShard(4.8, 0.42, 0xe8f0ff, 0x88bbff, 0.38);
+    mainShard.position.set(0, 2.4, 0);
+    mainShard.rotation.set(0.05, 0, -0.04);
+    crystalGroup.add(mainShard);
+
+    // Agujas satélite: configuración explícita para aspecto dramático
+    const shards = [
+        { h: 3.6, r: 0.34, x: 0.8, z: 0.4, tiltX: 0.15, tiltZ: -0.22, p: 0 },
+        { h: 3.2, r: 0.30, x: -0.6, z: 0.7, tiltX: -0.12, tiltZ: 0.18, p: 1 },
+        { h: 2.8, r: 0.26, x: 0.3, z: -0.9, tiltX: 0.20, tiltZ: 0.10, p: 2 },
+        { h: 2.4, r: 0.22, x: -1.1, z: -0.3, tiltX: -0.18, tiltZ: -0.14, p: 3 },
+        { h: 2.0, r: 0.20, x: 1.2, z: -0.5, tiltX: 0.10, tiltZ: 0.25, p: 4 },
+        { h: 3.0, r: 0.28, x: -0.2, z: -1.2, tiltX: -0.08, tiltZ: -0.20, p: 0 },
+        { h: 1.8, r: 0.18, x: 0.9, z: 1.0, tiltX: 0.22, tiltZ: -0.08, p: 1 },
+        { h: 2.6, r: 0.24, x: -1.3, z: 0.5, tiltX: -0.14, tiltZ: 0.12, p: 2 },
+        { h: 1.5, r: 0.16, x: 0.5, z: 1.3, tiltX: 0.08, tiltZ: 0.30, p: 3 },
+        { h: 1.2, r: 0.14, x: -0.8, z: -1.1, tiltX: -0.25, tiltZ: -0.05, p: 4 },
+        { h: 3.4, r: 0.32, x: 0.0, z: 1.1, tiltX: 0.04, tiltZ: -0.16, p: 0 },
+        { h: 1.6, r: 0.15, x: 1.4, z: 0.1, tiltX: 0.18, tiltZ: 0.14, p: 1 },
+    ];
+
+    shards.forEach((cfg) => {
+        const pal = palettes[cfg.p];
+        const shard = createCrystalShard(cfg.h, cfg.r, pal.color, pal.emissive, pal.intensity);
+        shard.position.set(cfg.x, cfg.h * 0.5, cfg.z);
+        shard.rotation.set(cfg.tiltX, Math.random() * Math.PI * 2, cfg.tiltZ);
+        crystalGroup.add(shard);
+    });
+
+    // Luces internas del cluster
+    const innerLight1 = new THREE.PointLight(0x88bbff, 2.4, 12, 2);
+    innerLight1.position.set(0, 3.5, 0);
+    innerLight1.userData.baseIntensity = 2.4;
+    crystalGroup.add(innerLight1);
+
+    const innerLight2 = new THREE.PointLight(0xff4466, 0.8, 8, 2);
+    innerLight2.position.set(0.5, 1.5, -0.5);
+    innerLight2.userData.baseIntensity = 0.8;
+    crystalGroup.add(innerLight2);
+
+    parentGroup.add(crystalGroup);
+    return crystalGroup;
+}
+
+// Partículas flotantes — polvo brillante alrededor de los cristales
+function buildDustParticles(count, bounds, parentGroup) {
+    const geometry = new THREE.BufferGeometry();
+    const positions = new Float32Array(count * 3);
+    const sizes = new Float32Array(count);
+    const phases = new Float32Array(count);
+
+    for (let i = 0; i < count; i++) {
+        positions[i * 3] = bounds.min.x + Math.random() * (bounds.max.x - bounds.min.x);
+        positions[i * 3 + 1] = Math.random() * 5.5;
+        positions[i * 3 + 2] = bounds.min.z + Math.random() * (bounds.max.z - bounds.min.z);
+        sizes[i] = 0.02 + Math.random() * 0.06;
+        phases[i] = Math.random() * Math.PI * 2;
+    }
+
+    geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+    geometry.setAttribute("size", new THREE.BufferAttribute(sizes, 1));
+    geometry.setAttribute("phase", new THREE.BufferAttribute(phases, 1));
+
+    const material = new THREE.PointsMaterial({
+        color: 0xd0e4ff,
+        size: 0.05,
+        transparent: true,
+        opacity: 0.42,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending,
+        sizeAttenuation: true,
+    });
+
+    const points = new THREE.Points(geometry, material);
+    points.userData.isDustParticles = true;
+    parentGroup.add(points);
+    return points;
+}
+
+// Blender-exact material overrides por nombre de objeto
+// Valores: Charcoal=#0c0c0d r=0.42 m=0.18 | Cream=#f6f2ee r=0.90 | Crimson=#c1564c r=0.48 m=0.02
+// Graphite=#1c1a1c r=0.46 m=0.12 | GlassRed=#561419 r=0.08 emit=0.24
+function getNameBasedOverride(name) {
+    // Tren — cuerpo Charcoal + trim Crimson
+    if (name.startsWith("FrontCar") || name.startsWith("BackCar") || name.startsWith("TrainCar") ||
+        name.startsWith("Train_Body") || name.startsWith("Train_Roof") || name.startsWith("Train_Floor") ||
+        name.startsWith("Train_Frame") || name.startsWith("Track_")) {
+        return { color: 0x0c0c0d, roughness: 0.42, metalness: 0.18 };
+    }
+    if (name.includes("_Trim") || name.includes("_Accent") || name.includes("_Strip") ||
+        name.startsWith("Train_Door") || name.startsWith("FloorLine")) {
+        return { color: 0xc1564c, roughness: 0.48, metalness: 0.02 };
+    }
+    // Suelo y plataforma — Cream mate
+    if (name.startsWith("Ground") || name.startsWith("Back_Platform") || name.startsWith("Right_Service_Pad")) {
+        return { color: 0xf6f2ee, roughness: 0.90, metalness: 0.0 };
+    }
+    // Mobiliario de andén — Graphite
+    if (name.startsWith("Bench_") || name.startsWith("Table_") || name.startsWith("Pillar_") ||
+        name.startsWith("LampPost") || name.startsWith("Lamp_Post")) {
+        return { color: 0x1c1a1c, roughness: 0.46, metalness: 0.12 };
+    }
+    // Árboles — Crimson orgánico
+    if (name.startsWith("Tree_")) {
+        return { color: 0xc1564c, roughness: 0.88, metalness: 0.0 };
+    }
+    return null;
+}
+
 function createStylizedMaterial(material, object) {
     const baseColor = material?.color?.clone?.() || new THREE.Color(0xffffff);
     const emissive = material?.emissive?.clone?.() || new THREE.Color(0x000000);
@@ -973,13 +1186,29 @@ function createStylizedMaterial(material, object) {
     const aoMap = material?.aoMap || null;
     const emissiveMap = material?.emissiveMap || null;
     const alphaMap = material?.alphaMap || null;
-    const side = object.name.startsWith("Poster_") || object.name.includes("_label") || object.name.includes("_art")
+
+    // Cassettes con textura y paneles de señal con textura → MeshBasicMaterial (igual que posters)
+    const isCassetteWithMap = object.name.startsWith("Cassette_") && Boolean(originalMap);
+    const isSignPanel = (object.name.startsWith("Portal_") || object.name.startsWith("Platform_Sign") ||
+                         object.name.startsWith("Sign_")) && Boolean(originalMap);
+    const isGraphic = object.name.startsWith("Poster_") || object.name.includes("_label") ||
+        object.name.includes("_art") || object.name.startsWith("CardStack_") ||
+        isCassetteWithMap || isSignPanel;
+
+    const side = (object.name.startsWith("Poster_") || object.name.includes("_label") || object.name.includes("_art"))
         ? THREE.DoubleSide
         : material?.side ?? THREE.FrontSide;
-    const isGraphic = object.name.startsWith("Poster_") || object.name.includes("_label") || object.name.includes("_art") || object.name.startsWith("CardStack_");
+
     const isGlass = transparent || object.name.includes("Glass") || object.name.startsWith("Crystal_");
     const hasSurfaceMaps = Boolean(originalMap || normalMap || roughnessMap || metalnessMap || aoMap || emissiveMap || alphaMap);
-    const proceduralMap = !isGraphic && !isGlass && !originalMap ? pickProceduralTexture(object, baseColor) : null;
+
+    // Overrides PBR por nombre (no aplica a gráficos ni vidrio)
+    const nameOv = (!isGraphic && !isGlass) ? getNameBasedOverride(object.name) : null;
+    const effectiveColor = nameOv?.color !== undefined ? new THREE.Color(nameOv.color) : baseColor;
+    const effectiveRoughness = nameOv?.roughness ?? material?.roughness ?? 0.72;
+    const effectiveMetalness = nameOv?.metalness ?? material?.metalness ?? 0.08;
+
+    const proceduralMap = !isGraphic && !isGlass && !originalMap ? pickProceduralTexture(object, effectiveColor) : null;
 
     if (isGraphic) {
         return rememberMaterialState(new THREE.MeshBasicMaterial({
@@ -994,6 +1223,8 @@ function createStylizedMaterial(material, object) {
     }
 
     if (isGlass) {
+        const glassRoughness = material?.roughness ?? (roughnessMap ? 0.08 : 0.05);
+        const isCrystal = object.name.startsWith("Crystal_");
         return rememberMaterialState(new THREE.MeshPhysicalMaterial({
             color: originalMap ? new THREE.Color(0xffffff) : baseColor,
             map: originalMap,
@@ -1002,14 +1233,14 @@ function createStylizedMaterial(material, object) {
             alphaMap,
             transparent: true,
             opacity: Math.min(opacity, 0.88),
-            roughness: roughnessMap ? material?.roughness ?? 0.16 : 0.12,
+            roughness: glassRoughness,
             metalness: 0.04,
-            transmission: object.name.startsWith("Crystal_") ? 0.72 : 0.34,
+            transmission: isCrystal ? 0.72 : 0.34,
             thickness: 0.58,
-            clearcoat: 0.9,
-            clearcoatRoughness: 0.16,
-            emissive,
-            emissiveIntensity: 0.16,
+            clearcoat: 0.96,
+            clearcoatRoughness: glassRoughness * 0.5,
+            emissive: (emissive.r + emissive.g + emissive.b) > 0.03 ? emissive : baseColor.clone().multiplyScalar(0.18),
+            emissiveIntensity: isCrystal ? 0.20 : 0.24,
             side,
             depthWrite: false,
         }));
@@ -1017,7 +1248,7 @@ function createStylizedMaterial(material, object) {
 
     if (hasSurfaceMaps) {
         return rememberMaterialState(new THREE.MeshStandardMaterial({
-            color: originalMap ? new THREE.Color(0xffffff) : baseColor,
+            color: originalMap ? new THREE.Color(0xffffff) : effectiveColor,
             map: originalMap || proceduralMap,
             normalMap,
             roughnessMap,
@@ -1030,20 +1261,21 @@ function createStylizedMaterial(material, object) {
             transparent,
             opacity,
             alphaTest,
-            roughness: material?.roughness ?? 0.72,
-            metalness: material?.metalness ?? 0.08,
+            roughness: effectiveRoughness,
+            metalness: effectiveMetalness,
             side,
         }));
     }
 
-    return rememberMaterialState(new THREE.MeshToonMaterial({
-        color: baseColor,
-        map: originalMap || proceduralMap,
-        gradientMap: toonGradientMap,
+    return rememberMaterialState(new THREE.MeshStandardMaterial({
+        color: effectiveColor,
+        map: proceduralMap,
         transparent,
         opacity,
         emissive,
         emissiveIntensity: material?.emissiveIntensity ?? 0,
+        roughness: effectiveRoughness,
+        metalness: effectiveMetalness,
         side,
     }));
 }
@@ -1856,11 +2088,43 @@ function render() {
         sprite.material.opacity = (index < 3 ? 0.11 : 0.04) + Math.sin(elapsed * 1.3 + phase) * 0.018;
     });
 
+    // Animación de la fortaleza de cristales
+    if (runtime.crystalFortress) {
+        const fortress = runtime.crystalFortress;
+        fortress.children.forEach((child, i) => {
+            if (child.isMesh && child.material?.emissive) {
+                const pulse = 0.7 + Math.sin(elapsed * 1.2 + i * 0.8) * 0.3;
+                child.material.emissiveIntensity = (child.material.userData.baseEmissiveIntensity || 0.3) * pulse;
+                child.material.opacity = 0.72 + Math.sin(elapsed * 0.9 + i * 0.5) * 0.1;
+            }
+            if (child.isPointLight) {
+                child.intensity = child.userData.baseIntensity
+                    ? child.userData.baseIntensity * (0.8 + Math.sin(elapsed * 1.6 + i) * 0.2)
+                    : child.intensity;
+            }
+        });
+        // Rotación lenta del cluster completo
+        fortress.rotation.y = elapsed * 0.04;
+    }
+
+    // Animación de partículas de polvo
+    if (runtime.dustParticles) {
+        const posAttr = runtime.dustParticles.geometry.attributes.position;
+        const phaseAttr = runtime.dustParticles.geometry.attributes.phase;
+        for (let i = 0; i < posAttr.count; i++) {
+            const ph = phaseAttr.getX(i);
+            posAttr.setY(i, posAttr.getY(i) + Math.sin(elapsed * 0.4 + ph) * 0.001);
+            posAttr.setX(i, posAttr.getX(i) + Math.cos(elapsed * 0.3 + ph) * 0.0004);
+        }
+        posAttr.needsUpdate = true;
+        runtime.dustParticles.material.opacity = 0.32 + Math.sin(elapsed * 0.5) * 0.1;
+    }
+
     renderer.getDrawingBufferSize(drawBufferSize);
     renderer.setScissorTest(false);
     renderer.setViewport(0, 0, drawBufferSize.x, drawBufferSize.y);
     renderer.clear(true, true, true);
-    outlineEffect.render(scene, camera);
+    composer.render(dt);
 }
 
 function resize() {
@@ -1870,6 +2134,9 @@ function resize() {
 
     renderer.setPixelRatio(pixelRatio);
     renderer.setSize(width, height, false);
+    composer.setPixelRatio(pixelRatio);
+    composer.setSize(width, height);
+    bloomPass.resolution.set(width, height);
     outlineEffect.setSize(width, height);
     camera.aspect = width / Math.max(height, 1);
     camera.updateProjectionMatrix();

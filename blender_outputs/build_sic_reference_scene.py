@@ -3,6 +3,7 @@ import bmesh
 import math
 import os
 import random
+import shutil
 from mathutils import Euler, Vector
 
 
@@ -13,6 +14,7 @@ TEXTURES_DIR = os.path.join(WEB_ASSETS_DIR, "textures")
 RENDER_PATH = os.path.join(OUTPUT_DIR, "sic_reference_render.png")
 BLEND_PATH = os.path.join(OUTPUT_DIR, "sic_reference_scene.blend")
 GLB_PATH = os.path.join(WEB_ASSETS_DIR, "sic_universe_station.glb")
+PREVIEW_PATH = os.path.join(WEB_ASSETS_DIR, "sic_universe_station_preview.png")
 
 
 def clear_scene():
@@ -452,6 +454,60 @@ def add_tapered_block(name, location, scale, material=None, rotation=(0.0, 0.0, 
     return obj
 
 
+def transform_profile(points, scale_y=1.0, scale_z=1.0, y_shift=0.0, z_shift=0.0):
+    return [(y * scale_y + y_shift, z * scale_z + z_shift) for y, z in points]
+
+
+def add_lofted_shape(name, location, slices, material=None, rotation=(0.0, 0.0, 0.0), parent=None, cap_ends=True):
+    if len(slices) < 2:
+        raise ValueError(f"Lofted shape '{name}' requires at least two slices.")
+
+    loop_size = len(slices[0][1])
+    if loop_size < 3:
+        raise ValueError(f"Lofted shape '{name}' requires profiles with at least three points.")
+
+    for _, profile in slices:
+        if len(profile) != loop_size:
+            raise ValueError(f"Lofted shape '{name}' must use the same point count for every slice.")
+
+    vertices = []
+    faces = []
+
+    for x_value, profile in slices:
+        for y_value, z_value in profile:
+            vertices.append((x_value, y_value, z_value))
+
+    for slice_index in range(len(slices) - 1):
+        current_offset = slice_index * loop_size
+        next_offset = (slice_index + 1) * loop_size
+        for point_index in range(loop_size):
+            next_index = (point_index + 1) % loop_size
+            faces.append(
+                [
+                    current_offset + point_index,
+                    current_offset + next_index,
+                    next_offset + next_index,
+                    next_offset + point_index,
+                ]
+            )
+
+    if cap_ends:
+        faces.append(list(range(loop_size)))
+        faces.append(list(range((len(slices) - 1) * loop_size, len(slices) * loop_size))[::-1])
+
+    mesh = bpy.data.meshes.new(f"{name}_mesh")
+    mesh.from_pydata(vertices, [], faces)
+    mesh.update()
+    obj = bpy.data.objects.new(name, mesh)
+    bpy.context.collection.objects.link(obj)
+    obj.parent = parent
+    obj.location = location
+    obj.rotation_euler = rotation
+    if material:
+        assign_material(obj, material)
+    return obj
+
+
 def add_polyline(name, points, width, material):
     curve = bpy.data.curves.new(name=name, type="CURVE")
     curve.dimensions = "3D"
@@ -473,124 +529,169 @@ def look_at(obj, target):
 
 
 def make_train_body(name, location, rotation_z, body_mat, trim_mat, glass_mat):
-    mesh = bpy.data.meshes.new(f"{name}_mesh")
-    obj = bpy.data.objects.new(name, mesh)
-    bpy.context.collection.objects.link(obj)
-    obj.location = location
-    obj.rotation_euler = (0.0, 0.0, rotation_z)
+    shell_profile = [
+        (0.06, -0.66),
+        (0.46, -0.6),
+        (0.8, -0.4),
+        (0.96, -0.08),
+        (0.9, 0.28),
+        (0.62, 0.6),
+        (0.22, 0.8),
+        (-0.22, 0.8),
+        (-0.62, 0.6),
+        (-0.9, 0.28),
+        (-0.96, -0.08),
+        (-0.46, -0.6),
+    ]
+    shell_slices = [
+        (-2.64, transform_profile(shell_profile, 0.94, 0.9, 0.0, -0.02)),
+        (-1.92, transform_profile(shell_profile, 1.0, 0.96, 0.0, 0.0)),
+        (-1.02, transform_profile(shell_profile, 1.04, 1.0, 0.0, 0.04)),
+        (0.16, transform_profile(shell_profile, 1.06, 1.02, 0.0, 0.06)),
+        (1.24, transform_profile(shell_profile, 1.02, 0.98, 0.0, 0.04)),
+        (1.96, transform_profile(shell_profile, 0.84, 0.86, 0.0, -0.02)),
+        (2.52, transform_profile(shell_profile, 0.56, 0.66, 0.0, -0.16)),
+        (2.92, transform_profile(shell_profile, 0.18, 0.34, 0.0, -0.24)),
+    ]
+    obj = add_lofted_shape(name, location, shell_slices, body_mat, rotation=(0.0, 0.0, rotation_z))
 
-    bm = bmesh.new()
-    bmesh.ops.create_cube(bm, size=2.0)
-
-    for vert in bm.verts:
-        vert.co.x *= 2.55
-        vert.co.y *= 0.82
-        vert.co.z *= 0.74
-        if vert.co.z > 0:
-            vert.co.y *= 0.74
-            vert.co.z *= 0.88
-        if vert.co.x > 0:
-            vert.co.y *= 0.3
-            vert.co.z *= 0.84
-            vert.co.x += 1.05
-        if vert.co.x < -3.4:
-            vert.co.y *= 0.92
-            vert.co.z *= 0.95
-
-    bmesh.ops.bevel(
-        bm,
-        geom=list(bm.edges) + list(bm.verts),
-        offset=0.07,
-        offset_type="OFFSET",
-        segments=2,
-        profile=0.6,
-        affect="EDGES",
+    underframe_profile = [
+        (0.18, -0.18),
+        (0.56, -0.16),
+        (0.66, 0.02),
+        (0.46, 0.14),
+        (0.0, 0.18),
+        (-0.46, 0.14),
+        (-0.66, 0.02),
+        (-0.56, -0.16),
+    ]
+    add_lofted_shape(
+        f"{name}_base",
+        (0.0, 0.0, 0.0),
+        [
+            (-2.22, transform_profile(underframe_profile, 1.0, 1.0, 0.0, -0.54)),
+            (-0.84, transform_profile(underframe_profile, 1.02, 1.02, 0.0, -0.56)),
+            (0.86, transform_profile(underframe_profile, 0.98, 0.98, 0.0, -0.56)),
+            (1.94, transform_profile(underframe_profile, 0.78, 0.84, 0.0, -0.52)),
+        ],
+        trim_mat,
+        parent=obj,
     )
-
-    bm.to_mesh(mesh)
-    bm.free()
-    assign_material(obj, body_mat)
-
-    add_tapered_block(f"{name}_base", (-0.2, 0.0, -0.56), (1.95, 0.76, 0.07), trim_mat, parent=obj, top_scale=(0.92, 0.98))
-    add_tapered_block(f"{name}_roof", (-0.65, 0.0, 0.74), (1.48, 0.58, 0.045), trim_mat, parent=obj, top_scale=(0.78, 0.84), top_offset=(0.14, 0.0))
-    add_tapered_block(f"{name}_roof_cap", (0.92, 0.0, 0.76), (0.54, 0.46, 0.042), trim_mat, parent=obj, top_scale=(0.56, 0.86), top_offset=(0.08, 0.0))
-    add_tapered_block(
+    add_lofted_shape(
+        f"{name}_roof",
+        (0.0, 0.0, 0.0),
+        [
+            (-1.96, [(-0.48, 0.58), (0.48, 0.58), (0.7, 0.72), (0.32, 0.86), (-0.32, 0.86), (-0.7, 0.72)]),
+            (-0.82, [(-0.52, 0.62), (0.52, 0.62), (0.78, 0.76), (0.36, 0.92), (-0.36, 0.92), (-0.78, 0.76)]),
+            (0.44, [(-0.5, 0.64), (0.5, 0.64), (0.76, 0.78), (0.34, 0.94), (-0.34, 0.94), (-0.76, 0.78)]),
+            (1.48, [(-0.42, 0.58), (0.42, 0.58), (0.62, 0.7), (0.28, 0.82), (-0.28, 0.82), (-0.62, 0.7)]),
+        ],
+        trim_mat,
+        parent=obj,
+    )
+    add_lofted_shape(
+        f"{name}_roof_cap",
+        (0.0, 0.0, 0.0),
+        [
+            (1.26, [(-0.24, 0.74), (0.24, 0.74), (0.34, 0.84), (0.0, 0.96), (-0.34, 0.84)]),
+            (1.82, [(-0.2, 0.72), (0.2, 0.72), (0.28, 0.82), (0.0, 0.92), (-0.28, 0.82)]),
+        ],
+        trim_mat,
+        parent=obj,
+    )
+    add_lofted_shape(
         f"{name}_nose_glass",
-        (2.92, 0.0, 0.02),
-        (0.34, 0.26, 0.34),
-        glass_mat,
-        rotation=(0.0, math.radians(8), 0.0),
-        parent=obj,
-        top_scale=(0.58, 0.76),
-        top_offset=(0.07, 0.0),
-    )
-    add_tapered_block(
-        f"{name}_window_left",
-        (0.12, 0.54, 0.08),
-        (1.95, 0.055, 0.29),
+        (0.0, 0.0, 0.0),
+        [
+            (1.98, [(-0.34, -0.04), (-0.18, -0.22), (0.18, -0.22), (0.34, -0.04), (0.24, 0.28), (0.0, 0.48), (-0.24, 0.28)]),
+            (2.48, [(-0.24, -0.08), (-0.12, -0.2), (0.12, -0.2), (0.24, -0.08), (0.18, 0.18), (0.0, 0.36), (-0.18, 0.18)]),
+            (2.84, [(-0.12, -0.12), (-0.06, -0.16), (0.06, -0.16), (0.12, -0.12), (0.08, 0.02), (0.0, 0.14), (-0.08, 0.02)]),
+        ],
         glass_mat,
         parent=obj,
-        top_scale=(0.9, 0.66),
-        top_offset=(0.08, 0.0),
     )
-    add_tapered_block(
-        f"{name}_window_right",
-        (0.12, -0.54, 0.08),
-        (1.95, 0.055, 0.29),
-        glass_mat,
-        parent=obj,
-        top_scale=(0.9, 0.66),
-        top_offset=(0.08, 0.0),
-    )
-    add_tapered_block(
-        f"{name}_window_left_front",
-        (1.9, 0.42, 0.12),
-        (0.46, 0.055, 0.22),
-        glass_mat,
-        rotation=(0.0, math.radians(-18), 0.0),
-        parent=obj,
-        top_scale=(0.72, 0.7),
-        top_offset=(0.05, 0.0),
-    )
-    add_tapered_block(
-        f"{name}_window_right_front",
-        (1.9, -0.42, 0.12),
-        (0.46, 0.055, 0.22),
-        glass_mat,
-        rotation=(0.0, math.radians(-18), 0.0),
-        parent=obj,
-        top_scale=(0.72, 0.7),
-        top_offset=(0.05, 0.0),
-    )
-    add_tapered_block(f"{name}_trim_left", (-0.18, 0.74, -0.28), (2.34, 0.025, 0.065), trim_mat, parent=obj, top_scale=(0.94, 0.72))
-    add_tapered_block(f"{name}_trim_right", (-0.18, -0.74, -0.28), (2.34, 0.025, 0.065), trim_mat, parent=obj, top_scale=(0.94, 0.72))
-    add_tapered_block(f"{name}_skid_left", (-0.28, 0.54, -0.56), (1.82, 0.09, 0.05), trim_mat, parent=obj, top_scale=(0.72, 0.82))
-    add_tapered_block(f"{name}_skid_right", (-0.28, -0.54, -0.56), (1.82, 0.09, 0.05), trim_mat, parent=obj, top_scale=(0.72, 0.82))
-    add_tapered_block(f"{name}_side_fin_left", (1.02, 0.68, -0.18), (0.9, 0.03, 0.14), trim_mat, rotation=(0.0, math.radians(-14), 0.0), parent=obj, top_scale=(0.46, 0.82), top_offset=(0.14, 0.0))
-    add_tapered_block(f"{name}_side_fin_right", (1.02, -0.68, -0.18), (0.9, 0.03, 0.14), trim_mat, rotation=(0.0, math.radians(14), 0.0), parent=obj, top_scale=(0.46, 0.82), top_offset=(0.14, 0.0))
-    add_tapered_block(f"{name}_nose_fin_left", (2.62, 0.48, -0.12), (0.32, 0.03, 0.18), trim_mat, rotation=(0.0, math.radians(-24), 0.0), parent=obj, top_scale=(0.42, 0.74), top_offset=(0.08, 0.0))
-    add_tapered_block(f"{name}_nose_fin_right", (2.62, -0.48, -0.12), (0.32, 0.03, 0.18), trim_mat, rotation=(0.0, math.radians(24), 0.0), parent=obj, top_scale=(0.42, 0.74), top_offset=(0.08, 0.0))
-    for index, x in enumerate((-1.0, -0.25, 0.5, 1.18)):
-        offset = 0.53
-        size_x = 0.06 if index < 3 else 0.04
+
+    for side, side_name, tilt in ((1.0, "left", -14), (-1.0, "right", 14)):
+        band_profile = [
+            (0.68 * side, -0.18),
+            (0.78 * side, -0.08),
+            (0.8 * side, 0.3),
+            (0.66 * side, 0.36),
+        ]
+        front_profile = [
+            (0.42 * side, -0.12),
+            (0.56 * side, -0.04),
+            (0.54 * side, 0.22),
+            (0.4 * side, 0.28),
+        ]
+        add_lofted_shape(
+            f"{name}_window_{side_name}",
+            (0.0, 0.0, 0.0),
+            [
+                (-1.72, band_profile),
+                (-0.62, transform_profile(band_profile, 1.0, 1.0, 0.0, 0.02)),
+                (0.78, transform_profile(band_profile, 0.98, 0.98, 0.0, 0.03)),
+                (1.48, transform_profile(front_profile, 1.0, 1.0, 0.0, 0.02)),
+                (2.0, transform_profile(front_profile, 0.84, 0.88, 0.0, 0.0)),
+            ],
+            glass_mat,
+            parent=obj,
+        )
         add_tapered_block(
-            f"{name}_brace_left_{index}",
-            (x, offset, 0.12),
-            (size_x, 0.03, 0.34),
+            f"{name}_trim_{side_name}",
+            (-0.08, 0.8 * side, -0.24),
+            (2.26, 0.025, 0.08),
             trim_mat,
-            rotation=(0.0, math.radians(-18), 0.0),
+            parent=obj,
+            top_scale=(0.9, 0.72),
+        )
+        add_tapered_block(
+            f"{name}_skid_{side_name}",
+            (-0.18, 0.6 * side, -0.58),
+            (1.86, 0.1, 0.06),
+            trim_mat,
             parent=obj,
             top_scale=(0.72, 0.82),
         )
         add_tapered_block(
-            f"{name}_brace_right_{index}",
-            (x, -offset, 0.12),
-            (size_x, 0.03, 0.34),
+            f"{name}_side_fin_{side_name}",
+            (1.02, 0.74 * side, -0.18),
+            (0.92, 0.03, 0.18),
             trim_mat,
-            rotation=(0.0, math.radians(18), 0.0),
+            rotation=(0.0, math.radians(tilt), 0.0),
             parent=obj,
-            top_scale=(0.72, 0.82),
+            top_scale=(0.38, 0.82),
+            top_offset=(0.18, 0.0),
         )
+        add_tapered_block(
+            f"{name}_nose_fin_{side_name}",
+            (2.56, 0.54 * side, -0.12),
+            (0.42, 0.03, 0.22),
+            trim_mat,
+            rotation=(0.0, math.radians(tilt * 1.7), 0.0),
+            parent=obj,
+            top_scale=(0.34, 0.7),
+            top_offset=(0.1, 0.0),
+        )
+
+    for index, x in enumerate((-1.42, -0.62, 0.26, 1.02, 1.66)):
+        brace_height = 0.36 if index < 3 else 0.28
+        for side, brace_name, tilt in ((0.56, "left", -18), (-0.56, "right", 18)):
+            add_tapered_block(
+                f"{name}_brace_{brace_name}_{index}",
+                (x, side, 0.1),
+                (0.05, 0.028, brace_height),
+                trim_mat,
+                rotation=(0.0, math.radians(tilt), 0.0),
+                parent=obj,
+                top_scale=(0.62, 0.82),
+            )
+
+    add_tapered_block(f"{name}_door_frame", (-0.46, 0.72, 0.02), (0.42, 0.024, 0.38), trim_mat, parent=obj, top_scale=(0.58, 0.8))
+    add_tapered_block(f"{name}_door_frame_inner", (-0.46, 0.69, 0.02), (0.34, 0.018, 0.3), glass_mat, parent=obj, top_scale=(0.7, 0.84))
+    add_tapered_block(f"{name}_roof_strip", (-0.46, 0.0, 0.98), (1.16, 0.06, 0.022), trim_mat, parent=obj, top_scale=(0.68, 0.84))
+    add_cylinder(f"{name}_bogie_front", (0.96, 0.0, -0.62), 0.18, 0.84, trim_mat, rotation=(math.pi / 2.0, 0.0, 0.0), vertices=10, parent=obj)
+    add_cylinder(f"{name}_bogie_rear", (-1.26, 0.0, -0.62), 0.18, 0.84, trim_mat, rotation=(math.pi / 2.0, 0.0, 0.0), vertices=10, parent=obj)
     return obj
 
 
@@ -686,47 +787,71 @@ def create_bench(name, location, rotation_z, wood_mat, dark_mat):
 
 
 def create_tree(name, location, trunk_mat, foliage_mat, accent_mat):
-    trunk = add_cylinder(f"{name}_trunk", (location[0], location[1], location[2] + 0.66), 0.082, 1.32, trunk_mat, vertices=10)
-    add_tapered_block(f"{name}_trunk_base", (location[0], location[1], location[2] + 0.1), (0.18, 0.16, 0.09), trunk_mat, top_scale=(0.64, 0.7))
-    add_tapered_block(f"{name}_trunk_collar", (location[0], location[1], location[2] + 1.06), (0.12, 0.12, 0.06), trunk_mat, top_scale=(0.72, 0.72))
+    trunk_profile = [
+        (0.0, -0.12),
+        (0.08, -0.08),
+        (0.11, 0.02),
+        (0.07, 0.12),
+        (-0.04, 0.16),
+        (-0.11, 0.08),
+        (-0.09, -0.04),
+    ]
+    trunk = add_lofted_shape(
+        f"{name}_trunk",
+        (location[0], location[1], location[2]),
+        [
+            (0.0, transform_profile(trunk_profile, 1.28, 1.0, 0.0, 0.1)),
+            (0.08, transform_profile(trunk_profile, 1.08, 1.02, 0.0, 0.52)),
+            (-0.04, transform_profile(trunk_profile, 0.92, 0.92, 0.02, 1.0)),
+            (0.0, transform_profile(trunk_profile, 0.74, 0.82, 0.0, 1.34)),
+        ],
+        trunk_mat,
+    )
+    add_tapered_block(f"{name}_trunk_base", (location[0], location[1], location[2] + 0.1), (0.2, 0.18, 0.1), trunk_mat, top_scale=(0.56, 0.68))
+    add_tapered_block(f"{name}_trunk_collar", (location[0], location[1], location[2] + 1.08), (0.14, 0.14, 0.06), trunk_mat, top_scale=(0.62, 0.68))
     crown_specs = [
-        (f"{name}_crown", (location[0], location[1], location[2] + 1.62), 0.42, (1.04, 0.94, 1.24), foliage_mat, 2),
-        (f"{name}_crown_front", (location[0] - 0.08, location[1] - 0.28, location[2] + 1.48), 0.24, (0.82, 0.78, 0.96), foliage_mat, 1),
-        (f"{name}_crown_back", (location[0] + 0.06, location[1] + 0.24, location[2] + 1.5), 0.24, (0.8, 0.82, 0.98), foliage_mat, 1),
-        (f"{name}_crown_left", (location[0] - 0.28, location[1] + 0.08, location[2] + 1.46), 0.26, (0.86, 0.86, 1.0), foliage_mat, 1),
-        (f"{name}_crown_right", (location[0] + 0.26, location[1] - 0.06, location[2] + 1.5), 0.28, (0.84, 0.82, 1.0), foliage_mat, 1),
-        (f"{name}_crown_top", (location[0] + 0.02, location[1], location[2] + 1.94), 0.22, (0.78, 0.72, 0.88), accent_mat, 1),
-        (f"{name}_accent_left", (location[0] - 0.18, location[1] - 0.18, location[2] + 1.34), 0.2, (0.78, 0.68, 0.84), accent_mat, 1),
-        (f"{name}_accent_right", (location[0] + 0.22, location[1] + 0.14, location[2] + 1.38), 0.2, (0.8, 0.7, 0.86), accent_mat, 1),
+        (f"{name}_crown", (location[0], location[1], location[2] + 1.62), 0.44, (1.08, 0.96, 1.3), foliage_mat, 2),
+        (f"{name}_crown_front", (location[0] - 0.1, location[1] - 0.32, location[2] + 1.46), 0.28, (0.88, 0.82, 1.02), foliage_mat, 1),
+        (f"{name}_crown_back", (location[0] + 0.08, location[1] + 0.28, location[2] + 1.5), 0.28, (0.86, 0.84, 1.02), foliage_mat, 1),
+        (f"{name}_crown_left", (location[0] - 0.32, location[1] + 0.12, location[2] + 1.48), 0.28, (0.9, 0.86, 1.06), foliage_mat, 1),
+        (f"{name}_crown_right", (location[0] + 0.3, location[1] - 0.08, location[2] + 1.5), 0.3, (0.88, 0.84, 1.06), foliage_mat, 1),
+        (f"{name}_crown_top", (location[0] + 0.02, location[1], location[2] + 2.0), 0.24, (0.82, 0.74, 0.92), accent_mat, 1),
+        (f"{name}_accent_left", (location[0] - 0.22, location[1] - 0.22, location[2] + 1.36), 0.22, (0.82, 0.7, 0.86), accent_mat, 1),
+        (f"{name}_accent_right", (location[0] + 0.26, location[1] + 0.16, location[2] + 1.4), 0.22, (0.82, 0.72, 0.9), accent_mat, 1),
+        (f"{name}_accent_upper", (location[0] - 0.02, location[1] + 0.16, location[2] + 1.82), 0.18, (0.7, 0.62, 0.78), accent_mat, 1),
     ]
     for crown_name, crown_loc, radius, scale, material, subdivisions in crown_specs:
         add_ico(crown_name, crown_loc, radius, scale, material, subdivisions=subdivisions)
 
     branch_specs = [
-        ((-0.16, -0.04, 1.02), (math.radians(18), math.radians(10), math.radians(112)), 0.34),
-        ((0.14, 0.06, 1.08), (math.radians(24), math.radians(-8), math.radians(-84)), 0.36),
-        ((0.02, -0.16, 1.16), (math.radians(26), math.radians(4), math.radians(18)), 0.26),
+        ((-0.16, -0.04, 1.02), (math.radians(18), math.radians(10), math.radians(112)), 0.36),
+        ((0.14, 0.06, 1.08), (math.radians(24), math.radians(-8), math.radians(-84)), 0.38),
+        ((0.02, -0.16, 1.16), (math.radians(26), math.radians(4), math.radians(18)), 0.3),
+        ((-0.04, 0.16, 1.18), (math.radians(20), math.radians(-6), math.radians(-12)), 0.24),
     ]
     for index, (offset, rotation, depth) in enumerate(branch_specs):
-        add_tapered_block(
+        add_cylinder(
             f"{name}_branch_{index}",
             (location[0] + offset[0], location[1] + offset[1], location[2] + offset[2]),
-            (0.05, 0.05, depth),
+            0.04 if index < 2 else 0.032,
+            depth,
             trunk_mat,
             rotation=rotation,
-            top_scale=(0.42, 0.72),
         )
 
     leaf_specs = (
-        (0.12, 0.34, 0.06, 0.28, 0.02),
-        (0.72, 0.26, 0.08, 0.26, 0.02),
-        (1.34, 0.24, 0.1, 0.3, 0.03),
-        (2.04, 0.28, 0.08, 0.28, 0.02),
-        (2.68, 0.3, 0.04, 0.26, 0.02),
-        (3.36, 0.26, -0.06, 0.3, 0.03),
-        (4.04, 0.24, -0.08, 0.26, 0.02),
-        (4.76, 0.22, -0.04, 0.28, 0.02),
-        (5.38, 0.28, 0.04, 0.3, 0.03),
+        (0.1, 0.36, 0.08, 0.3, 0.02),
+        (0.56, 0.3, 0.1, 0.28, 0.02),
+        (1.02, 0.28, 0.12, 0.32, 0.02),
+        (1.52, 0.3, 0.08, 0.32, 0.03),
+        (2.08, 0.34, 0.06, 0.3, 0.02),
+        (2.62, 0.34, 0.0, 0.3, 0.02),
+        (3.12, 0.3, -0.04, 0.32, 0.03),
+        (3.64, 0.28, -0.08, 0.3, 0.02),
+        (4.14, 0.26, -0.1, 0.3, 0.02),
+        (4.72, 0.24, -0.04, 0.3, 0.02),
+        (5.18, 0.28, 0.02, 0.32, 0.03),
+        (5.72, 0.32, 0.06, 0.3, 0.02),
     )
     for index, (angle, radius, z_offset, depth, tip_radius) in enumerate(leaf_specs):
         add_cone(
@@ -741,14 +866,24 @@ def create_tree(name, location, trunk_mat, foliage_mat, accent_mat):
             accent_mat if index % 2 else foliage_mat,
             rotation=(math.radians(22), math.radians(4), angle),
             radius2=tip_radius,
-            vertices=6,
+            vertices=5 if index % 3 == 0 else 6,
         )
 
 
 def create_starburst_tree(name, location, trunk_mat, spike_mat):
-    trunk = add_cylinder(f"{name}_trunk", (location[0], location[1], location[2] + 0.72), 0.09, 1.44, trunk_mat, vertices=10)
-    add_tapered_block(f"{name}_trunk_base", (location[0], location[1], location[2] + 0.1), (0.18, 0.16, 0.08), trunk_mat, top_scale=(0.66, 0.72))
-    core = add_ico(f"{name}_core", (0.0, 0.0, 1.72), 0.3, (1.0, 1.0, 1.0), spike_mat, subdivisions=1, parent=trunk)
+    trunk = add_lofted_shape(
+        f"{name}_trunk",
+        (location[0], location[1], location[2]),
+        [
+            (0.0, [(-0.12, 0.08), (-0.02, 0.0), (0.08, 0.04), (0.12, 0.14), (0.02, 0.22), (-0.08, 0.2)]),
+            (0.06, [(-0.08, 0.56), (0.0, 0.46), (0.08, 0.52), (0.1, 0.64), (0.0, 0.74), (-0.1, 0.7)]),
+            (-0.02, [(-0.06, 1.06), (0.02, 0.96), (0.08, 1.0), (0.08, 1.16), (-0.02, 1.22), (-0.08, 1.16)]),
+            (0.02, [(-0.04, 1.38), (0.0, 1.3), (0.05, 1.34), (0.06, 1.48), (-0.02, 1.54), (-0.08, 1.48)]),
+        ],
+        trunk_mat,
+    )
+    add_tapered_block(f"{name}_trunk_base", (location[0], location[1], location[2] + 0.1), (0.2, 0.18, 0.08), trunk_mat, top_scale=(0.62, 0.68))
+    core = add_ico(f"{name}_core", (0.0, 0.0, 1.74), 0.34, (1.02, 1.02, 1.02), spike_mat, subdivisions=2, parent=trunk)
     directions = [
         (0.0, 0.0, 0.0),
         (math.radians(38), 0.0, 0.0),
@@ -759,20 +894,35 @@ def create_starburst_tree(name, location, trunk_mat, spike_mat):
         (math.radians(-22), math.radians(18), math.radians(122)),
         (math.radians(18), math.radians(-22), math.radians(-38)),
         (math.radians(-18), math.radians(-18), math.radians(180)),
+        (math.radians(12), math.radians(34), math.radians(18)),
+        (math.radians(-12), math.radians(-34), math.radians(-18)),
+        (math.radians(26), math.radians(-12), math.radians(136)),
     ]
     for index, rotation in enumerate(directions):
         spike = add_cone(
             f"{name}_spike_{index}",
             (0.0, 0.0, 1.72),
             0.13,
-            1.08 if index == 0 else 0.86,
+            1.1 if index == 0 else 0.9 if index < 5 else 0.8,
             spike_mat,
             rotation=rotation,
             radius2=0.0,
             vertices=6,
             parent=trunk,
         )
-        spike.scale = (1.0, 1.0, 1.0 if index == 0 else 0.82)
+        spike.scale = (1.0, 1.0, 1.0 if index == 0 else 0.84 if index < 5 else 0.72)
+    for index, angle in enumerate([0.0, 1.26, 2.52, 3.78, 5.02]):
+        add_cone(
+            f"{name}_petal_{index}",
+            (0.0, 0.0, 1.66),
+            0.12,
+            0.56,
+            spike_mat,
+            rotation=(math.radians(64), 0.0, angle),
+            radius2=0.02,
+            vertices=5,
+            parent=trunk,
+        )
     return trunk
 
 
@@ -938,6 +1088,8 @@ def create_crystal_cluster(glass_mat, dark_mat, red_mat, core_mat=None):
         ((center.x + 0.48, center.y + 0.28, 1.58), (0.14, 0.14, 0.88), (math.radians(-24), math.radians(10), math.radians(24))),
         ((center.x - 0.28, center.y - 0.44, 1.62), (0.13, 0.13, 0.8), (math.radians(14), math.radians(-18), math.radians(62))),
         ((center.x + 0.24, center.y - 0.48, 1.6), (0.13, 0.13, 0.82), (math.radians(-18), math.radians(16), math.radians(38))),
+        ((center.x - 0.52, center.y - 0.18, 1.7), (0.16, 0.16, 0.9), (math.radians(22), math.radians(-12), math.radians(-14))),
+        ((center.x + 0.52, center.y - 0.2, 1.72), (0.16, 0.16, 0.9), (math.radians(-22), math.radians(12), math.radians(14))),
     ]
 
     for index, (loc, scl, rot) in enumerate(crystal_specs):
@@ -953,6 +1105,16 @@ def create_crystal_cluster(glass_mat, dark_mat, red_mat, core_mat=None):
     ):
         inner = add_cone(f"Crystal_Inner_{index}", loc, 0.24, 1.2, core_mat or red_mat, rotation=rot, radius2=0.02, vertices=6)
         inner.scale = scl
+    for index, angle in enumerate([0.34, 1.18, 2.02, 2.86, 3.76, 4.62, 5.44]):
+        add_tapered_block(
+            f"Crystal_Petal_{index}",
+            (center.x + math.cos(angle) * 0.34, center.y + math.sin(angle) * 0.34, 1.08),
+            (0.07, 0.16, 0.22),
+            core_mat or red_mat,
+            rotation=(math.radians(54), math.radians(6), angle),
+            top_scale=(0.34, 0.82),
+            top_offset=(0.02, 0.0),
+        )
 
 
 def create_sign(name, location, rotation_z, text, width, height, frame_mat, board_mat, text_mat, post_height=1.3):
@@ -975,20 +1137,50 @@ def create_sign(name, location, rotation_z, text, width, height, frame_mat, boar
 
 
 def create_portal_sign(frame_mat, board_mat, text_mat):
-    left_post = add_cylinder("Portal_Post_Left", (-3.78, 1.92, 1.38), 0.08, 2.76, frame_mat, vertices=10)
-    right_post = add_cylinder("Portal_Post_Right", (-1.02, 1.9, 1.32), 0.08, 2.62, frame_mat, vertices=10)
+    left_post = add_cylinder("Portal_Post_Left", (-3.78, 1.92, 1.38), 0.08, 2.76, frame_mat, vertices=14)
+    right_post = add_cylinder("Portal_Post_Right", (-1.02, 1.9, 1.32), 0.08, 2.62, frame_mat, vertices=14)
     add_tapered_block("Portal_Post_Left_Foot", (-3.78, 1.92, 0.1), (0.18, 0.16, 0.08), frame_mat, top_scale=(0.66, 0.72))
     add_tapered_block("Portal_Post_Right_Foot", (-1.02, 1.9, 0.1), (0.18, 0.16, 0.08), frame_mat, top_scale=(0.66, 0.72))
-    add_tapered_block("Portal_Top", (-2.42, 1.91, 2.58), (1.54, 0.08, 0.1), frame_mat, top_scale=(0.84, 0.78))
+    add_lofted_shape(
+        "Portal_Top",
+        (-2.42, 1.91, 2.56),
+        [
+            (-1.36, [(-0.08, -0.08), (0.08, -0.08), (0.12, 0.0), (0.08, 0.08), (-0.08, 0.08), (-0.12, 0.0)]),
+            (-0.38, [(-0.08, -0.08), (0.08, -0.08), (0.12, 0.02), (0.08, 0.08), (-0.08, 0.08), (-0.12, 0.02)]),
+            (0.52, [(-0.08, -0.08), (0.08, -0.08), (0.1, 0.06), (0.08, 0.08), (-0.08, 0.08), (-0.1, 0.06)]),
+            (1.36, [(-0.08, -0.08), (0.08, -0.08), (0.12, 0.0), (0.08, 0.08), (-0.08, 0.08), (-0.12, 0.0)]),
+        ],
+        frame_mat,
+    )
     add_tapered_block("Portal_Top_End_Left", (-3.62, 1.91, 2.58), (0.18, 0.08, 0.12), board_mat, top_scale=(0.44, 0.82), top_offset=(-0.04, 0.0))
     add_tapered_block("Portal_Top_End_Right", (-1.22, 1.91, 2.58), (0.18, 0.08, 0.12), board_mat, top_scale=(0.44, 0.82), top_offset=(0.04, 0.0))
-    add_tapered_block("Portal_Board_Frame", (-2.44, 1.91, 2.18), (1.1, 0.065, 0.28), board_mat, top_scale=(0.84, 0.78))
-    sign_board = add_tapered_block("Portal_Board", (-2.44, 1.91, 2.18), (1.0, 0.06, 0.22), frame_mat, top_scale=(0.8, 0.74))
+    add_lofted_shape(
+        "Portal_Board_Frame",
+        (-2.44, 1.91, 2.18),
+        [
+            (-0.98, [(-0.06, -0.24), (0.06, -0.24), (0.08, 0.0), (0.06, 0.24), (-0.06, 0.24), (-0.08, 0.0)]),
+            (0.0, [(-0.06, -0.28), (0.06, -0.28), (0.08, 0.0), (0.06, 0.28), (-0.06, 0.28), (-0.08, 0.0)]),
+            (0.98, [(-0.06, -0.24), (0.06, -0.24), (0.08, 0.0), (0.06, 0.24), (-0.06, 0.24), (-0.08, 0.0)]),
+        ],
+        board_mat,
+    )
+    sign_board = add_lofted_shape(
+        "Portal_Board",
+        (-2.44, 1.94, 2.18),
+        [
+            (-0.9, [(-0.04, -0.18), (0.04, -0.18), (0.06, 0.0), (0.04, 0.18), (-0.04, 0.18), (-0.06, 0.0)]),
+            (0.0, [(-0.04, -0.22), (0.04, -0.22), (0.06, 0.0), (0.04, 0.22), (-0.04, 0.22), (-0.06, 0.0)]),
+            (0.9, [(-0.04, -0.18), (0.04, -0.18), (0.06, 0.0), (0.04, 0.18), (-0.04, 0.18), (-0.06, 0.0)]),
+        ],
+        frame_mat,
+    )
     sign_board.rotation_euler = (0.0, 0.0, 0.0)
     add_tapered_block("Portal_Brace_Left", (-3.18, 1.91, 1.84), (0.12, 0.05, 0.58), frame_mat, rotation=(math.radians(-18), 0.0, 0.0), top_scale=(0.46, 0.82))
     add_tapered_block("Portal_Brace_Right", (-1.7, 1.91, 1.84), (0.12, 0.05, 0.58), frame_mat, rotation=(math.radians(-18), 0.0, 0.0), top_scale=(0.46, 0.82))
     add_tapered_block("Portal_Board_Accent_Left", (-2.96, 1.98, 2.18), (0.08, 0.016, 0.18), board_mat, top_scale=(0.48, 0.8))
     add_tapered_block("Portal_Board_Accent_Right", (-1.94, 1.98, 2.18), (0.08, 0.016, 0.18), board_mat, top_scale=(0.48, 0.8))
+    add_tapered_block("Portal_Header_Fin_Left", (-3.06, 1.92, 2.68), (0.22, 0.04, 0.12), board_mat, rotation=(math.radians(18), 0.0, math.radians(16)), top_scale=(0.34, 0.82))
+    add_tapered_block("Portal_Header_Fin_Right", (-1.82, 1.92, 2.68), (0.22, 0.04, 0.12), board_mat, rotation=(math.radians(-18), 0.0, math.radians(-16)), top_scale=(0.34, 0.82))
     text = add_text(
         "Portal_Text",
         "[SIC] LINE - TO: BODY",
@@ -1089,14 +1281,95 @@ def create_wall_poster(name, image_path, location, rotation_z, size, frame_mat):
 
 
 def create_train_canopy(train_angle, dark_mat, red_mat, glass_mat):
-    add_tapered_block("Canopy_Spine", (5.92, 2.06, 1.18), (1.22, 0.5, 0.18), dark_mat, rotation=(0.0, math.radians(11), train_angle), top_scale=(0.72, 0.78), top_offset=(0.18, 0.0))
-    add_tapered_block("Canopy_Spine_Cap", (5.96, 2.12, 1.34), (0.92, 0.32, 0.05), red_mat, rotation=(0.0, math.radians(9), train_angle), top_scale=(0.62, 0.84), top_offset=(0.14, 0.0))
-    add_tapered_block("Canopy_Wing_A", (5.34, 1.76, 1.0), (0.78, 0.12, 0.12), red_mat, rotation=(math.radians(32), 0.0, train_angle + math.radians(34)), top_scale=(0.48, 0.82), top_offset=(0.18, 0.0))
-    add_tapered_block("Canopy_Wing_B", (6.52, 2.5, 1.02), (0.88, 0.12, 0.12), red_mat, rotation=(math.radians(-18), 0.0, train_angle - math.radians(22)), top_scale=(0.44, 0.84), top_offset=(0.22, 0.0))
-    add_tapered_block("Canopy_Wing_C", (5.98, 2.18, 0.94), (0.52, 0.1, 0.1), dark_mat, rotation=(math.radians(14), 0.0, train_angle + math.radians(8)), top_scale=(0.42, 0.82), top_offset=(0.12, 0.0))
-    add_tapered_block("Canopy_Fin", (6.82, 2.92, 1.32), (0.52, 0.1, 0.4), dark_mat, rotation=(0.0, math.radians(16), train_angle), top_scale=(0.42, 0.86), top_offset=(0.14, 0.0))
-    add_tapered_block("Canopy_Glass", (5.52, 1.78, 1.02), (0.46, 0.18, 0.26), glass_mat, rotation=(0.0, math.radians(12), train_angle), top_scale=(0.6, 0.78), top_offset=(0.08, 0.0))
-    add_tapered_block("Canopy_Glass_B", (6.2, 2.28, 1.08), (0.42, 0.14, 0.24), glass_mat, rotation=(0.0, math.radians(14), train_angle + math.radians(14)), top_scale=(0.58, 0.8), top_offset=(0.08, 0.0))
+    add_lofted_shape(
+        "Canopy_Spine",
+        (5.94, 2.08, 1.16),
+        [
+            (-1.18, [(-0.42, -0.12), (0.32, -0.16), (0.46, 0.0), (0.28, 0.16), (-0.26, 0.2), (-0.44, 0.04)]),
+            (-0.28, [(-0.52, -0.16), (0.36, -0.18), (0.58, 0.0), (0.34, 0.2), (-0.3, 0.22), (-0.5, 0.06)]),
+            (0.62, [(-0.44, -0.12), (0.42, -0.16), (0.56, 0.02), (0.32, 0.2), (-0.28, 0.22), (-0.42, 0.06)]),
+            (1.28, [(-0.28, -0.08), (0.26, -0.1), (0.34, 0.02), (0.18, 0.14), (-0.16, 0.18), (-0.28, 0.04)]),
+        ],
+        dark_mat,
+        rotation=(0.0, math.radians(10), train_angle),
+    )
+    add_lofted_shape(
+        "Canopy_Spine_Cap",
+        (5.96, 2.12, 1.34),
+        [
+            (-0.94, [(-0.18, -0.05), (0.18, -0.05), (0.26, 0.0), (0.16, 0.08), (-0.16, 0.08), (-0.26, 0.0)]),
+            (0.0, [(-0.22, -0.06), (0.22, -0.06), (0.3, 0.0), (0.18, 0.1), (-0.18, 0.1), (-0.3, 0.0)]),
+            (0.94, [(-0.16, -0.05), (0.16, -0.05), (0.22, 0.0), (0.14, 0.08), (-0.14, 0.08), (-0.22, 0.0)]),
+        ],
+        red_mat,
+        rotation=(0.0, math.radians(8), train_angle),
+    )
+    add_lofted_shape(
+        "Canopy_Wing_A",
+        (5.32, 1.78, 1.02),
+        [
+            (-0.72, [(-0.06, -0.04), (0.16, -0.1), (0.28, 0.0), (0.08, 0.08), (-0.12, 0.04)]),
+            (0.0, [(-0.08, -0.05), (0.18, -0.12), (0.32, 0.0), (0.1, 0.1), (-0.14, 0.05)]),
+            (0.74, [(-0.04, -0.03), (0.12, -0.08), (0.22, 0.0), (0.06, 0.06), (-0.08, 0.04)]),
+        ],
+        red_mat,
+        rotation=(math.radians(30), 0.0, train_angle + math.radians(34)),
+    )
+    add_lofted_shape(
+        "Canopy_Wing_B",
+        (6.52, 2.5, 1.04),
+        [
+            (-0.8, [(-0.06, -0.04), (0.16, -0.1), (0.28, 0.0), (0.08, 0.08), (-0.12, 0.04)]),
+            (0.0, [(-0.08, -0.05), (0.18, -0.12), (0.32, 0.0), (0.1, 0.1), (-0.14, 0.05)]),
+            (0.84, [(-0.04, -0.03), (0.12, -0.08), (0.22, 0.0), (0.06, 0.06), (-0.08, 0.04)]),
+        ],
+        red_mat,
+        rotation=(math.radians(-18), 0.0, train_angle - math.radians(22)),
+    )
+    add_lofted_shape(
+        "Canopy_Wing_C",
+        (5.98, 2.18, 0.96),
+        [
+            (-0.4, [(-0.05, -0.03), (0.12, -0.08), (0.18, 0.0), (0.06, 0.06), (-0.08, 0.04)]),
+            (0.0, [(-0.06, -0.04), (0.14, -0.08), (0.22, 0.0), (0.06, 0.08), (-0.1, 0.04)]),
+            (0.46, [(-0.04, -0.03), (0.1, -0.06), (0.16, 0.0), (0.04, 0.05), (-0.06, 0.03)]),
+        ],
+        dark_mat,
+        rotation=(math.radians(14), 0.0, train_angle + math.radians(8)),
+    )
+    add_lofted_shape(
+        "Canopy_Fin",
+        (6.82, 2.92, 1.32),
+        [
+            (-0.36, [(-0.06, -0.16), (0.06, -0.16), (0.12, 0.0), (0.06, 0.2), (-0.06, 0.2), (-0.12, 0.0)]),
+            (0.0, [(-0.08, -0.18), (0.08, -0.18), (0.16, 0.0), (0.08, 0.24), (-0.08, 0.24), (-0.16, 0.0)]),
+            (0.4, [(-0.04, -0.12), (0.04, -0.12), (0.08, 0.0), (0.04, 0.16), (-0.04, 0.16), (-0.08, 0.0)]),
+        ],
+        dark_mat,
+        rotation=(0.0, math.radians(16), train_angle),
+    )
+    add_lofted_shape(
+        "Canopy_Glass",
+        (5.54, 1.8, 1.04),
+        [
+            (-0.34, [(-0.12, -0.1), (0.12, -0.12), (0.18, 0.0), (0.1, 0.14), (-0.1, 0.14), (-0.18, 0.0)]),
+            (0.0, [(-0.14, -0.12), (0.14, -0.12), (0.22, 0.0), (0.12, 0.18), (-0.12, 0.18), (-0.22, 0.0)]),
+            (0.38, [(-0.1, -0.08), (0.1, -0.08), (0.16, 0.0), (0.08, 0.12), (-0.08, 0.12), (-0.16, 0.0)]),
+        ],
+        glass_mat,
+        rotation=(0.0, math.radians(12), train_angle),
+    )
+    add_lofted_shape(
+        "Canopy_Glass_B",
+        (6.22, 2.3, 1.1),
+        [
+            (-0.28, [(-0.1, -0.08), (0.1, -0.1), (0.16, 0.0), (0.08, 0.14), (-0.08, 0.14), (-0.16, 0.0)]),
+            (0.0, [(-0.12, -0.1), (0.12, -0.1), (0.18, 0.0), (0.1, 0.16), (-0.1, 0.16), (-0.18, 0.0)]),
+            (0.32, [(-0.08, -0.06), (0.08, -0.08), (0.14, 0.0), (0.06, 0.1), (-0.06, 0.1), (-0.14, 0.0)]),
+        ],
+        glass_mat,
+        rotation=(0.0, math.radians(14), train_angle + math.radians(14)),
+    )
     add_tapered_block("Canopy_Rib_A", (5.44, 1.82, 0.9), (0.08, 0.08, 0.56), dark_mat, rotation=(math.radians(-16), 0.0, train_angle + math.radians(18)), top_scale=(0.42, 0.82))
     add_tapered_block("Canopy_Rib_B", (6.16, 2.28, 0.94), (0.08, 0.08, 0.52), dark_mat, rotation=(math.radians(12), 0.0, train_angle - math.radians(12)), top_scale=(0.42, 0.82))
     add_cylinder("Canopy_Post_A", (5.0, 1.5, 0.6), 0.085, 1.2, dark_mat, vertices=10)
@@ -1605,6 +1878,7 @@ def create_scene():
     bpy.ops.wm.save_as_mainfile(filepath=BLEND_PATH)
     bpy.context.scene.render.filepath = RENDER_PATH
     bpy.ops.render.render(write_still=True)
+    shutil.copyfile(RENDER_PATH, PREVIEW_PATH)
     bpy.ops.export_scene.gltf(
         filepath=GLB_PATH,
         export_format="GLB",
