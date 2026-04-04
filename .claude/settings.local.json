@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:cdn.jsdelivr.net)",
+      "WebFetch(domain:hyper3d.ai)",
+      "WebSearch",
+      "WebFetch(domain:hyperhuman.deemos.com)",
+      "WebFetch(domain:github.com)"
+    ]
+  }
+}

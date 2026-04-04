@@ -1,10 +1,8 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { OutlineEffect } from "three/addons/effects/OutlineEffect.js";
-import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
-import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
-import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
-import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
+// Post-processing desactivado — bloom global quema superficies claras.
+// En su lugar usamos glow sprites localizados en cristales.
 
 const HOTSPOTS = [
     {
@@ -267,22 +265,13 @@ const outlineEffect = new OutlineEffect(renderer, {
     defaultKeepAlive: true
 });
 
-// Post-processing: bloom para cristales y emisiones
-const composer = new EffectComposer(renderer);
-const bloomPass = new UnrealBloomPass(
-    new THREE.Vector2(win.innerWidth, win.innerHeight),
-    0.35,   // strength — sutil, solo cristales y emisiones
-    0.5,    // radius
-    0.92    // threshold — alto para que solo lo más brillante haga bloom
-);
-
 const toonGradientMap = createToonGradientMap();
 const surfaceTextures = createSurfaceTextures();
 const textureSlots = ["map", "normalMap", "roughnessMap", "metalnessMap", "aoMap", "emissiveMap", "alphaMap"];
 
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 0.82;
+renderer.toneMappingExposure = 0.92;
 renderer.setClearColor(0x090809, 1);
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFShadowMap;
@@ -292,11 +281,6 @@ scene.fog = new THREE.FogExp2(0x090809, isCoarsePointer ? 0.026 : 0.022);
 
 const camera = new THREE.PerspectiveCamera(20, 1, 0.1, 120);
 camera.position.set(0, 5, 14);
-
-// Inicializar composer con bloom
-composer.addPass(new RenderPass(scene, camera));
-composer.addPass(bloomPass);
-composer.addPass(new OutputPass());
 
 const timer = new THREE.Timer();
 const loader = new GLTFLoader();
@@ -323,7 +307,7 @@ scene.add(hoverLight);
 scene.add(new THREE.HemisphereLight(0xfff4ea, 0x0a0608, 0.45));
 
 // KeyLight — matches Blender AREA 5000W at (-4.6,-3.9,8.2) [BL] → (-4.6,8.2,3.9) [Three]
-const keyLight = new THREE.DirectionalLight(0xffffff, 2.2);
+const keyLight = new THREE.DirectionalLight(0xffffff, 1.8);
 keyLight.position.set(-4.6, 8.2, 3.9);
 keyLight.castShadow = true;
 keyLight.shadow.mapSize.set(isCoarsePointer ? 1024 : 2048, isCoarsePointer ? 1024 : 2048);
@@ -932,8 +916,8 @@ function buildAtmosphere(root) {
         if (matchedName && !seenLamps.has(matchedName)) {
             seenLamps.add(matchedName);
             const lampPos = node.getWorldPosition(new THREE.Vector3());
-            const lampLight = new THREE.PointLight(0xfff4ea, 1.4, 14, 2);
-            lampLight.position.set(lampPos.x, lampPos.y + 2.2, lampPos.z);
+            const lampLight = new THREE.PointLight(0xfff4ea, 0.30, 12, 2);
+            lampLight.position.set(lampPos.x, lampPos.y + 2.8, lampPos.z);
             atmosphereGroup.add(lampLight);
         }
     });
@@ -946,19 +930,38 @@ function buildAtmosphere(root) {
         fortressBase.y = 0;
         runtime.crystalFortress = buildCrystalFortress(fortressBase, atmosphereGroup);
 
-        // Glow sprite central
-        const sprite = createGlowSprite(glowTexture, 0x88bbff, 0.32, new THREE.Vector3(10, 10, 1));
-        sprite.position.copy(crystalPos);
-        sprite.position.y += 3.5;
-        atmosphereGroup.add(sprite);
-        runtime.atmosphereSprites.push(sprite);
+        // Capas de glow localizado (simula bloom sin post-process global)
+        // Capa externa — halo amplio azul difuso
+        const outerGlow = createGlowSprite(glowTexture, 0x6688cc, 0.14, new THREE.Vector3(14, 14, 1));
+        outerGlow.position.copy(crystalPos);
+        outerGlow.position.y += 3.0;
+        outerGlow.userData.floatPhase = 0;
+        atmosphereGroup.add(outerGlow);
+        runtime.atmosphereSprites.push(outerGlow);
 
-        // Segundo glow más concentrado
-        const innerGlow = createGlowSprite(glowTexture, 0xffffff, 0.16, new THREE.Vector3(4, 6, 1));
-        innerGlow.position.copy(crystalPos);
-        innerGlow.position.y += 2.2;
-        atmosphereGroup.add(innerGlow);
-        runtime.atmosphereSprites.push(innerGlow);
+        // Capa media — azul-hielo más visible
+        const midGlow = createGlowSprite(glowTexture, 0x88bbff, 0.22, new THREE.Vector3(8, 10, 1));
+        midGlow.position.copy(crystalPos);
+        midGlow.position.y += 3.5;
+        midGlow.userData.floatPhase = 1.2;
+        atmosphereGroup.add(midGlow);
+        runtime.atmosphereSprites.push(midGlow);
+
+        // Core brillante blanco
+        const coreGlow = createGlowSprite(glowTexture, 0xddeeff, 0.28, new THREE.Vector3(3.5, 5.5, 1));
+        coreGlow.position.copy(crystalPos);
+        coreGlow.position.y += 2.4;
+        coreGlow.userData.floatPhase = 2.5;
+        atmosphereGroup.add(coreGlow);
+        runtime.atmosphereSprites.push(coreGlow);
+
+        // Acento rojo sutil — referencia a la identidad [SIC]
+        const redAccent = createGlowSprite(glowTexture, 0xff3355, 0.06, new THREE.Vector3(6, 4, 1));
+        redAccent.position.copy(crystalPos);
+        redAccent.position.y += 1.2;
+        redAccent.userData.floatPhase = 3.8;
+        atmosphereGroup.add(redAccent);
+        runtime.atmosphereSprites.push(redAccent);
     }
 
     // Partículas de polvo brillante
@@ -1094,14 +1097,14 @@ function buildCrystalFortress(basePosition, parentGroup) {
     });
 
     // Luces internas del cluster
-    const innerLight1 = new THREE.PointLight(0x88bbff, 2.4, 12, 2);
+    const innerLight1 = new THREE.PointLight(0x88bbff, 1.2, 10, 2);
     innerLight1.position.set(0, 3.5, 0);
-    innerLight1.userData.baseIntensity = 2.4;
+    innerLight1.userData.baseIntensity = 1.2;
     crystalGroup.add(innerLight1);
 
-    const innerLight2 = new THREE.PointLight(0xff4466, 0.8, 8, 2);
+    const innerLight2 = new THREE.PointLight(0xff4466, 0.5, 6, 2);
     innerLight2.position.set(0.5, 1.5, -0.5);
-    innerLight2.userData.baseIntensity = 0.8;
+    innerLight2.userData.baseIntensity = 0.5;
     crystalGroup.add(innerLight2);
 
     parentGroup.add(crystalGroup);
@@ -1199,7 +1202,10 @@ function createStylizedMaterial(material, object) {
         ? THREE.DoubleSide
         : material?.side ?? THREE.FrontSide;
 
-    const isGlass = transparent || object.name.includes("Glass") || object.name.startsWith("Crystal_");
+    const isLampGlobe = object.name.includes("globe") || object.name.includes("Globe") ||
+        object.name.includes("_bulb") || object.name.includes("_Bulb") ||
+        object.name.includes("lamp_light") || object.name.includes("Lamp_Light");
+    const isGlass = transparent || object.name.includes("Glass") || object.name.startsWith("Crystal_") || isLampGlobe;
     const hasSurfaceMaps = Boolean(originalMap || normalMap || roughnessMap || metalnessMap || aoMap || emissiveMap || alphaMap);
 
     // Overrides PBR por nombre (no aplica a gráficos ni vidrio)
@@ -2124,7 +2130,7 @@ function render() {
     renderer.setScissorTest(false);
     renderer.setViewport(0, 0, drawBufferSize.x, drawBufferSize.y);
     renderer.clear(true, true, true);
-    composer.render(dt);
+    outlineEffect.render(scene, camera);
 }
 
 function resize() {
@@ -2134,9 +2140,6 @@ function resize() {
 
     renderer.setPixelRatio(pixelRatio);
     renderer.setSize(width, height, false);
-    composer.setPixelRatio(pixelRatio);
-    composer.setSize(width, height);
-    bloomPass.resolution.set(width, height);
     outlineEffect.setSize(width, height);
     camera.aspect = width / Math.max(height, 1);
     camera.updateProjectionMatrix();
