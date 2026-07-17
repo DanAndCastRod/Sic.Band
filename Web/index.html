@@ -6,10 +6,49 @@
     <title>[SIC] | Sentence In Conflict</title>
     <meta name="description" content="[SIC] convierte ideas, ambigüedad y tensión en materia sonora.">
     <meta name="theme-color" content="#0a0a0a">
+    <link rel="canonical" href="https://danandcastrod.github.io/Sic.Band/Web/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="[SIC] | Sentence In Conflict">
+    <meta property="og:title" content="[SIC] | Sentence In Conflict">
+    <meta property="og:description" content="[SIC] convierte ideas, ambigüedad y tensión en materia sonora. Rock alternativo, grunge y fusión desde Pereira, Colombia.">
+    <meta property="og:url" content="https://danandcastrod.github.io/Sic.Band/Web/">
+    <meta property="og:image" content="https://danandcastrod.github.io/Sic.Band/Web/assets/sic_phase_iv_ambiguity.png">
+    <meta property="og:locale" content="es_CO">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="[SIC] | Sentence In Conflict">
+    <meta name="twitter:description" content="[SIC] convierte ideas, ambigüedad y tensión en materia sonora.">
+    <meta name="twitter:image" content="https://danandcastrod.github.io/Sic.Band/Web/assets/sic_phase_iv_ambiguity.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Audiowide&family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="./assets/sic_symbol_daniel.png">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "MusicGroup",
+        "name": "[SIC]",
+        "alternateName": "Sentence In Conflict",
+        "genre": ["Rock alternativo", "Grunge", "Fusión"],
+        "foundingDate": "2017",
+        "foundingLocation": {
+            "@type": "Place",
+            "name": "Pereira, Colombia"
+        },
+        "email": "sic.rockband@gmail.com",
+        "url": "https://danandcastrod.github.io/Sic.Band/Web/",
+        "image": "https://danandcastrod.github.io/Sic.Band/Web/assets/sic_phase_iv_ambiguity.png",
+        "sameAs": [
+            "https://www.instagram.com/sic.band/",
+            "https://www.youtube.com/channel/UCFAShEu-88tWd8x7cjrVVlA",
+            "https://open.spotify.com/intl-es/album/4PxnIpMCF5wOzT7vtO6JO0"
+        ],
+        "member": [
+            { "@type": "Person", "name": "Daniel Castañeda", "roleName": "Voz y guitarra" },
+            { "@type": "Person", "name": "Juan Pablo Hurtado", "roleName": "Batería" },
+            { "@type": "Person", "name": "Francisco Valencia", "roleName": "Bajo" }
+        ]
+    }
+    </script>
     <style>
         :root {
             --void: #0a0a0a;
@@ -1231,6 +1270,39 @@
             color: var(--visceral);
         }
 
+        /* ── SKIP LINK ── */
+        .skip-link {
+            position: fixed;
+            top: -100%;
+            left: 1rem;
+            z-index: 100;
+            padding: 0.7rem 1rem;
+            font-family: "Syncopate", sans-serif;
+            font-size: 0.68rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--void);
+            background: var(--paper);
+            transition: top 160ms ease;
+        }
+
+        .skip-link:focus-visible {
+            top: 1rem;
+        }
+
+        /* ── REDUCED MOTION ── */
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
         /* ── RESPONSIVE ── */
         @media (max-width: 1240px) {
             .hero-ledger,
@@ -1360,6 +1432,7 @@
     </style>
 </head>
 <body data-home-section="hero">
+    <a class="skip-link" href="#top">Saltar al contenido</a>
     <canvas id="home-void-scene" class="home-void-scene" aria-hidden="true"></canvas>
     <div class="home-ambient-glow" aria-hidden="true"></div>
     <div class="home-ambient-readout" aria-hidden="true">
@@ -1371,7 +1444,7 @@
         <div class="container">
             <a class="brand-mark" href="#top">[<span>SIC</span>]</a>
             <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menú</button>
-            <nav id="site-nav" class="site-nav">
+            <nav id="site-nav" class="site-nav" aria-label="Navegación principal">
                 <a href="#manifiesto">Manifiesto</a>
                 <a href="#nucleo">Núcleo</a>
                 <a href="#sistema">Sistema</a>
@@ -1421,7 +1494,7 @@
 
                 <div class="hero-visual">
                     <figure class="hero-poster">
-                        <img src="./assets/sic_phase_iv_ambiguity.png" alt="[SIC] — La verdad en lo ambiguo">
+                        <img src="./assets/sic_phase_iv_ambiguity.png" alt="[SIC] — La verdad en lo ambiguo" fetchpriority="high" decoding="async">
                         <p class="poster-stamp">Pereira / 2017 →</p>
                         <figcaption class="poster-caption">La ambigüedad no corrige la verdad. La expone.</figcaption>
                     </figure>
@@ -1470,7 +1543,7 @@
                 </div>
 
                 <aside class="dossier-card">
-                    <img src="./assets/sic_bio_scene.png" alt="[SIC] en vivo">
+                    <img loading="lazy" decoding="async" src="./assets/sic_bio_scene.png" alt="[SIC] en vivo">
                     <div class="dossier-data">
                         <span class="panel-label">Dossier</span>
                         <div class="dossier-row">
@@ -1698,7 +1771,7 @@
                     </div>
                     <div class="release-grid">
                         <a class="release-card" href="https://open.spotify.com/intl-es/album/4Rr1wEGeMCwCl0IN3NLufn?si=yto2li2iRAuBenzhMXcyqA" target="_blank" rel="noreferrer">
-                            <img src="./assets/sic_album_al_reves.png" alt="Al Revés">
+                            <img loading="lazy" decoding="async" src="./assets/sic_album_al_reves.png" alt="Al Revés">
                             <div class="release-copy">
                                 <span class="release-meta">2018 / Phase I</span>
                                 <h3>Al Revés</h3>
@@ -1706,7 +1779,7 @@
                             </div>
                         </a>
                         <a class="release-card" href="https://open.spotify.com/intl-es/album/0KIu74uNoPhDNFz49zuDyx?si=LmcsxKT5SrqCCm0W3ljdIQ" target="_blank" rel="noreferrer">
-                            <img src="./assets/sic_album_desde_que_el_sol.jpg" alt="Desde que el sol brilla">
+                            <img loading="lazy" decoding="async" src="./assets/sic_album_desde_que_el_sol.jpg" alt="Desde que el sol brilla">
                             <div class="release-copy">
                                 <span class="release-meta">2022 / Phase II</span>
                                 <h3>Desde que el sol brilla</h3>
@@ -1714,7 +1787,7 @@
                             </div>
                         </a>
                         <a class="release-card" href="https://open.spotify.com/intl-es/album/2SvkcZAU0u9b3k6lJmWfJf?si=Dah5mQJ9Qi-PfbWYyLxxGA" target="_blank" rel="noreferrer">
-                            <img src="./assets/sic_album_mss_white.png" alt="MSS WHITE">
+                            <img loading="lazy" decoding="async" src="./assets/sic_album_mss_white.png" alt="MSS WHITE">
                             <div class="release-copy">
                                 <span class="release-meta">2025 / Phase III</span>
                                 <h3>MSS WHITE</h3>
@@ -1722,7 +1795,7 @@
                             </div>
                         </a>
                         <a class="release-card" href="https://open.spotify.com/intl-es/album/4PxnIpMCF5wOzT7vtO6JO0?si=64dq-kJ4SxqF5CNZ5jzdUw" target="_blank" rel="noreferrer">
-                            <img src="./assets/sic_album_asi.jpg" alt="Así">
+                            <img loading="lazy" decoding="async" src="./assets/sic_album_asi.jpg" alt="Así">
                             <div class="release-copy">
                                 <span class="release-meta">2025 / Phase III</span>
                                 <h3>Así</h3>
@@ -1730,7 +1803,7 @@
                             </div>
                         </a>
                         <article class="release-card release-card-feature">
-                            <img src="./assets/sic_album_ambiguous.png" alt="Ambiguous">
+                            <img loading="lazy" decoding="async" src="./assets/sic_album_ambiguous.png" alt="Ambiguous">
                             <div class="release-copy">
                                 <span class="release-flag">Foco actual</span>
                                 <span class="release-meta">2026 / Phase IV</span>
@@ -1757,7 +1830,7 @@
                 <div class="triad-grid">
                     <article class="member-card">
                         <div class="member-media">
-                            <img src="./assets/sic_icon_daniel.png" alt="Daniel Castañeda — Estructura geométrica">
+                            <img loading="lazy" decoding="async" src="./assets/sic_icon_daniel.png" alt="Daniel Castañeda — Estructura geométrica">
                             <span class="member-stamp">SIC-01 / Voz + Guitarra</span>
                         </div>
                         <div class="member-designation">
@@ -1772,7 +1845,7 @@
 
                     <article class="member-card">
                         <div class="member-media">
-                            <img src="./assets/sic_icon_juan_refined.png" alt="Juan Pablo Hurtado — Vórtice cinético">
+                            <img loading="lazy" decoding="async" src="./assets/sic_icon_juan_refined.png" alt="Juan Pablo Hurtado — Vórtice cinético">
                             <span class="member-stamp">SIC-02 / Batería</span>
                         </div>
                         <div class="member-designation">
@@ -1787,7 +1860,7 @@
 
                     <article class="member-card">
                         <div class="member-media">
-                            <img src="./assets/sic_icon_francisco.png" alt="Francisco Valencia — Geometría sagrada">
+                            <img loading="lazy" decoding="async" src="./assets/sic_icon_francisco.png" alt="Francisco Valencia — Geometría sagrada">
                             <span class="member-stamp">SIC-03 / Bajo</span>
                         </div>
                         <div class="member-designation">
