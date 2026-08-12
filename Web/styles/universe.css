@@ -58,6 +58,11 @@ button {
     height: 100vh;
 }
 
+/* Con el raton capturado el cursor sobra: manda la reticula. */
+.universe-canvas.is-locked {
+    cursor: none;
+}
+
 .universe-noise,
 .universe-scanlines,
 .universe-vignette,
