@@ -1,6 +1,10 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { OutlineEffect } from "three/addons/effects/OutlineEffect.js";
+import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+import { Pass } from "three/addons/postprocessing/Pass.js";
+import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
+import { FullScreenQuad } from "three/addons/postprocessing/Pass.js";
 // Post-processing desactivado — bloom global quema superficies claras.
 // En su lugar usamos glow sprites localizados en cristales.
 
@@ -276,11 +280,272 @@ renderer.setClearColor(0x090809, 1);
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFShadowMap;
 
+const prefersReducedMotion = win.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+// Altura de los ojos sobre el anden, en metros de escena.
+const EYE_HEIGHT = 1.58;
+
 const scene = new THREE.Scene();
 scene.fog = new THREE.FogExp2(0x090809, isCoarsePointer ? 0.026 : 0.022);
 
 const camera = new THREE.PerspectiveCamera(20, 1, 0.1, 120);
 camera.position.set(0, 5, 14);
+
+/* ──────────────────────────────────────────────────────────────
+   POST-PROCESADO
+   El contorno (OutlineEffect) solo delega en renderer.render, asi
+   que se puede envolver en un pass y encadenar bloom + grading sin
+   perder la linea de tinta que define la estetica [SIC].
+   ────────────────────────────────────────────────────────────── */
+
+class OutlineRenderPass extends Pass {
+    constructor(renderScene, renderCamera, effect) {
+        super();
+        this.scene = renderScene;
+        this.camera = renderCamera;
+        this.effect = effect;
+        this.needsSwap = false;
+        this.clear = true;
+    }
+
+    render(activeRenderer, writeBuffer, readBuffer) {
+        const previousTarget = activeRenderer.getRenderTarget();
+        activeRenderer.setRenderTarget(this.renderToScreen ? null : readBuffer);
+        if (this.clear) {
+            activeRenderer.clear(true, true, true);
+        }
+        this.effect.render(this.scene, this.camera);
+        activeRenderer.setRenderTarget(previousTarget);
+    }
+}
+
+/* Bloom cromatico a media resolucion.
+   El mundo es blanco casi saturado, asi que un bloom por luminancia haria
+   brillar el anden entero. Este extrae por SATURACION: solo el rojo visceral,
+   los cristales y las balizas emiten halo; el blanco crudo se queda limpio.
+   Corre despues del tone mapping, sobre valores de pantalla en rango 0-1. */
+class GlowBloomPass extends Pass {
+    constructor(strength, threshold, knee) {
+        super();
+        this.strength = strength;
+        this.needsSwap = true;
+
+        const targetOptions = { depthBuffer: false, stencilBuffer: false };
+        this.brightTarget = new THREE.WebGLRenderTarget(1, 1, targetOptions);
+        this.blurTarget = new THREE.WebGLRenderTarget(1, 1, targetOptions);
+
+        const quadVertex = /* glsl */`
+            varying vec2 vUv;
+            void main() {
+                vUv = uv;
+                gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+            }
+        `;
+
+        this.brightMaterial = new THREE.ShaderMaterial({
+            uniforms: {
+                tDiffuse: { value: null },
+                threshold: { value: threshold },
+                knee: { value: knee }
+            },
+            vertexShader: quadVertex,
+            fragmentShader: /* glsl */`
+                uniform sampler2D tDiffuse;
+                uniform float threshold;
+                uniform float knee;
+                varying vec2 vUv;
+                void main() {
+                    vec3 color = clamp(texture2D(tDiffuse, vUv).rgb, 0.0, 1.0);
+
+                    float maxChannel = max(color.r, max(color.g, color.b));
+                    float minChannel = min(color.r, min(color.g, color.b));
+                    float saturation = (maxChannel - minChannel) / max(maxChannel, 0.0001);
+
+                    // Color saturado con cuerpo: el acento cromatico emite halo.
+                    float chroma = smoothstep(threshold, threshold + knee, saturation) * maxChannel;
+
+                    // Blancos ya al limite (focos, balizas) aportan un halo leve.
+                    float luma = dot(color, vec3(0.2126, 0.7152, 0.0722));
+                    float highlight = smoothstep(0.97, 1.0, luma) * 0.35;
+
+                    gl_FragColor = vec4(color * max(chroma, highlight), 1.0);
+                }
+            `
+        });
+
+        this.blurMaterial = new THREE.ShaderMaterial({
+            uniforms: {
+                tDiffuse: { value: null },
+                direction: { value: new THREE.Vector2(1, 0) },
+                texelSize: { value: new THREE.Vector2() }
+            },
+            vertexShader: quadVertex,
+            fragmentShader: /* glsl */`
+                uniform sampler2D tDiffuse;
+                uniform vec2 direction;
+                uniform vec2 texelSize;
+                varying vec2 vUv;
+                void main() {
+                    // Gaussiana separable de 9 muestras.
+                    float weights[5];
+                    weights[0] = 0.227027; weights[1] = 0.194594; weights[2] = 0.121621;
+                    weights[3] = 0.054054; weights[4] = 0.016216;
+
+                    vec3 result = texture2D(tDiffuse, vUv).rgb * weights[0];
+                    for (int i = 1; i < 5; i++) {
+                        vec2 offset = direction * texelSize * float(i) * 1.6;
+                        result += texture2D(tDiffuse, vUv + offset).rgb * weights[i];
+                        result += texture2D(tDiffuse, vUv - offset).rgb * weights[i];
+                    }
+                    gl_FragColor = vec4(result, 1.0);
+                }
+            `
+        });
+
+        this.compositeMaterial = new THREE.ShaderMaterial({
+            uniforms: {
+                tDiffuse: { value: null },
+                tGlow: { value: null },
+                strength: { value: strength }
+            },
+            vertexShader: quadVertex,
+            fragmentShader: /* glsl */`
+                uniform sampler2D tDiffuse;
+                uniform sampler2D tGlow;
+                uniform float strength;
+                varying vec2 vUv;
+                void main() {
+                    vec4 base = texture2D(tDiffuse, vUv);
+                    vec3 glow = texture2D(tGlow, vUv).rgb;
+                    gl_FragColor = vec4(base.rgb + glow * strength, base.a);
+                }
+            `
+        });
+
+        this._quad = new FullScreenQuad(this.brightMaterial);
+    }
+
+    setSize(width, height) {
+        const w = Math.max(1, Math.round(width * 0.5));
+        const h = Math.max(1, Math.round(height * 0.5));
+        this.brightTarget.setSize(w, h);
+        this.blurTarget.setSize(w, h);
+        this.blurMaterial.uniforms.texelSize.value.set(1 / w, 1 / h);
+    }
+
+    render(activeRenderer, writeBuffer, readBuffer) {
+        const previousAutoClear = activeRenderer.autoClear;
+        activeRenderer.autoClear = false;
+
+        // 1. Altas luces.
+        this.brightMaterial.uniforms.tDiffuse.value = readBuffer.texture;
+        this._quad.material = this.brightMaterial;
+        activeRenderer.setRenderTarget(this.brightTarget);
+        activeRenderer.clear(true, false, false);
+        this._quad.render(activeRenderer);
+
+        // 2. Difuminado horizontal y vertical.
+        this._quad.material = this.blurMaterial;
+        this.blurMaterial.uniforms.tDiffuse.value = this.brightTarget.texture;
+        this.blurMaterial.uniforms.direction.value.set(1, 0);
+        activeRenderer.setRenderTarget(this.blurTarget);
+        activeRenderer.clear(true, false, false);
+        this._quad.render(activeRenderer);
+
+        this.blurMaterial.uniforms.tDiffuse.value = this.blurTarget.texture;
+        this.blurMaterial.uniforms.direction.value.set(0, 1);
+        activeRenderer.setRenderTarget(this.brightTarget);
+        activeRenderer.clear(true, false, false);
+        this._quad.render(activeRenderer);
+
+        // 3. Suma sobre la escena.
+        this.compositeMaterial.uniforms.tDiffuse.value = readBuffer.texture;
+        this.compositeMaterial.uniforms.tGlow.value = this.brightTarget.texture;
+        this.compositeMaterial.uniforms.strength.value = this.strength;
+        this._quad.material = this.compositeMaterial;
+        activeRenderer.setRenderTarget(this.renderToScreen ? null : writeBuffer);
+        activeRenderer.clear(true, false, false);
+        this._quad.render(activeRenderer);
+
+        activeRenderer.autoClear = previousAutoClear;
+    }
+
+    dispose() {
+        this.brightTarget.dispose();
+        this.blurTarget.dispose();
+        this.brightMaterial.dispose();
+        this.blurMaterial.dispose();
+        this.compositeMaterial.dispose();
+        this._quad.dispose();
+    }
+}
+
+// Grading editorial: contraste alto, viñeta y tinte frio en sombras.
+const EditorialGradeShader = {
+    uniforms: {
+        tDiffuse: { value: null },
+        contrast: { value: 1.16 },
+        vignette: { value: 0.58 },
+        shadowTint: { value: new THREE.Color(0x0d0b10) }
+    },
+    vertexShader: /* glsl */`
+        varying vec2 vUv;
+        void main() {
+            vUv = uv;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+    `,
+    fragmentShader: /* glsl */`
+        uniform sampler2D tDiffuse;
+        uniform float contrast;
+        uniform float vignette;
+        uniform vec3 shadowTint;
+        varying vec2 vUv;
+
+        void main() {
+            vec4 texel = texture2D(tDiffuse, vUv);
+            vec3 color = texel.rgb;
+
+            // Contraste alrededor del gris medio: separa el blanco crudo del negro.
+            color = (color - 0.5) * contrast + 0.5;
+
+            // Tinte frio solo en las sombras, sin tocar altas luces ni el rojo.
+            float luma = dot(color, vec3(0.2126, 0.7152, 0.0722));
+            color = mix(color + shadowTint * 0.85, color, smoothstep(0.0, 0.42, luma));
+
+            // Viñeta suave que cierra el encuadre.
+            vec2 offset = vUv - 0.5;
+            float falloff = 1.0 - dot(offset, offset) * vignette;
+            color *= clamp(falloff, 0.0, 1.0);
+
+            gl_FragColor = vec4(clamp(color, 0.0, 1.0), texel.a);
+        }
+    `
+};
+
+let composer = null;
+let bloomPass = null;
+
+try {
+    // Buffer en espacio de pantalla: la escena entra ya mapeada por ACES en
+    // los materiales, igual que en el render directo. Bloom y grading operan
+    // despues sobre valores 0-1, que es donde su matematica tiene sentido.
+    const composerTarget = new THREE.WebGLRenderTarget(1, 1, {
+        colorSpace: THREE.SRGBColorSpace,
+        samples: isCoarsePointer ? 0 : 4
+    });
+    composer = new EffectComposer(renderer, composerTarget);
+    composer.addPass(new OutlineRenderPass(scene, camera, outlineEffect));
+
+    // threshold = saturacion minima para emitir halo.
+    bloomPass = new GlowBloomPass(isCoarsePointer ? 0.6 : 0.9, 0.30, 0.25);
+    composer.addPass(bloomPass);
+
+    composer.addPass(new ShaderPass(EditorialGradeShader));
+} catch (error) {
+    console.warn("Post-procesado no disponible, usando render directo.", error);
+    composer = null;
+}
 
 const timer = new THREE.Timer();
 const loader = new GLTFLoader();
@@ -304,7 +569,8 @@ const hoverLight = new THREE.PointLight(0xd4434c, 1.15, 12, 2);
 hoverLight.position.set(0, 3.5, 0);
 scene.add(hoverLight);
 
-scene.add(new THREE.HemisphereLight(0xfff4ea, 0x0a0608, 0.45));
+// Ambiente contenido: el relleno alto aplanaba la escena y borraba el volumen.
+scene.add(new THREE.HemisphereLight(0xfff4ea, 0x0a0608, 0.30));
 
 // KeyLight — matches Blender AREA 5000W at (-4.6,-3.9,8.2) [BL] → (-4.6,8.2,3.9) [Three]
 const keyLight = new THREE.DirectionalLight(0xffffff, 1.8);
@@ -320,12 +586,13 @@ keyLight.shadow.camera.bottom = -16;
 scene.add(keyLight);
 
 // FillLight — matches Blender AREA 1500W at (6.7,2.6,5.0) [BL] → (6.7,5.0,-2.6) [Three]
-const fillLight = new THREE.DirectionalLight(0xffffff, 0.7);
+const fillLight = new THREE.DirectionalLight(0xffffff, 0.46);
 fillLight.position.set(6.7, 5.0, -2.6);
 scene.add(fillLight);
 
 // RimLight — matches Blender SUN 1.8W rot(44°,-2°,132°), lights from rear-left
-const rimLight = new THREE.DirectionalLight(0xe8f0ff, 0.32);
+// Reforzada: el contraluz frio recorta la silueta contra el vacio.
+const rimLight = new THREE.DirectionalLight(0xdbe8ff, 0.62);
 rimLight.position.set(-6, 9, -8);
 scene.add(rimLight);
 
@@ -418,7 +685,7 @@ const runtime = {
         lastY: 0,
         yaw: 0,
         pitch: -0.08,
-        position: new THREE.Vector3(0, 1.58, 4.6),
+        position: new THREE.Vector3(0, EYE_HEIGHT, 4.6),
         moveX: 0,
         moveY: 0,
         joystickX: 0,
@@ -429,7 +696,13 @@ const runtime = {
             left: false,
             right: false,
             sprint: false
-        }
+        },
+        // Velocidad suavizada: el movimiento acelera y frena en vez de
+        // encenderse y apagarse de golpe con la tecla.
+        velocity: new THREE.Vector2(),
+        pointerLocked: false,
+        bobPhase: 0,
+        bobOffset: 0
     },
     clickStart: {
         x: 0,
@@ -544,6 +817,9 @@ function bindUI() {
     canvas.addEventListener("pointerup", onCanvasPointerUp);
     canvas.addEventListener("pointerleave", onCanvasPointerUp);
     canvas.addEventListener("pointercancel", onCanvasPointerUp);
+
+    doc.addEventListener("pointerlockchange", onPointerLockChange);
+    doc.addEventListener("mousemove", onPointerLockMove);
 
     doc.addEventListener("keydown", onKeyDown);
     doc.addEventListener("keyup", onKeyUp);
@@ -1550,21 +1826,28 @@ function setMode(mode, fromUser) {
 }
 
 function resetExplorePose(instant) {
-    const start = runtime.sceneCenter.clone().add(
-        new THREE.Vector3(
-            -runtime.sceneSize.x * 0.18,
-            1.58,
-            runtime.sceneSize.z * 0.38
-        )
+    // El punto de mira se calculaba sobre sceneCenter.y (2.0) mientras la
+    // camara vive a 1.58: se entraba al recorrido mirando 12 grados al cielo,
+    // contra el vacio. Ahora se entra por el borde del anden, a la altura de
+    // los ojos y con la vista sobre la escena.
+    const start = new THREE.Vector3(
+        runtime.sceneCenter.x,
+        EYE_HEIGHT,
+        runtime.walkBounds.minZ + 1.4
     );
 
     runtime.explore.position.copy(start);
     clampExplorePosition();
 
-    const lookPoint = runtime.sceneCenter.clone().add(new THREE.Vector3(0.3, 1.05, -0.1));
+    const lookPoint = new THREE.Vector3(
+        runtime.sceneCenter.x + 0.3,
+        EYE_HEIGHT - 0.28,
+        runtime.sceneCenter.z
+    );
     const direction = lookPoint.sub(runtime.explore.position).normalize();
     runtime.explore.yaw = Math.atan2(direction.x, direction.z);
-    runtime.explore.pitch = Math.asin(clamp(direction.y, -0.7, 0.7));
+    runtime.explore.pitch = clamp(Math.asin(clamp(direction.y, -0.7, 0.7)), -0.35, 0.1);
+    runtime.explore.velocity.set(0, 0);
 
     if (instant) {
         applyExploreCamera(true);
@@ -1582,7 +1865,7 @@ function enterExploreFromHotspot(hotspotId) {
     const radius = Math.max(bounds.getSize(new THREE.Vector3()).length(), 0.65);
     const approach = runtime.referenceOffsetDirection.clone().multiplyScalar(-Math.max(radius * 1.55, 1.5));
     const position = focusPoint.clone().add(approach);
-    position.y = 1.58;
+    position.y = EYE_HEIGHT;
 
     runtime.explore.position.copy(position);
     clampExplorePosition();
@@ -1603,8 +1886,10 @@ function applyExploreCamera(instant) {
     const cameraQuaternion = quaternionFromEuler(runtime.explore.pitch, runtime.explore.yaw);
 
     runtime.targetPose.position.copy(runtime.explore.position);
+    runtime.targetPose.position.y += runtime.explore.bobOffset;
     runtime.targetPose.quaternion.copy(cameraQuaternion);
-    runtime.targetPose.fov = 56;
+    // Un pelo mas de campo al esprintar: da sensacion de velocidad.
+    runtime.targetPose.fov = runtime.explore.keyState.sprint ? 60 : 56;
 
     if (instant) {
         camera.position.copy(runtime.targetPose.position);
@@ -1764,6 +2049,13 @@ function onCanvasPointerDown(event) {
         return;
     }
 
+    // En escritorio el raton se captura: mirar deja de exigir arrastrar.
+    // El arrastre se arma igual, para que siga habiendo control si el
+    // navegador deniega el bloqueo de puntero.
+    if (!isCoarsePointer && !runtime.explore.pointerLocked) {
+        requestPointerLock();
+    }
+
     runtime.explore.activeLook = true;
     runtime.explore.pointerId = event.pointerId;
     runtime.explore.lastX = event.clientX;
@@ -1771,7 +2063,42 @@ function onCanvasPointerDown(event) {
     canvas.setPointerCapture?.(event.pointerId);
 }
 
+function requestPointerLock() {
+    canvas.requestPointerLock?.();
+}
+
+function onPointerLockChange() {
+    const locked = doc.pointerLockElement === canvas;
+    runtime.explore.pointerLocked = locked;
+    canvas.classList.toggle("is-locked", locked);
+
+    if (locked) {
+        setReticleHint("");
+    } else {
+        runtime.explore.activeLook = false;
+        // Al soltar el raton se para el avance: evita quedar corriendo solo.
+        runtime.explore.keyState.forward = false;
+        runtime.explore.keyState.backward = false;
+        runtime.explore.keyState.left = false;
+        runtime.explore.keyState.right = false;
+        runtime.explore.keyState.sprint = false;
+    }
+}
+
+function onPointerLockMove(event) {
+    if (!runtime.explore.pointerLocked || runtime.mode !== "explore") {
+        return;
+    }
+
+    runtime.explore.yaw -= event.movementX * 0.0022;
+    runtime.explore.pitch = clamp(runtime.explore.pitch - event.movementY * 0.0018, -1.1, 0.52);
+}
+
 function onCanvasPointerMove(event) {
+    if (runtime.explore.pointerLocked) {
+        return;
+    }
+
     if (runtime.mode === "explore" && runtime.explore.activeLook && runtime.explore.pointerId === event.pointerId) {
         const deltaX = event.clientX - runtime.explore.lastX;
         const deltaY = event.clientY - runtime.explore.lastY;
@@ -1854,6 +2181,20 @@ function updateMovePad(event) {
 }
 
 function onKeyDown(event) {
+    // Sin esto, Ctrl+T abria pestaña y ademas lanzaba el tour.
+    if (event.ctrlKey || event.metaKey || event.altKey) {
+        return;
+    }
+
+    if (event.code === "Escape" && runtime.mode === "explore") {
+        if (runtime.explore.pointerLocked) {
+            doc.exitPointerLock?.();
+        } else {
+            setMode("frame", true);
+        }
+        return;
+    }
+
     if (event.code === "KeyW" || event.code === "ArrowUp") {
         runtime.explore.keyState.forward = true;
     }
@@ -1900,11 +2241,17 @@ function onKeyDown(event) {
         event.preventDefault();
         setHudHidden(!runtime.hudHidden);
     }
-    if (event.code === "Tab") {
+    // Tab solo cicla nodos cuando el foco no esta en un control del HUD:
+    // secuestrarlo siempre dejaba la interfaz sin navegacion por teclado.
+    if (event.code === "Tab" && !isInteractiveTarget(event.target)) {
         event.preventDefault();
         setTourActive(false);
         focusRelativeHotspot(event.shiftKey ? -1 : 1);
     }
+}
+
+function isInteractiveTarget(target) {
+    return Boolean(target?.closest?.("button, a, input, select, textarea, [tabindex]"));
 }
 
 function onKeyUp(event) {
@@ -1953,6 +2300,8 @@ function updateReticleTarget() {
     if (hotspotId) {
         const hotspot = HOTSPOT_BY_ID.get(hotspotId);
         setReticleHint(`${hotspot.label} / presiona E o el boton inspeccionar`);
+    } else if (!isCoarsePointer && !runtime.explore.pointerLocked) {
+        setReticleHint("Clic para capturar el raton / Esc para soltarlo");
     } else {
         setReticleHint("");
     }
@@ -1976,14 +2325,36 @@ function updateExplore(dt) {
     runtime.explore.moveX = axisX;
     runtime.explore.moveY = axisY;
 
-    const moveLength = Math.hypot(axisX, axisY);
-    if (moveLength > 0.01) {
+    // Entrada normalizada: en diagonal no se avanza mas rapido.
+    const inputLength = Math.hypot(axisX, axisY);
+    const targetX = inputLength > 0.01 ? axisX / Math.max(inputLength, 1) : 0;
+    const targetY = inputLength > 0.01 ? axisY / Math.max(inputLength, 1) : 0;
+
+    // Inercia: acelera rapido y frena algo mas lento, para que el paso tenga
+    // peso en vez de arrancar y cortarse en seco.
+    const responsiveness = inputLength > 0.01 ? 11 : 8;
+    const smoothing = 1 - Math.exp(-dt * responsiveness);
+    runtime.explore.velocity.x += (targetX - runtime.explore.velocity.x) * smoothing;
+    runtime.explore.velocity.y += (targetY - runtime.explore.velocity.y) * smoothing;
+
+    const velocityLength = runtime.explore.velocity.length();
+
+    if (velocityLength > 0.001) {
         const speed = runtime.explore.keyState.sprint ? 5.4 : 3.35;
         const forward = new THREE.Vector3(Math.sin(runtime.explore.yaw), 0, Math.cos(runtime.explore.yaw));
         const right = new THREE.Vector3(forward.z, 0, -forward.x);
-        runtime.explore.position.addScaledVector(forward, (axisY / moveLength) * speed * dt);
-        runtime.explore.position.addScaledVector(right, (axisX / moveLength) * speed * dt);
+        runtime.explore.position.addScaledVector(forward, runtime.explore.velocity.y * speed * dt);
+        runtime.explore.position.addScaledVector(right, runtime.explore.velocity.x * speed * dt);
         clampExplorePosition();
+    }
+
+    // Balanceo de paso, proporcional a la velocidad real.
+    if (prefersReducedMotion) {
+        runtime.explore.bobOffset = 0;
+    } else {
+        runtime.explore.bobPhase += dt * (runtime.explore.keyState.sprint ? 11 : 8) * velocityLength;
+        const bobTarget = Math.sin(runtime.explore.bobPhase) * 0.022 * velocityLength;
+        runtime.explore.bobOffset += (bobTarget - runtime.explore.bobOffset) * (1 - Math.exp(-dt * 12));
     }
 
     applyExploreCamera(false);
@@ -1992,7 +2363,7 @@ function updateExplore(dt) {
 function clampExplorePosition() {
     runtime.explore.position.x = clamp(runtime.explore.position.x, runtime.walkBounds.minX, runtime.walkBounds.maxX);
     runtime.explore.position.z = clamp(runtime.explore.position.z, runtime.walkBounds.minZ, runtime.walkBounds.maxZ);
-    runtime.explore.position.y = 1.58;
+    runtime.explore.position.y = EYE_HEIGHT;
 }
 
 function updateFrameCamera(dt) {
@@ -2129,8 +2500,13 @@ function render() {
     renderer.getDrawingBufferSize(drawBufferSize);
     renderer.setScissorTest(false);
     renderer.setViewport(0, 0, drawBufferSize.x, drawBufferSize.y);
-    renderer.clear(true, true, true);
-    outlineEffect.render(scene, camera);
+
+    if (composer) {
+        composer.render(dt);
+    } else {
+        renderer.clear(true, true, true);
+        outlineEffect.render(scene, camera);
+    }
 }
 
 function resize() {
@@ -2141,6 +2517,13 @@ function resize() {
     renderer.setPixelRatio(pixelRatio);
     renderer.setSize(width, height, false);
     outlineEffect.setSize(width, height);
+
+    if (composer) {
+        composer.setPixelRatio(pixelRatio);
+        composer.setSize(width, height);
+
+    }
+
     camera.aspect = width / Math.max(height, 1);
     camera.updateProjectionMatrix();
 }
