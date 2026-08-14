@@ -2060,7 +2060,26 @@ function onCanvasPointerDown(event) {
     runtime.explore.pointerId = event.pointerId;
     runtime.explore.lastX = event.clientX;
     runtime.explore.lastY = event.clientY;
-    canvas.setPointerCapture?.(event.pointerId);
+    capturePointerSafely(canvas, event.pointerId);
+}
+
+/* El bloqueo de puntero desactiva el puntero como tal, asi que capturarlo
+   lanza InvalidStateError. Ahi la captura sobra —mirar ya va por el bloqueo—
+   y liberar un puntero no capturado tambien puede lanzar. */
+function capturePointerSafely(element, pointerId) {
+    try {
+        element?.setPointerCapture?.(pointerId);
+    } catch (error) {
+        /* sin captura: el arrastre sigue via los listeners del elemento */
+    }
+}
+
+function releasePointerSafely(element, pointerId) {
+    try {
+        element?.releasePointerCapture?.(pointerId);
+    } catch (error) {
+        /* el puntero ya no estaba capturado */
+    }
 }
 
 function requestPointerLock() {
@@ -2119,7 +2138,7 @@ function onCanvasPointerUp(event) {
     if (runtime.mode === "explore" && runtime.explore.pointerId === event.pointerId) {
         runtime.explore.activeLook = false;
         runtime.explore.pointerId = null;
-        canvas.releasePointerCapture?.(event.pointerId);
+        releasePointerSafely(canvas, event.pointerId);
         return;
     }
 
@@ -2143,7 +2162,7 @@ function onCanvasPointerUp(event) {
 function onMovePadDown(event) {
     runtime.moveStick.active = true;
     runtime.moveStick.pointerId = event.pointerId;
-    movePad.setPointerCapture?.(event.pointerId);
+    capturePointerSafely(movePad, event.pointerId);
     updateMovePad(event);
 }
 
@@ -2163,7 +2182,7 @@ function onMovePadUp(event) {
     runtime.moveStick.pointerId = null;
     runtime.explore.joystickX = 0;
     runtime.explore.joystickY = 0;
-    movePad.releasePointerCapture?.(event.pointerId);
+    releasePointerSafely(movePad, event.pointerId);
     moveKnob.style.transform = "translate(-50%, -50%)";
 }
 
@@ -2521,7 +2540,6 @@ function resize() {
     if (composer) {
         composer.setPixelRatio(pixelRatio);
         composer.setSize(width, height);
-
     }
 
     camera.aspect = width / Math.max(height, 1);
