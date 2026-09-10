@@ -9,7 +9,8 @@ Antes de modificar diseño, contenido, narrativa, arquitectura o experiencia, le
 Para retomar rápidamente el contexto, leer primero:
 
 1. `docs/sic/09_HANDOFF_SUMMARY.md`
-2. después los documentos especializados que correspondan a la tarea.
+2. `docs/sic/10_VISUAL_REFERENCES.md` si la tarea toca diseño, web, contenido visual o implementación del Key Visual System
+3. después los documentos especializados que correspondan a la tarea.
 
 Si existe `docs/sic/history/CHAT_TRANSCRIPT_FULL.md`, usarlo cuando haga falta recuperar detalles conversacionales que el resumen pueda haber omitido.
 
@@ -25,6 +26,7 @@ Si existe `docs/sic/history/CHAT_TRANSCRIPT_FULL.md`, usarlo cuando haga falta r
 - Dirección web: `docs/sic/06_WEB_DIRECTION.md`
 - Catálogo de activos: `docs/sic/07_ASSET_CATALOG.md`
 - Decisiones y restricciones: `docs/sic/08_DECISIONS_LOG.md`
+- Archivo visual y enlaces a Drive: `docs/sic/10_VISUAL_REFERENCES.md`
 
 ## Principios obligatorios
 
@@ -48,3 +50,9 @@ Si existe `docs/sic/history/CHAT_TRANSCRIPT_FULL.md`, usarlo cuando haga falta r
 Para trabajos de diseño visual, no asumir que la primera composición es válida. Trabajar por iteraciones internas: construir, observar, comparar, reducir y corregir antes de presentar el resultado.
 
 La identidad debe poder mantenerse aunque una pieza no use logo grande, waveform, línea roja, textura grunge o tipografía gigante. Estos recursos son opcionales y semánticos, no una plantilla.
+
+## Archivo visual externo
+
+El archivo canónico de rondas visuales V05–V07 está organizado en Google Drive y documentado en `docs/sic/10_VISUAL_REFERENCES.md`.
+
+Codex CLI no debe asumir que puede abrir enlaces privados de Google Drive sin autenticación o integración adicional. Cuando la inspección visual exacta sea necesaria y Drive no esté accesible, debe trabajar con una copia local/sincronizada del archivo o pedir que se le proporcione la referencia; no debe inventar detalles visuales a partir de la descripción.
