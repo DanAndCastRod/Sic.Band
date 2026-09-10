@@ -1,0 +1,18 @@
+{
+  "version": "V08",
+  "status": "Exploraciones generadas con IA, no aprobación final ni archivo documental",
+  "method": "image_gen integrado",
+  "user_choice": "Generar todas las piezas con IA como exploraciones",
+  "prompts": [
+    {
+      "output": "triad_tres_funciones_v08.png",
+      "input": "sources/DMP06450-2-reference.jpg",
+      "prompt": "Use case: identity-preserve / compositing. Create ONE V08 [SIC] portrait editorial exploration, 4:5 ratio. This input is the authoritative photograph of the actual three band members. Use its ENTIRE group arrangement as ONE image, proportionally scaled into a clean rectangular photographic area, converted to neutral black and white. Preserve the EXACT faces, hairstyles, relative positions, clothing and poses. Do not exchange roles or replace anyone. The supplied identity mapping is Daniel Castañeda at the top center leaning behind the sofa, Juan Pablo Hurtado bottom left, Francisco Valencia bottom right. Do not invent instruments or performance poses, do not split into newly generated portraits. Preserve authentic human proportions and group relationship; no beautification. The surrounding layout has white space and restrained type. At top, a small black '[SIC]' signature and a modest two-line condensed sans title 'TRES FUNCIONES.' / 'UN MISMO PULSO.' Below the single photograph provide three clearly legible lines of black monospaced captions with EXACT Spanish accents: 'Daniel Castañeda — guitarra y voz', 'Juan Pablo Hurtado — batería', 'Francisco Valencia — bajo'. No other text. Title should be much smaller than V07, letting the photo and names communicate the group. Clean precise severe editorial design. No red, no waveform, no vertical line, no tape, no grain overlays, no worn frames, no filenames, no version/state labels, no codes, no date, no icons or emoji. This is an AI visual exploration based on the real source, not a documentary reproduction. Flat finished artwork, never a mockup."
+    },
+    {
+      "output": "trace_archivo_vivo_v08.png",
+      "input": "sources/Cuanzas-94-reference.jpg",
+      "prompt": "Use case: compositing / identity-preserve. Produce ONE V08 [SIC] portrait editorial exploration in 4:5 ratio, based on the actual source image supplied here named Cuanzas-94.jpg. Replace the previous fabricated archival collage with ONE proportional photograph interpretation of this exact bassist scene. Preserve the same musician, pose, bass, clothing, scene and proportions; convert to black and white only, do not add people or objects or turn him into someone else. A clean white archival page with one centered portrait photograph occupying about 58% canvas area and generous white margins. Above it, small restrained black editorial text exactly 'ARCHIVO VIVO'. Beneath it, in clear readable black monospaced typography, the exact provenance caption 'Interpretación visual · Cuanzas-94.jpg'. This wording is essential: this is an AI interpretation using a real source, NOT the original document and not a claimed authentic archive print. Preserve correct filename capitalization, punctuation and accent. No dates, no venue labels, no generated setlist, no handwritten note, no filename codes elsewhere, no tape, no ripped paper, no fake scuffs, no grunge, no grid, no huge logo, no red line, no emoji. No other copy. The photograph and truthful source attribution must suffice. Elegant sober documentary-inspired composition, quiet enough to stand with SILENCE while retaining a clear archival provenance."
+    }
+  ]
+}

@@ -45,6 +45,12 @@ Si existe `docs/sic/history/CHAT_TRANSCRIPT_FULL.md`, usarlo cuando haga falta r
 - Material con antiguos integrantes pertenece a `ARCHIVE / TRACE`, siempre contextualizado.
 - `AMBIGUOUS` permanece como `SIGNAL IN DEVELOPMENT` hasta que música y concepto estén maduros.
 
+## Codificación y comunicación
+
+- Leer y guardar los archivos de texto en UTF-8 de forma explícita.
+- Revisar acentos y caracteres especiales al editar. Investigar y corregir cualquier mojibake encontrado, distinguiendo errores del archivo de errores de visualización de la terminal.
+- No usar emojis ni iconos de emoji en contenido, interfaces, documentación o respuestas.
+
 ## Método de trabajo visual
 
 Para trabajos de diseño visual, no asumir que la primera composición es válida. Trabajar por iteraciones internas: construir, observar, comparar, reducir y corregir antes de presentar el resultado.
