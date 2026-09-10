@@ -4,8 +4,18 @@ Este repositorio contiene la web y el sistema digital de la banda [SIC].
 
 Antes de modificar diseño, contenido, narrativa, arquitectura o experiencia, leer los documentos relevantes en `docs/sic/`.
 
+## Inicio recomendado para Codex
+
+Para retomar rápidamente el contexto, leer primero:
+
+1. `docs/sic/09_HANDOFF_SUMMARY.md`
+2. después los documentos especializados que correspondan a la tarea.
+
+Si existe `docs/sic/history/CHAT_TRANSCRIPT_FULL.md`, usarlo cuando haga falta recuperar detalles conversacionales que el resumen pueda haber omitido.
+
 ## Fuentes de verdad
 
+- Resumen de continuidad: `docs/sic/09_HANDOFF_SUMMARY.md`
 - Contexto general: `docs/sic/00_CONTEXT.md`
 - Núcleo de marca: `docs/sic/01_BRAND_CORE.md`
 - Key Visual System: `docs/sic/02_KEY_VISUAL_SYSTEM.md`
