@@ -1109,13 +1109,30 @@ function handleProgress(event) {
 
 function handleError(error) {
     console.error(error);
-    doc.body.dataset.universeReady = "error";
+
+    // Cloudflare Pages limita cada asset estático a 25 MiB.
+    // Si el GLB principal no está desplegado, degradamos de forma controlada
+    // a una vista editorial 2D en lugar de bloquear toda la experiencia.
+    doc.body.dataset.universeReady = "fallback";
+
     if (sceneStatus) {
-        sceneStatus.textContent = "error al cargar glb";
+        sceneStatus.textContent = "preview editorial / 3D externalizado";
     }
+
     if (loadingCopy) {
-        loadingCopy.textContent = "No se pudo abrir el universo 3D. Verifica la carga del archivo sic_universe_station.glb.";
+        loadingCopy.textContent = "El modelo 3D completo está temporalmente fuera del bundle de Pages. La experiencia continúa en modo preview.";
     }
+
+    if (loadingProgress) {
+        loadingProgress.textContent = "preview";
+    }
+
+    canvas.style.background = [
+        "linear-gradient(180deg, rgba(9,8,9,.18), rgba(9,8,9,.72))",
+        "url('./assets/sic_universe_station_preview.png') center / cover no-repeat"
+    ].join(",");
+
+    loadingScreen?.classList.add("is-hidden");
 }
 
 function centerModel(root) {
