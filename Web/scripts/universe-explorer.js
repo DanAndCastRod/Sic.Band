@@ -1,10 +1,10 @@
-import * as THREE from "three";
-import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { OutlineEffect } from "three/addons/effects/OutlineEffect.js";
-import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
-import { Pass } from "three/addons/postprocessing/Pass.js";
-import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
-import { FullScreenQuad } from "three/addons/postprocessing/Pass.js";
+import * as THREE from "https://esm.sh/three@0.183.2";
+import { GLTFLoader } from "https://esm.sh/three@0.183.2/examples/jsm/loaders/GLTFLoader.js";
+import { OutlineEffect } from "https://esm.sh/three@0.183.2/examples/jsm/effects/OutlineEffect.js";
+import { EffectComposer } from "https://esm.sh/three@0.183.2/examples/jsm/postprocessing/EffectComposer.js";
+import { Pass } from "https://esm.sh/three@0.183.2/examples/jsm/postprocessing/Pass.js";
+import { ShaderPass } from "https://esm.sh/three@0.183.2/examples/jsm/postprocessing/ShaderPass.js";
+import { FullScreenQuad } from "https://esm.sh/three@0.183.2/examples/jsm/postprocessing/Pass.js";
 // Post-processing desactivado — bloom global quema superficies claras.
 // En su lugar usamos glow sprites localizados en cristales.
 
