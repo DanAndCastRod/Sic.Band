@@ -723,8 +723,10 @@ setTourActive(false);
 setHudHidden(false);
 resize();
 win.addEventListener("resize", resize);
+const UNIVERSE_MODEL_URL = "https://assets.sic.releven.cc/sic_universe_station.glb";
+
 loader.load(
-    "./assets/sic_universe_station.glb",
+    UNIVERSE_MODEL_URL,
     handleLoaded,
     handleProgress,
     handleError
@@ -1120,7 +1122,7 @@ function handleError(error) {
     }
 
     if (loadingCopy) {
-        loadingCopy.textContent = "El modelo 3D completo está temporalmente fuera del bundle de Pages. La experiencia continúa en modo preview.";
+        loadingCopy.textContent = "No se pudo cargar el modelo 3D remoto. La experiencia continúa en modo preview."
     }
 
     if (loadingProgress) {
