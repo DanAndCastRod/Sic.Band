@@ -89,3 +89,10 @@ Antes de implementar el nuevo hero:
 5. no introducir una plantilla visual rígida;
 6. validar mobile y desktop;
 7. mantener acceso rápido a escucha.
+
+
+## Universo 3D / Frente B
+
+El universo 3D existente no se considera artísticamente terminado. Antes de seguir refinándolo, consultar `docs/sic/11_UNIVERSE_ART_DIRECTION.md`.
+
+Regla operativa: no añadir modelos por acumulación. Cada asset, material, luz y gesto debe responder a una función dentro del KVS y los GLB pesados deben servirse desde R2, no desde el bundle de Cloudflare Pages.
