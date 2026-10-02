@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>[SIC] / Immersive Signal</title>
+<meta name="description" content="[SIC] — experiencia inmersiva entre SILENCE, SIGNAL y TRACE.">
+<meta name="theme-color" content="#090909">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@400;500;600&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#090909;--paper:#f1eee6;--red:#d21f2b;--muted:rgba(241,238,230,.62);--mutedInk:rgba(9,9,9,.62);--line:rgba(241,238,230,.16)}
+*{box-sizing:border-box}html{scroll-behavior:smooth;background:var(--ink)}body{margin:0;background:var(--ink);color:var(--paper);font-family:"Roboto Condensed",sans-serif;overflow-x:hidden}a{color:inherit;text-decoration:none}button{font:inherit;color:inherit}::selection{background:var(--red);color:var(--paper)}
+#stage,.noise,.wash{position:fixed;inset:0;width:100%;height:100%;pointer-events:none}#stage{z-index:0}.noise{z-index:1;opacity:.065;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.88' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");mix-blend-mode:soft-light}.wash{z-index:0;background:radial-gradient(circle at 72% 34%,rgba(210,31,43,.15),transparent 30rem)}
+header{position:fixed;z-index:60;inset:0 0 auto;min-height:72px;padding:1rem clamp(1rem,4vw,3rem);display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);background:linear-gradient(180deg,rgba(9,9,9,.92),rgba(9,9,9,.18));backdrop-filter:blur(16px)}.brand{font:400 1rem/1 "Archivo Black";letter-spacing:.09em}.brand i{font-style:normal;color:var(--red)}nav{display:flex;gap:1.15rem}nav a,.sound{font:500 .64rem/1 "IBM Plex Mono",monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}.sound{border:0;background:none;cursor:pointer}
+main,footer{position:relative;z-index:4}.scene{position:relative;min-height:100svh;padding:clamp(7rem,13vh,10rem) clamp(1rem,5vw,5rem);display:grid;align-content:center}.scene:after{content:"";position:absolute;inset:auto 5vw 0;height:1px;background:linear-gradient(90deg,transparent,var(--line),transparent)}.eyebrow{margin:0 0 1.1rem;font:600 .67rem/1.5 "IBM Plex Mono",monospace;letter-spacing:.2em;color:var(--red);text-transform:uppercase}
+.hero h1{display:grid;margin:0;width:min(1000px,92vw);font:400 clamp(3.5rem,9.6vw,9.2rem)/.8 "Archivo Black";letter-spacing:-.06em;text-transform:uppercase}.hero h1 span:nth-child(2){margin-left:min(8vw,7rem)}.hero h1 em{font-style:normal;color:var(--red);font-size:.67em;margin-top:.25em}.lead{max-width:640px;font-size:clamp(1rem,1.5vw,1.25rem);line-height:1.65;color:var(--muted)}.actions{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:2rem}.cta{display:inline-flex;min-height:46px;align-items:center;padding:.7rem 1rem;border:1px solid var(--line);font:600 .68rem/1 "IBM Plex Mono",monospace;letter-spacing:.11em;text-transform:uppercase;background:rgba(9,9,9,.28);backdrop-filter:blur(8px)}.cta.primary{background:var(--paper);color:var(--ink);border-color:var(--paper)}.cta:hover{color:var(--red);border-color:var(--red)}
+h2{margin:0;font:400 clamp(2.8rem,6.4vw,6.8rem)/.86 "Archivo Black";letter-spacing:-.05em;text-transform:uppercase}.signals{background:rgba(9,9,9,.72)}.signals>p,.gesture-copy>p,.ambiguous>div>p{max-width:700px;color:var(--muted);line-height:1.65}.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin-top:3rem;background:var(--line);border:1px solid var(--line)}.card{min-height:330px;padding:1.15rem;display:flex;flex-direction:column;justify-content:flex-end;background:#0b0b0b;position:relative;overflow:hidden}.card.cover:before{content:"";position:absolute;inset:0;background-image:linear-gradient(180deg,transparent,rgba(9,9,9,.96)),var(--cover);background-position:center;background-size:cover;filter:grayscale(.3)}.card>*{position:relative}.meta{font:600 .62rem/1.3 "IBM Plex Mono",monospace;color:var(--red);letter-spacing:.12em}.card h3{margin:.6rem 0 .4rem;font:400 2rem/.92 "Archivo Black";text-transform:uppercase}.card p{margin:0 0 1.2rem;color:var(--muted)}.listen{font:600 .65rem/1 "IBM Plex Mono",monospace;text-transform:uppercase;border-bottom:1px solid currentColor;width:max-content;padding-bottom:.2rem}.card.text:after{content:"";position:absolute;width:145%;height:17%;left:-20%;top:32%;background:var(--red);transform:rotate(-10deg);opacity:.72}
+.gesture{min-height:125svh;align-content:start;padding-top:18vh;background:linear-gradient(90deg,rgba(241,238,230,.97) 0 48%,rgba(241,238,230,.84) 48% 56%,rgba(9,9,9,.15) 56%);color:var(--ink)}.gesture-copy{max-width:650px;position:sticky;top:9rem}.gesture-copy>p{color:var(--mutedInk)}.panel{margin-top:2.4rem;border-top:2px solid var(--ink);padding-top:1rem;display:grid;gap:.45rem}.panel span{font:600 .65rem/1 "IBM Plex Mono",monospace;color:var(--red)}.panel strong{font:400 1.7rem/1 "Archivo Black";text-transform:uppercase}.panel p{margin:0;color:var(--mutedInk)}.controls{position:absolute;right:5vw;top:22vh;width:min(350px,36vw);display:grid}.controls button{display:grid;grid-template-columns:2.3rem 1fr;gap:.8rem;text-align:left;border:0;border-bottom:1px solid rgba(241,238,230,.25);padding:1rem .25rem;background:rgba(9,9,9,.18);font:600 .7rem/1 "IBM Plex Mono",monospace;letter-spacing:.1em;cursor:pointer;backdrop-filter:blur(8px)}.controls button:hover,.controls button.active{color:var(--red);padding-left:.7rem}.hint{position:absolute;right:5vw;bottom:2.5rem;font:500 .6rem/1 "IBM Plex Mono",monospace;color:rgba(241,238,230,.55)}
+.triad{background:var(--paper);color:var(--ink)}.members{display:grid;grid-template-columns:repeat(3,1fr);margin-top:3rem;border-top:2px solid var(--ink)}.members article{min-height:280px;padding:1.25rem;border-right:1px solid rgba(9,9,9,.16);display:flex;flex-direction:column}.members article:last-child{border-right:0}.members span{font:600 .65rem/1 "IBM Plex Mono",monospace;color:var(--red)}.members h3{margin:auto 0 .7rem;font:400 clamp(2rem,3.2vw,3.6rem)/.88 "Archivo Black";text-transform:uppercase}.members p,.members small{font-family:"IBM Plex Mono",monospace}.members p{margin:0;text-transform:uppercase}.members small{margin-top:.4rem;color:var(--mutedInk)}
+.trace{background:rgba(9,9,9,.88)}.timeline{display:grid;grid-template-columns:repeat(4,1fr);margin-top:3rem;border:1px solid var(--line)}.timeline article{min-height:230px;padding:1rem;border-right:1px solid var(--line);display:flex;flex-direction:column}.timeline article:last-child{border-right:0}.timeline span{font:600 .68rem/1 "IBM Plex Mono",monospace;color:var(--red)}.timeline strong{margin:auto 0 .6rem;font:400 1.7rem/1 "Archivo Black";text-transform:uppercase}.timeline p{color:var(--muted)}
+.ambiguous>div{width:min(820px,88vw);margin-left:auto;padding:clamp(1.4rem,4vw,3.5rem);border-left:7px solid var(--red);background:rgba(9,9,9,.64);backdrop-filter:blur(14px)}footer{padding:2rem 5vw;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:1rem;font:500 .66rem/1.5 "IBM Plex Mono",monospace;color:var(--muted)}footer a:hover{color:var(--red)}
+.rail{position:fixed;z-index:50;right:1rem;top:50%;transform:translateY(-50%);writing-mode:vertical-rl;font:500 .55rem/1 "IBM Plex Mono",monospace;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
+@media(max-width:900px){nav{display:none}.cards,.timeline{grid-template-columns:repeat(2,1fr)}.members{grid-template-columns:1fr}.members article{border-right:0;border-bottom:1px solid rgba(9,9,9,.14)}.gesture{background:linear-gradient(180deg,rgba(241,238,230,.97) 0 50%,rgba(9,9,9,.16) 76%)}.gesture-copy{position:relative;top:auto}.controls{position:relative;right:auto;top:auto;width:100%;margin-top:55vh}.rail{display:none}}
+@media(max-width:620px){header{min-height:62px;padding:.8rem 1rem}.scene{padding-left:1rem;padding-right:1rem}.hero h1{font-size:clamp(3.1rem,17vw,5.5rem)}.hero h1 span:nth-child(2){margin-left:0}.cards,.timeline{grid-template-columns:1fr}.gesture{min-height:145svh}.controls{margin-top:48vh}footer{flex-direction:column}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}#stage{display:none}}
+</style>
+</head>
+<body data-state="silence">
+<canvas id="stage" aria-hidden="true"></canvas><div class="noise"></div><div class="wash"></div>
+<header><a class="brand" href="#hero">[ S<i>I</i>C ]</a><nav><a href="#signals">Escucha</a><a href="#gesture">Gesture</a><a href="#triad">Triad</a><a href="#trace">Trace</a><a href="#ambiguous">Ambiguous</a></nav><button class="sound" id="sound" type="button" aria-pressed="false">sonido / off</button></header>
+<main>
+<section class="scene hero" id="hero" data-state-key="silence"><div><p class="eyebrow">SILENCE / 001</p><h1><span>NO BUSQUES</span><span>UNA RESPUESTA.</span><em>ENTRA EN EL CONFLICTO.</em></h1><p class="lead">Una idea no pesa hasta que toca algo. [SIC] convierte contradicción, materia y presencia en sonido.</p><div class="actions"><a class="cta primary" href="#signals" data-event="signal_start">Escuchar señales</a><a class="cta" href="#gesture">Tocar la materia</a></div></div></section>
+
+<section class="scene signals" id="signals" data-state-key="signal"><div><p class="eyebrow">CURRENT SIGNALS</p><h2>Cuatro señales recientes.<br>Un sistema bajo presión.</h2><p>No se presentan como anuncios atrasados. Se escuchan como materia activa.</p><div class="cards">
+<article class="card cover" style="--cover:url('./assets/sic_album_mss_white.png')"><span class="meta">2025 / SIGNAL</span><h3>Mss White</h3><p>Verdad, deseo y tensión.</p><a class="listen" href="https://open.spotify.com/intl-es/album/2SvkcZAU0u9b3k6lJmWfJf?si=Dah5mQJ9Qi-PfbWYyLxxGA" target="_blank" rel="noreferrer" data-event="listen_spotify" data-track="Mss White">Spotify ↗</a></article>
+<article class="card cover" style="--cover:url('./assets/sic_album_asi.jpg')"><span class="meta">2025 / SIGNAL</span><h3>Así</h3><p>Insistencia, identidad y golpe directo.</p><a class="listen" href="https://open.spotify.com/intl-es/album/4PxnIpMCF5wOzT7vtO6JO0?si=64dq-kJ4SxqF5CNZ5jzdUw" target="_blank" rel="noreferrer" data-event="listen_spotify" data-track="Así">Spotify ↗</a></article>
+<article class="card text"><span class="meta">2025 / SIGNAL</span><h3>Perspectivas</h3><p>Interpretación, mirada y cambio de lectura.</p><span class="listen">señal activa</span></article>
+<article class="card text"><span class="meta">2026 / SIGNAL</span><h3>Out of Control</h3><p>Control, fractura y liberación.</p><span class="listen">señal activa</span></article>
+</div></div></section>
+
+<section class="scene gesture" id="gesture" data-state-key="gesture"><div class="gesture-copy"><p class="eyebrow">GESTURE / MATTER</p><h2>La pintura deja de ser imagen.<br>Se vuelve espacio.</h2><p>Arrastra, toca o selecciona un fragmento. Cada stroke abre una capa distinta.</p><div class="panel"><span id="g-state">GESTURE</span><strong id="g-title">Materia en suspensión</strong><p id="g-copy">Explora la escultura. La forma responde antes de explicarse.</p></div></div><div class="controls"><button data-focus="silence"><span>01</span>SILENCE</button><button data-focus="signal"><span>02</span>SIGNAL</button><button data-focus="trace"><span>03</span>TRACE</button><button data-focus="triad"><span>04</span>TRIAD</button><button data-focus="ambiguous"><span>05</span>AMBIGUOUS</button></div><div class="hint">drag / orbit · tap / inspect · wheel / traverse</div></section>
+
+<section class="scene triad" id="triad" data-state-key="triad"><div><p class="eyebrow">CURRENT / TRIAD</p><h2>Tres registros.<br>Un mismo pulso.</h2><div class="members"><article><span>01</span><h3>Daniel Castañeda</h3><p>guitarra + voz</p><small>estructura / intención</small></article><article><span>02</span><h3>Juan Pablo Hurtado</h3><p>batería</p><small>pulso / activación</small></article><article><span>03</span><h3>Francisco Valencia</h3><p>bajo</p><small>masa / fundamento</small></article></div></div></section>
+
+<section class="scene trace" id="trace" data-state-key="trace"><div><p class="eyebrow">TRACE / ARCHIVE</p><h2>El archivo no explica.<br>Deja rastros.</h2><div class="timeline"><article><span>2017</span><strong>Origen</strong><p>Formación en Pereira. Núcleo inicial.</p></article><article><span>2018</span><strong>Al Revés</strong><p>Primer gesto de inversión.</p></article><article><span>2025</span><strong>Señales recientes</strong><p>Mss White / Así / Perspectivas.</p></article><article><span>2026</span><strong>Transición</strong><p>Out of Control → Ambiguous.</p></article></div><div class="actions"><a class="cta" href="universe.html">Recorrer archivo espacial ↗</a></div></div></section>
+
+<section class="scene ambiguous" id="ambiguous" data-state-key="ambiguous"><div><p class="eyebrow">AMBIGUOUS</p><h2>SIGNAL IN DEVELOPMENT</h2><p>No es un lanzamiento terminado. Es una señal en proceso: composición, prueba, error, contradicción y materia tomando forma.</p><a class="cta" href="laboratory.html">Entrar al laboratorio</a></div></section>
+</main>
+<aside class="rail" aria-hidden="true"><span id="state-code">SILENCE</span> / <small id="state-note">latencia</small></aside>
+<footer><div>[SIC] / Sentence In Conflict / Pereira, Colombia</div><div><a href="https://www.instagram.com/sic.band/" target="_blank" rel="noreferrer">Instagram ↗</a> &nbsp; <a href="https://www.youtube.com/channel/UCFAShEu-88tWd8x7cjrVVlA" target="_blank" rel="noreferrer">YouTube ↗</a></div></footer>
+
+<script type="module">
+import * as THREE from "https://esm.sh/three@0.183.2";
+import { GLTFLoader } from "https://esm.sh/three@0.183.2/examples/jsm/loaders/GLTFLoader.js";
+
+// Los archivos Meshy pueden entrar después sin cambiar la arquitectura.
+// Nombres esperados: gesture-silence.glb, gesture-signal.glb, gesture-trace.glb.
+const MESHY=[
+ ["silence","./assets/gesture/gesture-silence.glb"],
+ ["signal","./assets/gesture/gesture-signal.glb"],
+ ["trace","./assets/gesture/gesture-trace.glb"]
+];
+const STATES={
+ silence:{label:"SILENCE",note:"latencia",camera:[0,.4,10.8],rot:[.03,-.08,0],spread:.72},
+ signal:{label:"SIGNAL",note:"activación",camera:[.4,.1,8.8],rot:[.12,.18,-.05],spread:1.02},
+ gesture:{label:"GESTURE",note:"materia",camera:[.8,.1,7.6],rot:[.18,.38,-.08],spread:1.18},
+ triad:{label:"TRIAD",note:"presencia",camera:[-.2,.25,10.2],rot:[.04,-.2,.02],spread:.9},
+ trace:{label:"TRACE",note:"rastro",camera:[.2,-.15,9.5],rot:[-.04,.24,.04],spread:1.04},
+ ambiguous:{label:"AMBIGUOUS",note:"signal in development",camera:[0,.1,8.2],rot:[.15,.5,-.16],spread:1.12}
+};
+const INFO={
+ silence:["SILENCE","Latencia","El vacío todavía contiene todas las posibilidades."],
+ signal:["SIGNAL","Activación","Cuando la intención toca materia aparece la señal."],
+ trace:["TRACE","Rastro","Lo ocurrido permanece como evidencia, no como decoración."],
+ triad:["TRIAD","Presencia","Tres registros humanos sostienen una misma tensión."],
+ ambiguous:["AMBIGUOUS","En desarrollo","Una señal incompleta conserva espacio para cambiar."]
+};
+const canvas=document.querySelector("#stage");
+const reduced=matchMedia("(prefers-reduced-motion: reduce)").matches;
+setupObserver();setupControls();setupTracking();setupSound();
+if(canvas&&!reduced){try{init3D()}catch(e){canvas.hidden=true}}
+
+function init3D(){
+ const renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:innerWidth>800,powerPreference:"high-performance"});
+ renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.setClearColor(0,0);
+ const scene=new THREE.Scene();scene.fog=new THREE.FogExp2(0x090909,.055);
+ const camera=new THREE.PerspectiveCamera(34,1,.1,60);camera.position.set(...STATES.silence.camera);
+ const world=new THREE.Group();scene.add(world);
+ scene.add(new THREE.HemisphereLight(0xf1eee6,0x151515,2.5));
+ const redLight=new THREE.PointLight(0xd21f2b,22,16,2);redLight.position.set(3.5,2.4,4.5);scene.add(redLight);
+ const paperLight=new THREE.PointLight(0xf1eee6,15,18,2);paperLight.position.set(-4,-1.5,4);scene.add(paperLight);
+ const group=new THREE.Group();world.add(group);const interactive=[];
+ const specs=[["silence",0xf1eee6,[-2.6,1.6,.2],.23,.96],["signal",0xd21f2b,[1.6,1.15,.45],.31,1.08],["trace",0x111111,[-.7,-1.15,.65],.27,1.12],["triad",0xf1eee6,[2.3,-1.35,-.4],.18,.82],["ambiguous",0xd21f2b,[.15,.05,-.8],.16,.7]];
+ const meshes=specs.map(s=>stroke(...s));meshes.forEach(m=>{group.add(m);interactive.push(m)});
+ const dust=createDust();world.add(dust);loadMeshy(group,interactive);
+ const targetCam=new THREE.Vector3(...STATES.silence.camera),targetRot=new THREE.Euler(...STATES.silence.rot);
+ let spread=STATES.silence.spread,active="silence",yaw=0,pitch=0,drag=false,last={x:0,y:0},hover=null;
+ const pointer=new THREE.Vector2(20,20),pointerTarget=new THREE.Vector2(),ray=new THREE.Raycaster(),clock=new THREE.Clock();
+ resize();addEventListener("resize",resize,{passive:true});
+ addEventListener("pointermove",e=>{pointerTarget.x=e.clientX/innerWidth*2-1;pointerTarget.y=-(e.clientY/innerHeight*2-1);if(drag){yaw+=(e.clientX-last.x)*.004;pitch=THREE.MathUtils.clamp(pitch+(e.clientY-last.y)*.003,-.45,.45);last={x:e.clientX,y:e.clientY}}},{passive:true});
+ addEventListener("pointerdown",e=>{if(e.target.closest?.("a,button"))return;drag=true;last={x:e.clientX,y:e.clientY}});
+ addEventListener("pointerup",()=>drag=false);addEventListener("pointercancel",()=>drag=false);
+ addEventListener("click",e=>{if(e.target.closest?.("a,button"))return;if(hover?.userData?.key)show(hover.userData.key,true)});
+ addEventListener("wheel",e=>{if(document.body.dataset.state==="gesture")yaw+=Math.sign(e.deltaY)*.035},{passive:true});
+ document.addEventListener("sic:state",e=>setState(e.detail));
+ document.addEventListener("sic:focus",e=>focus(e.detail));
+ renderer.setAnimationLoop(()=>{const t=clock.getElapsedTime();camera.position.lerp(targetCam,.045);world.rotation.x+=(targetRot.x+pitch-world.rotation.x)*.045;world.rotation.y+=(targetRot.y+yaw-world.rotation.y)*.045;world.rotation.z+=(targetRot.z-world.rotation.z)*.045;pointer.x+=(pointerTarget.x-pointer.x)*.08;pointer.y+=(pointerTarget.y-pointer.y)*.08;world.position.x+=(pointer.x*.3-world.position.x)*.035;world.position.y+=(-pointer.y*.18-world.position.y)*.035;meshes.forEach((m,i)=>{const h=m.userData.home;m.position.x+=(h.x*spread-m.position.x)*.035;m.position.y+=(h.y*spread-m.position.y)*.035;m.position.z+=(h.z*spread-m.position.z)*.035;m.rotation.z+=Math.sin(t*.35+i)*.00055;const p=m.userData.key===active?1.08:1;m.scale.lerp(new THREE.Vector3(p,p,p),.05)});dust.rotation.y=t*.012;ray.setFromCamera(pointer,camera);const hit=ray.intersectObjects(interactive,true)[0]?.object||null;hover=resolve(hit);canvas.style.cursor=hover?"pointer":drag?"grabbing":"grab";camera.lookAt(0,0,0);renderer.render(scene,camera)});
+ function setState(key){const s=STATES[key]||STATES.silence;active=key;targetCam.set(...s.camera);targetRot.set(...s.rot);spread=s.spread}
+ function focus(key){const m=meshes.find(x=>x.userData.key===key);if(!m)return;active=key;yaw=-m.userData.home.x*.055;pitch=m.userData.home.y*.03;targetCam.set(m.userData.home.x*.08,m.userData.home.y*.05,7.25)}
+ function resize(){renderer.setPixelRatio(Math.min(devicePixelRatio||1,innerWidth<720?1.15:1.65));renderer.setSize(innerWidth,innerHeight,false);camera.aspect=innerWidth/Math.max(innerHeight,1);camera.updateProjectionMatrix()}
+ function stroke(key,color,home,radius,scale){const seed=[...key].reduce((a,c)=>a+c.charCodeAt(0),0),pts=[],n=innerWidth<700?7:10;for(let i=0;i<n;i++){const u=i/(n-1);pts.push(new THREE.Vector3((u-.5)*5.4+Math.sin(seed*.07+u*7.2)*.55,Math.sin(u*Math.PI*1.3+seed*.018)*.72+(u-.5)*.5,Math.cos(u*5.1+seed*.011)*.42))}const curve=new THREE.CatmullRomCurve3(pts),geo=new THREE.TubeGeometry(curve,innerWidth<700?42:72,radius,7,false);geo.scale(scale,scale,scale);const mesh=new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color,roughness:.92,metalness:.02,flatShading:true,side:THREE.DoubleSide}));mesh.position.set(...home);mesh.rotation.set(seed*.0009,seed*.0014,seed*.0004);mesh.userData={key,home:new THREE.Vector3(...home)};return mesh}
+ function createDust(){const count=innerWidth<700?220:560,p=new Float32Array(count*3),c=new Float32Array(count*3),paper=new THREE.Color(0xf1eee6),red=new THREE.Color(0xd21f2b);for(let i=0;i<count;i++){const o=i*3;p[o]=(Math.random()-.5)*16;p[o+1]=(Math.random()-.5)*10;p[o+2]=(Math.random()-.5)*8;const col=Math.random()<.14?red:paper;c[o]=col.r;c[o+1]=col.g;c[o+2]=col.b}const g=new THREE.BufferGeometry();g.setAttribute("position",new THREE.BufferAttribute(p,3));g.setAttribute("color",new THREE.BufferAttribute(c,3));return new THREE.Points(g,new THREE.PointsMaterial({size:.025,vertexColors:true,transparent:true,opacity:.45,depthWrite:false}))}
+ function loadMeshy(parent,targets){const loader=new GLTFLoader();MESHY.forEach((slot,i)=>loader.load(slot[1],gltf=>{const o=gltf.scene;o.scale.setScalar(1.45);o.position.set((i-1)*1.8,i%2?-.7:.8,-.6);o.traverse(ch=>{if(!ch.isMesh)return;ch.userData.key=slot[0];targets.push(ch)});parent.add(o)},undefined,()=>{}))}
+ function resolve(o){let x=o;while(x){if(x.userData?.key)return x;x=x.parent}return null}
+}
+function setupObserver(){const nodes=[...document.querySelectorAll("[data-state-key]")],obs=new IntersectionObserver(es=>{const e=es.filter(x=>x.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio)[0];if(!e)return;const k=e.target.dataset.stateKey,s=STATES[k]||STATES.silence;document.body.dataset.state=k;document.querySelector("#state-code").textContent=s.label;document.querySelector("#state-note").textContent=s.note;document.dispatchEvent(new CustomEvent("sic:state",{detail:k}))},{threshold:[.25,.48,.7],rootMargin:"-12% 0px -32%"});nodes.forEach(n=>obs.observe(n))}
+function setupControls(){document.querySelectorAll("[data-focus]").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll("[data-focus]").forEach(x=>x.classList.toggle("active",x===b));show(b.dataset.focus,true);document.dispatchEvent(new CustomEvent("sic:focus",{detail:b.dataset.focus}))}))}
+function show(k,trackIt=false){const d=INFO[k];if(!d)return;document.querySelector("#g-state").textContent=d[0];document.querySelector("#g-title").textContent=d[1];document.querySelector("#g-copy").textContent=d[2];if(trackIt)track("gesture_inspect",{gesture:k})}
+function setupTracking(){document.addEventListener("click",e=>{const t=e.target.closest("[data-event]");if(t)track(t.dataset.event,{track:t.dataset.track||null,href:t.getAttribute("href")||null})})}
+function track(name,params={}){window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:name,...params});if(typeof window.gtag==="function")window.gtag("event",name,params)}
+function setupSound(){const b=document.querySelector("#sound");let ctx,osc,gain,on=false;b.addEventListener("click",async()=>{if(!ctx){ctx=new (window.AudioContext||window.webkitAudioContext)();osc=ctx.createOscillator();gain=ctx.createGain();osc.frequency.value=47;gain.gain.value=.0001;osc.connect(gain).connect(ctx.destination);osc.start()}if(ctx.state==="suspended")await ctx.resume();on=!on;gain.gain.linearRampToValueAtTime(on?.018:.0001,ctx.currentTime+.3);b.textContent=on?"sonido / on":"sonido / off";b.setAttribute("aria-pressed",String(on));track("ambient_sound",{active:on})})}
+</script>
+</body></html>

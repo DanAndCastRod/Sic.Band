@@ -216,6 +216,14 @@ Hallazgos:
 - TRIAD necesita fidelidad facial alta.
 - la identidad debe sobrevivir aun sin logo grande, waveform, línea roja o tipografía gigante.
 
+## 6.1. Universo 3D — Frente B
+
+El refinamiento artístico de `Web/universe.html` quedó documentado en:
+
+- `docs/sic/11_UNIVERSE_ART_DIRECTION.md`
+
+Este frente **no está resuelto** aunque el viewer funcione técnicamente. La escena actual necesita un art pass de geometría, materiales, texturas, iluminación, composición espacial, interacción y performance. El documento 11 es la fuente de continuidad para ese trabajo y debe consultarse antes de generar o integrar nuevos assets Meshy.
+
 ## 7. Pendientes
 
 ### Key Visual System

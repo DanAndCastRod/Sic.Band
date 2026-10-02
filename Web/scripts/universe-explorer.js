@@ -1,10 +1,10 @@
-import * as THREE from "three";
-import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { OutlineEffect } from "three/addons/effects/OutlineEffect.js";
-import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
-import { Pass } from "three/addons/postprocessing/Pass.js";
-import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
-import { FullScreenQuad } from "three/addons/postprocessing/Pass.js";
+import * as THREE from "https://esm.sh/three@0.183.2";
+import { GLTFLoader } from "https://esm.sh/three@0.183.2/examples/jsm/loaders/GLTFLoader.js";
+import { OutlineEffect } from "https://esm.sh/three@0.183.2/examples/jsm/effects/OutlineEffect.js";
+import { EffectComposer } from "https://esm.sh/three@0.183.2/examples/jsm/postprocessing/EffectComposer.js";
+import { Pass } from "https://esm.sh/three@0.183.2/examples/jsm/postprocessing/Pass.js";
+import { ShaderPass } from "https://esm.sh/three@0.183.2/examples/jsm/postprocessing/ShaderPass.js";
+import { FullScreenQuad } from "https://esm.sh/three@0.183.2/examples/jsm/postprocessing/Pass.js";
 // Post-processing desactivado — bloom global quema superficies claras.
 // En su lugar usamos glow sprites localizados en cristales.
 
@@ -723,8 +723,10 @@ setTourActive(false);
 setHudHidden(false);
 resize();
 win.addEventListener("resize", resize);
+const UNIVERSE_MODEL_URL = "https://assets.sic.releven.cc/sic_universe_station.glb";
+
 loader.load(
-    "./assets/sic_universe_station.glb",
+    UNIVERSE_MODEL_URL,
     handleLoaded,
     handleProgress,
     handleError
@@ -1109,13 +1111,30 @@ function handleProgress(event) {
 
 function handleError(error) {
     console.error(error);
-    doc.body.dataset.universeReady = "error";
+
+    // Cloudflare Pages limita cada asset estático a 25 MiB.
+    // Si el GLB principal no está desplegado, degradamos de forma controlada
+    // a una vista editorial 2D en lugar de bloquear toda la experiencia.
+    doc.body.dataset.universeReady = "fallback";
+
     if (sceneStatus) {
-        sceneStatus.textContent = "error al cargar glb";
+        sceneStatus.textContent = "preview editorial / 3D externalizado";
     }
+
     if (loadingCopy) {
-        loadingCopy.textContent = "No se pudo abrir el universo 3D. Verifica la carga del archivo sic_universe_station.glb.";
+        loadingCopy.textContent = "No se pudo cargar el modelo 3D remoto. La experiencia continúa en modo preview."
     }
+
+    if (loadingProgress) {
+        loadingProgress.textContent = "preview";
+    }
+
+    canvas.style.background = [
+        "linear-gradient(180deg, rgba(9,8,9,.18), rgba(9,8,9,.72))",
+        "url('./assets/sic_universe_station_preview.png') center / cover no-repeat"
+    ].join(",");
+
+    loadingScreen?.classList.add("is-hidden");
 }
 
 function centerModel(root) {
@@ -2060,7 +2079,26 @@ function onCanvasPointerDown(event) {
     runtime.explore.pointerId = event.pointerId;
     runtime.explore.lastX = event.clientX;
     runtime.explore.lastY = event.clientY;
-    canvas.setPointerCapture?.(event.pointerId);
+    capturePointerSafely(canvas, event.pointerId);
+}
+
+/* El bloqueo de puntero desactiva el puntero como tal, asi que capturarlo
+   lanza InvalidStateError. Ahi la captura sobra —mirar ya va por el bloqueo—
+   y liberar un puntero no capturado tambien puede lanzar. */
+function capturePointerSafely(element, pointerId) {
+    try {
+        element?.setPointerCapture?.(pointerId);
+    } catch (error) {
+        /* sin captura: el arrastre sigue via los listeners del elemento */
+    }
+}
+
+function releasePointerSafely(element, pointerId) {
+    try {
+        element?.releasePointerCapture?.(pointerId);
+    } catch (error) {
+        /* el puntero ya no estaba capturado */
+    }
 }
 
 function requestPointerLock() {
@@ -2119,7 +2157,7 @@ function onCanvasPointerUp(event) {
     if (runtime.mode === "explore" && runtime.explore.pointerId === event.pointerId) {
         runtime.explore.activeLook = false;
         runtime.explore.pointerId = null;
-        canvas.releasePointerCapture?.(event.pointerId);
+        releasePointerSafely(canvas, event.pointerId);
         return;
     }
 
@@ -2143,7 +2181,7 @@ function onCanvasPointerUp(event) {
 function onMovePadDown(event) {
     runtime.moveStick.active = true;
     runtime.moveStick.pointerId = event.pointerId;
-    movePad.setPointerCapture?.(event.pointerId);
+    capturePointerSafely(movePad, event.pointerId);
     updateMovePad(event);
 }
 
@@ -2163,7 +2201,7 @@ function onMovePadUp(event) {
     runtime.moveStick.pointerId = null;
     runtime.explore.joystickX = 0;
     runtime.explore.joystickY = 0;
-    movePad.releasePointerCapture?.(event.pointerId);
+    releasePointerSafely(movePad, event.pointerId);
     moveKnob.style.transform = "translate(-50%, -50%)";
 }
 
@@ -2521,7 +2559,6 @@ function resize() {
     if (composer) {
         composer.setPixelRatio(pixelRatio);
         composer.setSize(width, height);
-
     }
 
     camera.aspect = width / Math.max(height, 1);
