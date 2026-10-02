@@ -1,0 +1,18 @@
+[
+  {
+    "id": "02",
+    "prompt": "Precise cleanup of this poster only. Preserve every compositional relationship, text, red interrupted vertical line, photo crop, tone and paper texture. Remove the tiny vertical white lettering near bottom-left inside photo and all thin geometric corner-registration lines within the photograph. Restore photographic grain beneath. Keep naturally worn edges. Exact text unchanged. No other alterations."
+  },
+  {
+    "id": "04",
+    "prompt": "Precise final cleanup of this stage poster. Preserve bassist, diagonal instrument, dramatic light, composition, tactile black print, [SIC] and 'SEÑAL EN CONFLICTO.'. Remove tiny vertical white numbers at middle-left edge and every thin rectangular registration/corner line. Retain rough photographic print border. Do not add any letters or symbols. Lift shadows on bass-playing hand slightly so anatomy reads. No other changes."
+  },
+  {
+    "id": "05",
+    "prompt": "Targeted compositional refinement of this MATTER poster. Preserve the great bold left title, [SIC], dominant lower-right bass photograph and lower-left pedal image exactly in spirit and scale. Reduce upper-right drum fragment height by about a third, shift it down so it overlaps the guitar fragment's right edge and the upper bass edge. This smaller horizontal drum gesture is subordinate. Keep narrow tall guitar photo. The result is an interlocking asymmetrical four-photo collage, no extra photos. Remove long red line above title, retain only short red mark next to title. Retain tape once at drum overlap and tactile edges. Preserve correct text 'LA IDEA SE VUELVE MATERIA.'. Remove all geometric white registration lines. Do not create broad new empty zones: the guitar/drum/bass overlaps should form a connected mass."
+  },
+  {
+    "id": "07",
+    "prompt": "Refine this exact TRACE collage. Keep the excellent four-image composition, all people and image crops, large TRACE typography, [SIC], and all current text including 'INTERPRETACIÓN VISUAL'. Convert ALL photographic content to rich neutral BLACK AND WHITE, with open midtones and deep blacks, matching V07. Red underline and red I remain the ONLY color. Reduce outer paper dirt by 40 percent, retaining tactile grain, torn overlaps and selective tape. Remove geometric registration lines within images. No other changes. No fake codes or notes."
+  }
+]

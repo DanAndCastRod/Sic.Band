@@ -1,0 +1,70 @@
+{
+  "mode": "built-in imagegen",
+  "status": "final AI exploration selection",
+  "images": [
+    {
+      "file": "ambiguous_signal_in_development_v08.png",
+      "size": [
+        1055,
+        1491
+      ],
+      "sha256": "a76c874800a97eca77c1aeffcbf748b7f902971a96147799db9695cba8717af3"
+    },
+    {
+      "file": "manifesto_no_busques_una_respuesta_v08.png",
+      "size": [
+        1055,
+        1491
+      ],
+      "sha256": "d9287f7d38515c7384e57b326b1ee5502a6e7cba66a9c0cc5cd6d963f1105fd3"
+    },
+    {
+      "file": "matter_la_idea_se_vuelve_materia_v08.png",
+      "size": [
+        1055,
+        1491
+      ],
+      "sha256": "f1842ee8d66a1b7858331b0798797cf1b43516f5974cbb2792feed017e123f6b"
+    },
+    {
+      "file": "signal_live_state_v08.png",
+      "size": [
+        1055,
+        1491
+      ],
+      "sha256": "f7b7b04391fe8e75bbc8e97af6a6eefb460b4f37b74a85b48c981e6a2e76f76f"
+    },
+    {
+      "file": "silence_the_signal_was_here_v08.png",
+      "size": [
+        1055,
+        1491
+      ],
+      "sha256": "a9d227143e6c121d4e2cc9d549ba7e2595af34f86a653cfd7eef008b7ba9e289"
+    },
+    {
+      "file": "silence_v08.png",
+      "size": [
+        1055,
+        1491
+      ],
+      "sha256": "78c7e66389bb980a5557572af4cdfd47ccfb7543cf7b2a00a9f0c45f6dcc69aa"
+    },
+    {
+      "file": "trace_archivo_vivo_v08.png",
+      "size": [
+        1055,
+        1491
+      ],
+      "sha256": "ee3cb5bc6a82b8832e6f75e287350edd09438d9df8de481eb5ef8a5811647c4e"
+    },
+    {
+      "file": "triad_tres_funciones_v08.png",
+      "size": [
+        1055,
+        1491
+      ],
+      "sha256": "5a8b1adb2765b3e97e2b998e91a827988367397d6898ff5323357dc233489c38"
+    }
+  ]
+}

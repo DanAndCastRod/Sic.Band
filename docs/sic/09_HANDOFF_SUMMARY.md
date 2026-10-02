@@ -1,5 +1,9 @@
 # [SIC] — Resumen de continuidad / Handoff
 
+## Actualización visual — 10 de septiembre de 2026
+
+La primera V08 minimalista fue rechazada. Por indicación del usuario, se trabajó sobre el lenguaje artístico de V07 y se cerró una selección de ocho exploraciones V08, con cinco correcciones de segunda pasada. Ver [galería comparativa](references/key-visual-v08-final/galeria.html) y [revisión crítica](references/key-visual-v08-final/README.md). Esta entrega recupera collage, presencia fotográfica y fuerza tipográfica; no equivale a aprobación del usuario ni a publicación. Todas las piezas se generaron con IA por elección expresa; TRACE se identifica como interpretación visual. No se modificó el despliegue.
+
 Este documento existe para que Codex CLI, otros agentes o colaboradores puedan retomar el proyecto sin perder las decisiones principales del trabajo realizado.
 
 ## 1. Objetivos

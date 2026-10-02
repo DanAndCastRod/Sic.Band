@@ -1,0 +1,72 @@
+[
+  {
+    "id": "01",
+    "name": "silence_v08.png",
+    "prompt": "Edit the supplied V07 poster into a polished final V08 exploration. Preserve its authored artistic language, substantial photographic presence, tactile paper, purposeful distressed edges and confident typography. This is a close compositional improvement, not a minimalist redesign. Never replace it with a tiny photo and caption. Preserve portrait aspect ratio. Remove ALL KEY VISUAL SYSTEM headings, version labels, STATE labels, fake codes, filenames, repeated word lists and technical presentation footers. No invented dates or handwritten evidence. Richness comes from relationships and materials, not arbitrary decoration. Exact legible typography, restrained red, natural anatomy and proportional photographs. Return one flat finished artwork. Keep the huge condensed title 'UNA IDEA / NO PESA.' and secondary 'hasta que toca algo.'. Keep [SIC] at top left. Preserve the large right-hand guitar close-up and offset paper composition. Refine spacing: tighten title-photo relationship slightly, leave deliberate top air, align secondary sentence to title. Keep fine photographic edge wear and subtle paper grain. Remove bottom lists and framing numbers, but DO NOT shrink the central art. No additional text.",
+    "referenced_image_paths": [
+      "C:/proyectos_personales/Releven/bands/sic/tmp/imagegen/silence_v07.png"
+    ]
+  },
+  {
+    "id": "02",
+    "name": "manifesto_no_busques_una_respuesta_v08.png",
+    "prompt": "Edit the supplied V07 poster into a polished final V08 exploration. Preserve its authored artistic language, substantial photographic presence, tactile paper, purposeful distressed edges and confident typography. This is a close compositional improvement, not a minimalist redesign. Never replace it with a tiny photo and caption. Preserve portrait aspect ratio. Remove ALL KEY VISUAL SYSTEM headings, version labels, STATE labels, fake codes, filenames, repeated word lists and technical presentation footers. No invented dates or handwritten evidence. Richness comes from relationships and materials, not arbitrary decoration. Exact legible typography, restrained red, natural anatomy and proportional photographs. Return one flat finished artwork. Preserve the quiet yet powerful V07 layout: generous large right-side close-up hand on guitar, tactile off-white paper and red vertical line interrupted by the text. Keep exact 'NO BUSQUES UNA RESPUESTA.' and 'entra en el conflicto.'. Tighten the relation of this text to the photo edge, preserve visual tension and original mid-page placement; photo remains large and substantial. No logo, no filenames, no footer, no other text. Worn photo boundary subtle, not uniform grunge.",
+    "referenced_image_paths": [
+      "C:/proyectos_personales/Releven/bands/sic/tmp/imagegen/manifesto_no_busques_una_respuesta_v07.png"
+    ]
+  },
+  {
+    "id": "03",
+    "name": "silence_the_signal_was_here_v08.png",
+    "prompt": "Edit the supplied V07 poster into a polished final V08 exploration. Preserve its authored artistic language, substantial photographic presence, tactile paper, purposeful distressed edges and confident typography. This is a close compositional improvement, not a minimalist redesign. Never replace it with a tiny photo and caption. Preserve portrait aspect ratio. Remove ALL KEY VISUAL SYSTEM headings, version labels, STATE labels, fake codes, filenames, repeated word lists and technical presentation footers. No invented dates or handwritten evidence. Richness comes from relationships and materials, not arbitrary decoration. Exact legible typography, restrained red, natural anatomy and proportional photographs. Return one flat finished artwork. Keep V07's large dark photographic mass on the right and small left-side text 'THE SIGNAL WAS HERE.'. Replace unverified drummer portrait with a close-up of a musician's hand resting on the bass strings after playing, based on the bass and hands in second reference Cuanzas-94. No face, no identifiable portrait; quiet aftermath. Large tactile photographic crop occupies about 65 percent width and 75 percent height, bleed right, deep expressive shadows, paper edge. Keep the small red interruption underneath phrase. No other text. This must feel photographic, physical and intimate, not generic guitar product photography.",
+    "referenced_image_paths": [
+      "C:/proyectos_personales/Releven/bands/sic/tmp/imagegen/silence_the_signal_was_here_v07.png",
+      "C:/proyectos_personales/Releven/bands/sic/tmp/imagegen/Cuanzas-94-reference.jpg"
+    ]
+  },
+  {
+    "id": "04",
+    "name": "signal_live_state_v08.png",
+    "prompt": "Edit the supplied V07 poster into a polished final V08 exploration. Preserve its authored artistic language, substantial photographic presence, tactile paper, purposeful distressed edges and confident typography. This is a close compositional improvement, not a minimalist redesign. Never replace it with a tiny photo and caption. Preserve portrait aspect ratio. Remove ALL KEY VISUAL SYSTEM headings, version labels, STATE labels, fake codes, filenames, repeated word lists and technical presentation footers. No invented dates or handwritten evidence. Richness comes from relationships and materials, not arbitrary decoration. Exact legible typography, restrained red, natural anatomy and proportional photographs. Return one flat finished artwork. Preserve V07's full dark, visceral stage presence and diagonals, but use the bassist in second image Cuanzas-94 as the dominant musician, with natural gesture and bass proportions. Stage atmosphere, motion and contrasting light; no fabricated extra band members. Retain the environment's intimacy rather than a giant invented arena. Crop with bass diagonal spanning lower frame and head upper-left; deepen black negative space upper-right. Keep modest [SIC] top left and small exact 'SEÑAL EN CONFLICTO.' lower left. Keep selective rough print edges, do not put photo inside a small white rectangle. No additional text.",
+    "referenced_image_paths": [
+      "C:/proyectos_personales/Releven/bands/sic/tmp/imagegen/signal_live_state_v07.png",
+      "C:/proyectos_personales/Releven/bands/sic/tmp/imagegen/Cuanzas-94-reference.jpg"
+    ]
+  },
+  {
+    "id": "05",
+    "name": "matter_la_idea_se_vuelve_materia_v08.png",
+    "prompt": "Edit the supplied V07 poster into a polished final V08 exploration. Preserve its authored artistic language, substantial photographic presence, tactile paper, purposeful distressed edges and confident typography. This is a close compositional improvement, not a minimalist redesign. Never replace it with a tiny photo and caption. Preserve portrait aspect ratio. Remove ALL KEY VISUAL SYSTEM headings, version labels, STATE labels, fake codes, filenames, repeated word lists and technical presentation footers. No invented dates or handwritten evidence. Richness comes from relationships and materials, not arbitrary decoration. Exact legible typography, restrained red, natural anatomy and proportional photographs. Return one flat finished artwork. Keep the bold title 'LA IDEA SE VUELVE MATERIA.' upper-left and [SIC] top-left. Build four-photo interlocking collage with bass-hand diagonal as dominant lower-right, narrow guitar fragment upper-middle, SMALLER drum gesture offset overlapping near upper-right, pedalboard horizontal lower-left. These must have unequal sizes and intentional overlaps, not evenly spaced boxes. Remove microphone, handwritten note and all technical labels. One restrained tape attachment and short red fault at title/photo seam. Retain tactile art, bold typography and full photographic density. Clear clean spaces between only some elements.",
+    "referenced_image_paths": [
+      "C:/proyectos_personales/Releven/bands/sic/tmp/imagegen/matter_la_idea_se_vuelve_materia_v07.png"
+    ]
+  },
+  {
+    "id": "06",
+    "name": "triad_tres_funciones_v08.png",
+    "prompt": "Edit the supplied V07 poster into a polished final V08 exploration. Preserve its authored artistic language, substantial photographic presence, tactile paper, purposeful distressed edges and confident typography. This is a close compositional improvement, not a minimalist redesign. Never replace it with a tiny photo and caption. Preserve portrait aspect ratio. Remove ALL KEY VISUAL SYSTEM headings, version labels, STATE labels, fake codes, filenames, repeated word lists and technical presentation footers. No invented dates or handwritten evidence. Richness comes from relationships and materials, not arbitrary decoration. Exact legible typography, restrained red, natural anatomy and proportional photographs. Return one flat finished artwork. Use first reference ONLY for V07 artistic triptych layout and typography. Second reference is the actual formation photo and is authoritative for faces: Daniel is TOP CENTER in black/white leather jacket; Juan Pablo is LOWER LEFT black T-shirt short hair; Francisco is LOWER RIGHT long hair sunglasses. Create three substantial vertical photographic crops from that photo, LEFT Daniel, CENTER Juan Pablo, RIGHT Francisco. Keep their actual clothes and facial features; no invented instruments or performance situations. Portrait sizes comparable, panels slightly offset for tension, slim off-white gutters, one partial tape joint. Under each panel print exact names/roles: 'Daniel / guitarra y voz', 'Juan Pablo / batería', 'Francisco / bajo'. Keep strong large condensed bottom title 'TRES FUNCIONES. / UN MISMO PULSO.'. [SIC] top left. Remove waveform and long red line. One small red alignment accent at a panel junction. Maintain tactile print and editorial strength, no generic corporate team cards.",
+    "referenced_image_paths": [
+      "C:/proyectos_personales/Releven/bands/sic/tmp/imagegen/triad_tres_funciones_v07.png",
+      "C:/proyectos_personales/Releven/bands/sic/tmp/imagegen/DMP06450-2-reference.jpg"
+    ]
+  },
+  {
+    "id": "07",
+    "name": "trace_archivo_vivo_v08.png",
+    "prompt": "Edit the supplied V07 poster into a polished final V08 exploration. Preserve its authored artistic language, substantial photographic presence, tactile paper, purposeful distressed edges and confident typography. This is a close compositional improvement, not a minimalist redesign. Never replace it with a tiny photo and caption. Preserve portrait aspect ratio. Remove ALL KEY VISUAL SYSTEM headings, version labels, STATE labels, fake codes, filenames, repeated word lists and technical presentation footers. No invented dates or handwritten evidence. Richness comes from relationships and materials, not arbitrary decoration. Exact legible typography, restrained red, natural anatomy and proportional photographs. Return one flat finished artwork. Rebuild V07's rich TRACE collage using ONLY visual material from reference2 Cuanzas-94 (single live bassist) and reference3 DMP06450-2 (three people on sofa). Use four purposeful photographic fragments: dominant live bassist top-left; whole sofa group bottom-right; close crop of bass-playing hand as a slim right-side fragment; small detail of sofa group's hands at bottom-left. Different scales, overlapping edges, selective tape and torn paper, strong mid-left condensed 'TRACE' with '/ ARCHIVO VIVO' beneath. Add clearly legible small 'INTERPRETACIÓN VISUAL' directly beneath subtitle to distinguish AI exploration from documentary evidence. No source filenames inside the art, no handwritten notes, no setlists, no fake dates/codes, no invented backstage scenes. Keep [SIC] upper left and one short red underline. Authentic-looking tactile collage without pretending invented metadata are evidence.",
+    "referenced_image_paths": [
+      "C:/proyectos_personales/Releven/bands/sic/tmp/imagegen/trace_archivo_vivo_v07.png",
+      "C:/proyectos_personales/Releven/bands/sic/tmp/imagegen/Cuanzas-94-reference.jpg",
+      "C:/proyectos_personales/Releven/bands/sic/tmp/imagegen/DMP06450-2-reference.jpg"
+    ]
+  },
+  {
+    "id": "08",
+    "name": "ambiguous_signal_in_development_v08.png",
+    "prompt": "Edit the supplied V07 poster into a polished final V08 exploration. Preserve its authored artistic language, substantial photographic presence, tactile paper, purposeful distressed edges and confident typography. This is a close compositional improvement, not a minimalist redesign. Never replace it with a tiny photo and caption. Preserve portrait aspect ratio. Remove ALL KEY VISUAL SYSTEM headings, version labels, STATE labels, fake codes, filenames, repeated word lists and technical presentation footers. No invented dates or handwritten evidence. Richness comes from relationships and materials, not arbitrary decoration. Exact legible typography, restrained red, natural anatomy and proportional photographs. Return one flat finished artwork. Preserve V07 black tactile collage and bold central AMBIGUOUS with prominent exact subtitle 'SIGNAL IN DEVELOPMENT'. Retain large right-edge bass/hair/hand fragment and two offset left fragments, but show body and instrument details rather than unverified faces. Borrow bass hand material from second photo. Top-left fragment should be drumsticks/cymbal gesture; bottom-left guitar hand, abstract partial context, expressive shadows. No handwritten note, no filenames, no numerical metadata. Keep [SIC] small top-left, one red horizontal fault interrupted at a photographic seam; remove cross and long red axis. Compose richly with selective overlaps and deep black intervals, not empty black with text. Make status legible; no release claims.",
+    "referenced_image_paths": [
+      "C:/proyectos_personales/Releven/bands/sic/tmp/imagegen/ambiguous_signal_in_development_v07.png",
+      "C:/proyectos_personales/Releven/bands/sic/tmp/imagegen/Cuanzas-94-reference.jpg"
+    ]
+  }
+]

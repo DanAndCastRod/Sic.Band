@@ -1,5 +1,7 @@
 # [SIC] — Ronda visual V08
 
+> Estado actualizado: la primera entrega descrita abajo fue rechazada por pérdida de composición y carácter artístico. La selección que la sustituye está en [V08 final](references/key-visual-v08-final/galeria.html), con [revisiones y límites](references/key-visual-v08-final/README.md). Se conserva este texto como antecedente, no como dirección vigente.
+
 ## Entrega
 
 [Galería local](references/key-visual-v08/galeria.html) · [Índice, fuentes y evaluación](references/key-visual-v08/README.md)

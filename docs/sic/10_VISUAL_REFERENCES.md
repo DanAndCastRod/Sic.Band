@@ -1,5 +1,9 @@
 # [SIC] — Visual References Index
 
+## Selección local V08 final — 10 de septiembre de 2026
+
+[Galería con comparación V07](references/key-visual-v08-final/galeria.html) · [Criterios, fuentes y revisiones](references/key-visual-v08-final/README.md). Sustituye la primera exploración V08 rechazada; mantiene V07 como referencia artística. Son ocho exploraciones con IA, no archivo fotográfico original ni aprobación editorial del usuario.
+
 Este archivo conecta la documentación del repositorio con el archivo visual canónico guardado en Google Drive.
 
 ## Regla de uso para Codex
