@@ -1,0 +1,9 @@
+# Binarios: sin conversión de fin de línea y sin diff de texto.
+# Con core.autocrlf=true, un PDF sin bytes NUL podría tratarse como texto.
+*.pdf binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.zip binary
+*.glb binary
+*.blend binary
