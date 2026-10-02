@@ -11,3 +11,21 @@ cam-test-*.png
 playwright-live-*.png
 playwright-hide-*.png
 canvas-dataurl-prefix.json
+
+# Material de trabajo del Key Visual System: fotografías fuente copiadas de Drive,
+# renders de revisión y scripts de paso. No es entregable.
+# Los archivos de tmp/imagegen/ versionados en 3dd9f34 siguen versionados:
+# .gitignore no afecta a lo que ya está en el índice.
+/tmp/
+
+# Salidas generadas. Solo se versiona el PDF final del Key Visual System,
+# que es el entregable que fija docs/sic/13_PRODUCTION_CONTRACT.md.
+/output/*
+!/output/pdf/
+/output/pdf/*
+!/output/pdf/SIC_Key_Visual_System_V*.pdf
+
+# Paquete zip derivado de docs/sic/references/key-visual-v08-final/: su contenido
+# ya está versionado en esa carpeta y se regenera con package_v08_final.py.
+# Si hace falta como descarga, publicarlo como asset de un release de GitHub.
+/docs/sic/references/SIC_Key_Visual_V08_Final.zip
