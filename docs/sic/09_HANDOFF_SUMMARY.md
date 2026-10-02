@@ -222,7 +222,7 @@ El refinamiento artístico de `Web/universe.html` quedó documentado en:
 
 - `docs/sic/11_UNIVERSE_ART_DIRECTION.md`
 
-Este frente **no está resuelto** aunque el viewer funcione técnicamente. La escena actual necesita un art pass de geometría, materiales, texturas, iluminación, composición espacial, interacción y performance. El documento 11 es la fuente de continuidad para ese trabajo y debe consultarse antes de generar o integrar nuevos assets Meshy.
+Este frente **no está resuelto** aunque el viewer funcione técnicamente. La escena actual necesita un art pass de geometría, materiales, texturas, iluminación, composición espacial, interacción y performance. `11_UNIVERSE_ART_DIRECTION.md` (no confundir con `11_VISUAL_REVIEW_V07.md`, que comparte el número) es la fuente de continuidad para ese trabajo y debe consultarse antes de generar o integrar nuevos assets Meshy.
 
 ## 7. Pendientes
 
