@@ -1,0 +1,26 @@
+[
+  {
+    "path": "tmp/pdfs/DMP06423.jpg",
+    "sha256": "c9cfb12201328f4a1f98aef3659b961ce1bff2602f3d0baf7d7e26dc8a615c73"
+  },
+  {
+    "path": "tmp/pdfs/DSC06220.2.jpg",
+    "sha256": "1c834292192e8772069d1500c9ad48e7489a02b357c46f5933977bb6d1c5ab55"
+  },
+  {
+    "path": "tmp/pdfs/Cuanzas-113.jpg",
+    "sha256": "30e13e76fefe8f5634b07b3f06324a8dc4cc730a8d068547f80b678f381a1c08"
+  },
+  {
+    "path": "tmp/pdfs/Desmintiendo mitos-68.jpg",
+    "sha256": "93c4369b78899ef80f726611cc974e37f7fa9bff7a3d9889c29007974a00785e"
+  },
+  {
+    "path": "tmp/imagegen/DMP06450-2.jpg",
+    "sha256": "89ad75c329b4d7dfe428c395b27b0a14fea571f635674db67ef98d05629dfc9e"
+  },
+  {
+    "path": "tmp/imagegen/Cuanzas-94.jpg",
+    "sha256": "86d57859f0d6f358bd88df5a9482de2ff29a23fde5ff9828fb2d23bac341f569"
+  }
+]

@@ -1,5 +1,9 @@
 # [SIC] — Resumen de continuidad / Handoff
 
+## V09 editorial / contrato de producción
+
+El usuario cambió el entregable a un PDF editorial coherente de 8 a 10 páginas. Rige [13_PRODUCTION_CONTRACT.md](13_PRODUCTION_CONTRACT.md). V09 se entregó como documento de diez páginas, con fotografías originales y composición vectorial, sin pósteres generados incrustados. Ver [registro de producción y revisión](references/key-visual-v09/README.md). PDF: ../../output/pdf/SIC_Key_Visual_System_V09.pdf. Veredicto interno: refinar; no se declara aprobado el sistema matriz. DMP06423.jpg es la guía adicional de identidad confirmada por el usuario.
+
 ## Actualización visual — 10 de septiembre de 2026
 
 La primera V08 minimalista fue rechazada. Por indicación del usuario, se trabajó sobre el lenguaje artístico de V07 y se cerró una selección de ocho exploraciones V08, con cinco correcciones de segunda pasada. Ver [galería comparativa](references/key-visual-v08-final/galeria.html) y [revisión crítica](references/key-visual-v08-final/README.md). Esta entrega recupera collage, presencia fotográfica y fuerza tipográfica; no equivale a aprobación del usuario ni a publicación. Todas las piezas se generaron con IA por elección expresa; TRACE se identifica como interpretación visual. No se modificó el despliegue.

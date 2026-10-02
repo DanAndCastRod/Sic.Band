@@ -1,5 +1,9 @@
 # [SIC] — Visual References Index
 
+## V09 / documento editorial
+
+PDF local: ../../output/pdf/SIC_Key_Visual_System_V09.pdf. [Proceso, fuentes y evaluación](references/key-visual-v09/README.md). Diez páginas diseñadas como conjunto; fotografías reales, sin rostros regenerados. Guía de identidad inspeccionada: [DMP06423.jpg](https://drive.google.com/file/d/1Eygl5iEQBKe3sOGDmAqAltj-2VMIm1ha/view), con Juan Pablo izquierda, Daniel centro y Francisco derecha, según confirmación del usuario. Veredicto de esta edición: refinar.
+
 ## Selección local V08 final — 10 de septiembre de 2026
 
 [Galería con comparación V07](references/key-visual-v08-final/galeria.html) · [Criterios, fuentes y revisiones](references/key-visual-v08-final/README.md). Sustituye la primera exploración V08 rechazada; mantiene V07 como referencia artística. Son ocho exploraciones con IA, no archivo fotográfico original ni aprobación editorial del usuario.

@@ -2,6 +2,10 @@
 
 ## Formación actual
 
+### Guía adicional confirmada por el usuario
+
+`DMP06423.jpg`: Juan Pablo Hurtado a la izquierda; Daniel Castañeda al centro; Francisco Valencia a la derecha. Inspeccionada directamente para V09. La posición en esta fotografía no debe extrapolarse a otros archivos.
+
 La formación `CURRENT / TRIAD` tiene exactamente tres integrantes.
 
 ### Daniel Castañeda
